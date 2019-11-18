@@ -6,8 +6,11 @@ import { ConnectedRouter } from 'connected-react-router'
 import * as serviceWorker from './serviceWorker';
 import App from './components/App';
 import store, { history } from './configureStore';
+import { initFirebase } from './actions/firebase';
 
 import './styles/index.scss';
+
+initFirebase();
 
 ReactDOM.render((
   <Provider store={store}>

@@ -10,7 +10,10 @@
   },
   "dependencies": {
     "@material-ui/core": "^4.6.1",
+    "@material-ui/icons": "^4.5.1",
     "connected-react-router": "^6.6.0",
+    "firebase": "^7.4.0",
+    "immutability-helper": "^3.0.1",
     "node-sass": "^4.13.0",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
@@ -58,7 +61,7 @@
       "\\.(css|less|scss)$": "identity-obj-proxy"
     },
     "transform": {
-      "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/__mocks__/fileMock.js"
+      "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/src/__mocks__/fileMock.js"
     }
   }
 }
