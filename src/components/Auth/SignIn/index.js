@@ -1,37 +1,50 @@
 import React from 'react';
-import { TextField, Button, Grid } from '@material-ui/core';
+import { Button, Grid } from '@material-ui/core';
+import useForm from 'react-hook-form';
 
-import s from './index.module.scss';
-import AuthHeader from '../AuthHeader';
-import Link from '../../UI/Link';
 import { ROUTES } from '../../../constants';
 
+import AuthHeader from '../AuthHeader';
+import Link from '../../UI/Link';
+import TextField from '../../UI/TextField';
+
+import s from './index.module.scss';
+
 function SignIn() {
+  const { errors, handleSubmit, register } = useForm();
+
+  const onSubmit = data => {
+    console.log(data);
+  }
+
   return (
     <>
       <AuthHeader title="Sign in" />
-      <form className={s.form} noValidate>
+      <form
+        className={s.form}
+        noValidate
+        onSubmit={handleSubmit(onSubmit)}
+      >
         <TextField
           autoComplete="email"
           autoFocus
+          error={!!(errors && errors.email)}
           fullWidth
-          id="email"
+          inputRef={register({ required: true })}
           label="Email Address"
-          margin="normal"
           name="email"
           required
-          variant="outlined"
         />
         <TextField
           autoComplete="current-password"
+          error={!!(errors && errors.password)}
           fullWidth
           id="password"
+          inputRef={register({ required: true })}
           label="Password"
-          margin="normal"
           name="password"
           required
           type="password"
-          variant="outlined"
         />
         <Button
           className={s.submit}
