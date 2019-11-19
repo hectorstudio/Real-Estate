@@ -16,6 +16,7 @@ function App() {
       if (user.email) {
         user.getIdToken().then((token) => {
           dispatch(saveUser(user, token));
+          console.log('SIGNED IN');
         });
       }
     });
