@@ -9,6 +9,8 @@ export const initFirebase = () => {
   firebase.analytics();
 };
 
+export const createUserWithEmailAndPassword = (email, password) => firebase.auth().createUserWithEmailAndPassword(email, password);
+
 export const onAuthStateChanged = (callback) => firebase.auth().onAuthStateChanged(callback);
 
 export const signInWithEmailAndPassword = (email, password) =>

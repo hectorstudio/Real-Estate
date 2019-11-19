@@ -34,9 +34,7 @@ function SignIn() {
       });
   }
 
-  const handleSnackBarClose = () => {
-    setErrorMessage();
-  };
+  const handleSnackBarClose = () => setErrorMessage();
 
   return (
     <>

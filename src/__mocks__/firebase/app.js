@@ -7,6 +7,7 @@ const auth = jest.fn().mockImplementation(function auth() {
   this.currentUser = {
     getIdToken: jest.fn().mockResolvedValue('token'),
   };
+  this.createUserWithEmailAndPassword = jest.fn().mockResolvedValue();
   this.signInWithEmailAndPassword = jest.fn().mockResolvedValue();
   this.signOut = jest.fn().mockResolvedValue();
 

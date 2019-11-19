@@ -1,5 +1,5 @@
 import firebase from 'firebase/app';
-import { initFirebase, onAuthStateChanged, signInWithEmailAndPassword, signOut } from '../firebase';
+import { initFirebase, onAuthStateChanged, signInWithEmailAndPassword, signOut, createUserWithEmailAndPassword } from '../firebase';
 
 describe('initFirebase', () => {
   it('calls firebase initializeApp method', () => {
@@ -16,6 +16,14 @@ describe('onAuthStateChanged', () => {
     onAuthStateChanged(callback);
 
     expect(firebase.auth.mock.instances[0].onAuthStateChanged).toHaveBeenCalledWith(callback);
+  });
+});
+
+describe('createUserWithEmailAndPassword', () => {
+  it('calls createUserWithEmailAndPassword with email and password', () => {
+    createUserWithEmailAndPassword('foo', 'bar');
+
+    expect(firebase.auth.mock.instances[0].createUserWithEmailAndPassword).toHaveBeenCalledWith('foo', 'bar');
   });
 });
 

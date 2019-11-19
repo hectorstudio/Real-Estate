@@ -1,68 +1,96 @@
-import React from 'react';
-import { TextField, Button, Grid } from '@material-ui/core';
+import React, { useState } from 'react';
+import { Button, Grid, Snackbar } from '@material-ui/core';
+import useForm from 'react-hook-form';
+import { useDispatch } from 'react-redux';
+import { push } from 'connected-react-router';
 
-import s from './index.module.scss';
+import { ROUTES } from '../../../constants';
+import { createUserWithEmailAndPassword } from '../../../actions/firebase';
+
 import AuthHeader from '../AuthHeader';
 import Link from '../../UI/Link';
-import { ROUTES } from '../../../constants';
+import TextField from '../../UI/TextField';
+
+import s from './index.module.scss';
 
 function SignUp() {
+  const dispatch = useDispatch();
+  const { errors, handleSubmit, register } = useForm();
+  const [errorMessage, setErrorMessage] = useState();
+
+  const onSubmit = (values) => {
+    const { email, password } = values;
+
+    createUserWithEmailAndPassword(email, password)
+      .then(() => {
+        dispatch(push(ROUTES.signIn()));
+      })
+      .catch((err) => setErrorMessage(err.message));
+  }
+
+  const handleSnackBarClose = () => setErrorMessage();
+
   return (
     <>
+      <Snackbar
+        anchorOrigin={{
+          vertical: 'top',
+          horizontal: 'center',
+        }}
+        open={!!errorMessage}
+        onClose={handleSnackBarClose}
+        message={errorMessage}
+      />
       <AuthHeader title="Sign up" />
-      <form className={s.form} noValidate>
+      <form
+        className={s.form}
+        noValidate
+        onSubmit={handleSubmit(onSubmit)}
+      >
         <TextField
           autoComplete="given-name"
           autoFocus
           fullWidth
-          id="email"
+          inputRef={register()}
           label="First name"
-          margin="normal"
           name="firstName"
           required
-          variant="outlined"
         />
         <TextField
           autoComplete="family-name"
           fullWidth
-          id="email"
+          inputRef={register()}
           label="Last name"
-          margin="normal"
           name="lastName"
           required
-          variant="outlined"
         />
         <TextField
           autoComplete="email"
+          error={!!(errors && errors.email)}
           fullWidth
-          id="email"
+          inputRef={register({ required: true })}
           label="Email Address"
-          margin="normal"
           name="email"
           required
-          variant="outlined"
         />
         <TextField
           autoComplete="new-password"
+          error={!!(errors && errors.password)}
           fullWidth
-          id="password"
+          inputRef={register({ required: true })}
           label="Password"
-          margin="normal"
           name="password"
           required
           type="password"
-          variant="outlined"
         />
         <TextField
           autoComplete="new-password"
           fullWidth
-          id="repassword"
           label="Confirm password"
-          margin="normal"
           name="repassword"
           required
           type="password"
-          variant="outlined"
+          inputRef={register()}
         />
         <Button
           className={s.submit}
