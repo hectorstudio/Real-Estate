@@ -7,17 +7,8 @@ const auth = jest.fn().mockImplementation(function auth() {
   this.currentUser = {
     getIdToken: jest.fn().mockResolvedValue('token'),
   };
-  // this.fetchSignInMethodsForEmail = jest.fn().mockResolvedValue([]);
-  // this.getRedirectResult = jest.fn().mockResolvedValue();
-  // this.isSignInWithEmailLink = jest.fn((arg = true) => !!arg);
-  // this.sendSignInLinkToEmail = jest.fn().mockResolvedValue();
-  // this.setPersistence = jest.fn().mockResolvedValue();
   this.signInWithEmailAndPassword = jest.fn().mockResolvedValue();
-  // this.signInWithRedirect = jest.fn();
   this.signOut = jest.fn().mockResolvedValue();
-  // this.triggerAuthStateChanged = (user) => authStateChangedCallback(user);
-  // this.unregisterAuthObserver = jest.fn();
-  // this.signInAnonymously = jest.fn().mockResolvedValue({ user: this.currentUser });
 
   return this;
 });
