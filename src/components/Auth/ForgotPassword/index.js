@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, Grid, Snackbar } from '@material-ui/core';
+import { Button, Grid, Snackbar, Typography } from '@material-ui/core';
 import useForm from 'react-hook-form';
 
 import { ROUTES } from '../../../constants';
@@ -61,12 +61,12 @@ function ForgotPassword() {
           Reset password
         </Button>
         <Grid className={s.linkContainer}>
-          <Link
-            className={s.link}
-            to={ROUTES.signIn()}
-          >
-            {"Remember your password? Sign in"}
-          </Link>
+          <Typography className={s.link} variant="body2">
+            {'Remember your password? '}
+            <Link to={ROUTES.signIn()}>
+              Sign in
+            </Link>
+          </Typography>
         </Grid>
       </form>
     </>

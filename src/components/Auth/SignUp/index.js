@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, Grid, Snackbar } from '@material-ui/core';
+import { Button, Grid, Snackbar, Typography } from '@material-ui/core';
 import useForm from 'react-hook-form';
 import { useDispatch } from 'react-redux';
 import { push } from 'connected-react-router';
@@ -48,23 +48,6 @@ function SignUp() {
         onSubmit={handleSubmit(onSubmit)}
       >
         <TextField
-          autoComplete="given-name"
-          autoFocus
-          fullWidth
-          inputRef={register()}
-          label="First name"
-          name="firstName"
-          required
-        />
-        <TextField
-          autoComplete="family-name"
-          fullWidth
-          inputRef={register()}
-          label="Last name"
-          name="lastName"
-          required
-        />
-        <TextField
           autoComplete="email"
           error={!!(errors && errors.email)}
           fullWidth
@@ -92,6 +75,29 @@ function SignUp() {
           type="password"
           inputRef={register()}
         />
+        <Grid container spacing={2}>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              className={s.firstName}
+              autoComplete="given-name"
+              autoFocus
+              inputRef={register()}
+              label="First name"
+              name="firstName"
+              required
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              autoComplete="family-name"
+              className={s.lastName}
+              inputRef={register()}
+              label="Last name"
+              name="lastName"
+              required
+            />
+          </Grid>
+        </Grid>
         <Button
           className={s.submit}
           color="primary"
@@ -102,12 +108,12 @@ function SignUp() {
           Sign up
         </Button>
         <Grid className={s.linkContainer}>
-          <Link
-            className={s.link}
-            to={ROUTES.signIn()}
-          >
-            {"Already have an account? Sign in"}
-          </Link>
+          <Typography className={s.link} variant="body2">
+            {'Already have an account? '}
+            <Link to={ROUTES.signIn()}>
+              Sign in
+            </Link>
+          </Typography>
         </Grid>
       </form>
     </>

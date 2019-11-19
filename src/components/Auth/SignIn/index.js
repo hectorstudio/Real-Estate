@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, Grid, Snackbar } from '@material-ui/core';
+import { Button, Grid, Snackbar, Typography } from '@material-ui/core';
 import useForm from 'react-hook-form';
 import { useDispatch } from 'react-redux';
 
@@ -90,12 +90,12 @@ function SignIn() {
           >
             Forgot password?
           </Link>
-          <Link
-            className={s.link}
-            to={ROUTES.signUp()}
-          >
-            {"Don't have an account? Sign Up"}
-          </Link>
+          <Typography className={s.link} variant="body2">
+            {'Don\'t have an account? '}
+            <Link to={ROUTES.signUp()}>
+              Sign Up
+            </Link>
+          </Typography>
         </Grid>
       </form>
     </>
