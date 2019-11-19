@@ -13,6 +13,8 @@ export const createUserWithEmailAndPassword = (email, password) => firebase.auth
 
 export const onAuthStateChanged = (callback) => firebase.auth().onAuthStateChanged(callback);
 
+export const sendPasswordResetEmail = (email) => firebase.auth().sendPasswordResetEmail(email);
+
 export const signInWithEmailAndPassword = (email, password) =>
   firebase.auth().signInWithEmailAndPassword(email, password);
 
