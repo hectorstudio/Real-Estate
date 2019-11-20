@@ -11,6 +11,8 @@ export const initFirebase = () => {
 
 export const createUserWithEmailAndPassword = (email, password) => firebase.auth().createUserWithEmailAndPassword(email, password);
 
+export const signInWithPhoneNumber = (phone, recaptcha) => firebase.auth().signInWithPhoneNumber(phone, recaptcha);
+
 export const onAuthStateChanged = (callback) => firebase.auth().onAuthStateChanged(callback);
 
 export const sendPasswordResetEmail = (email) => firebase.auth().sendPasswordResetEmail(email);

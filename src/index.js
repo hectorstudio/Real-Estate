@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { ConnectedRouter } from 'connected-react-router'
+import { StylesProvider } from '@material-ui/core/styles';
 
 import * as serviceWorker from './serviceWorker';
 import App from './components/App';
@@ -15,7 +16,9 @@ initFirebase();
 ReactDOM.render((
   <Provider store={store}>
     <ConnectedRouter history={history}>
-      <App />
+      <StylesProvider injectFirst>
+        <App />
+      </StylesProvider>
     </ConnectedRouter>
   </Provider>
 ), document.getElementById('root'));

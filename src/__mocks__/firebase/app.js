@@ -9,6 +9,7 @@ const auth = jest.fn().mockImplementation(function auth() {
   };
   this.sendPasswordResetEmail = jest.fn().mockResolvedValue();
   this.createUserWithEmailAndPassword = jest.fn().mockResolvedValue();
+  this.signInWithPhoneNumber = jest.fn().mockResolvedValue();
   this.signInWithEmailAndPassword = jest.fn().mockResolvedValue();
   this.signOut = jest.fn().mockResolvedValue();
 
