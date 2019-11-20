@@ -1,13 +1,10 @@
-import React, { useState, useRef, useCallback } from 'react';
-import { useDispatch } from 'react-redux';
+import React, { useState } from 'react';
 
 import AuthHeader from '../AuthHeader';
 
 import SignUpForm from './SignUpForm';
 import AccountCreated from './AccountCreated';
 import VerifyPhoneNumber from './VerifyPhoneNumber';
-
-import s from './index.module.scss';
 
 function SignUp() {
   const [email, setEmail] = useState();

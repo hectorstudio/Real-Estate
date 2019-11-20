@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Button, Grid, Snackbar, Typography } from '@material-ui/core';
 import useForm from 'react-hook-form';
-import { useDispatch } from 'react-redux';
 
 import { ROUTES } from '../../../../constants';
 import { createUserWithEmailAndPassword } from '../../../../actions/firebase';
@@ -12,7 +11,6 @@ import TextField from '../../../UI/TextField';
 import s from './index.module.scss';
 
 function SignUpForm(props) {
-  const dispatch = useDispatch();
   const { errors, handleSubmit, register } = useForm();
 
   const [errorMessage, setErrorMessage] = useState();

@@ -4,8 +4,6 @@ import useForm from 'react-hook-form';
 import clsx from 'clsx';
 import firebase from 'firebase/app';
 
-import { signInWithPhoneNumber } from '../../../../actions/firebase';
-
 import TextField from '../../../UI/TextField';
 
 import s from './index.module.scss';
