@@ -13,7 +13,7 @@ function App() {
 
   useEffect(() => {
     onAuthStateChanged((user) => {
-      if (user.email) {
+      if (user && user.email) {
         user.getIdToken().then((token) => {
           dispatch(saveUser(user, token));
           console.log('SIGNED IN');
