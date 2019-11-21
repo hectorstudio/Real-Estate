@@ -26,7 +26,7 @@ function PrivateRoute(props) {
         dispatch(setIdToken(token));
 
         // Fetch user details. We pass token as first parameter because redux saved it asynchronously so it will be undefined.
-        dispatch(fetchCurrentUser()).then(() => {
+        dispatch(fetchCurrentUser(token)).then(() => {
           setLoading(false);
           setIsAuthenticated(true);
         });

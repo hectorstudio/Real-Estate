@@ -15,7 +15,11 @@ function Link(props) {
 }
 
 Link.propTypes = {
-  href: PropTypes.string.isRequired,
+  href: PropTypes.string,
+};
+
+Link.defaultProps = {
+  href: '',
 };
 
 export default Link;
