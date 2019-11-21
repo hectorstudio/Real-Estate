@@ -1,16 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import { Route, Switch } from 'react-router';
 import { useDispatch } from 'react-redux';
-
-import Auth from '../Auth';
-import Home from '../Home';
-import Loading from '../Loading';
+import { Container } from '@material-ui/core';
 
 import { onAuthStateChanged } from '../../actions/firebase';
 import { saveUser } from '../../actions/auth';
 import { ROUTES } from '../../constants';
 import { getUserByFirebaseId } from '../../actions/users';
 
+import Auth from '../Auth';
+import Home from '../Home';
+import Loading from '../Loading';
+import Header from '../Header';
+import Profile from '../Profile';
+
+import s from './index.module.scss';
+
+// TODO: Move auth logic to other component
 function App() {
   const dispatch = useDispatch();
   const [isSignedIn, setIsSignedIn] = useState(false);
@@ -18,33 +24,38 @@ function App() {
 
   useEffect(() => {
     onAuthStateChanged((user) => {
-      setIsLoading(false);
 
       if (user && user.email) {
         user.getIdToken().then((token) => {
           getUserByFirebaseId(user.uid).then((data) => {
             dispatch(saveUser(data, token));
             setIsSignedIn(true);
+            setIsLoading(false);
           });
         });
+      } else {
+        setIsLoading(false);
       }
     });
   }, [dispatch]);
-
-  let component = isSignedIn
-    ? Home
-    : Auth;
 
   if (isLoading) {
     return <Loading />
   }
 
+  if (!isSignedIn) {
+    return <Auth />;
+  }
+
   return (
     <div>
-      <Switch>
-        <Route exact path={ROUTES.signUp()} component={Auth} />
-        <Route component={component} />
-      </Switch>
+      <Header />
+      <Container className={s.container}>
+        <Switch>
+          <Route exact path={ROUTES.profile()} component={Profile} />
+          <Route component={Home} />
+        </Switch>
+      </Container>
     </div>
   );
 }

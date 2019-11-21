@@ -20,14 +20,6 @@ function Home() {
   return (
     <div className={s.root}>
       You are logged in.
-      <br />
-      <Button
-        color="primary"
-        onClick={doSignOut}
-        variant="contained"
-      >
-        Sign out
-      </Button>
     </div>
   );
 }
