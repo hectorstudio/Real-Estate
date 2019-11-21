@@ -4,6 +4,7 @@ import useForm from 'react-hook-form';
 
 import { ROUTES } from '../../../../constants';
 import { createUserWithEmailAndPassword } from '../../../../actions/firebase';
+import { addNewUser } from '../../../../actions/users';
 
 import Link from '../../../UI/Link';
 import TextField from '../../../UI/TextField';
@@ -12,7 +13,6 @@ import s from './index.module.scss';
 
 function SignUpForm(props) {
   const { errors, handleSubmit, register } = useForm();
-
   const [errorMessage, setErrorMessage] = useState();
 
   const onSubmit = (values) => {
@@ -20,8 +20,10 @@ function SignUpForm(props) {
 
     createUserWithEmailAndPassword(email, password)
       .then((res) => {
-        res.user.sendEmailVerification();
-        props.onEmailSubmit(res.user);
+        addNewUser(values).then((data) => {
+          res.user.sendEmailVerification();
+          props.onEmailSubmit(res.user);
+        });
       })
       .catch((err) => setErrorMessage(err.message));
   }
@@ -76,9 +78,9 @@ function SignUpForm(props) {
         <Grid container spacing={2}>
           <Grid item xs={12} sm={6}>
             <TextField
-              className={s.firstName}
               autoComplete="given-name"
-              inputRef={register()}
+              className={s.firstName}
+              inputRef={register({ required: true })}
               label="First name"
               name="firstName"
               required
@@ -88,7 +90,7 @@ function SignUpForm(props) {
             <TextField
               autoComplete="family-name"
               className={s.lastName}
-              inputRef={register()}
+              inputRef={register({ required: true })}
               label="Last name"
               name="lastName"
               required
