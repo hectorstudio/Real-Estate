@@ -20,7 +20,13 @@ function SignUpForm(props) {
 
     createUserWithEmailAndPassword(email, password)
       .then((res) => {
-        addNewUser(values).then((data) => {
+        const { _password, ...valuesWithoutPassword } = values;
+        const newUserData = {
+          ...valuesWithoutPassword,
+          firebaseId: res.user.uid,
+        };
+
+        addNewUser(newUserData).then((data) => {
           res.user.sendEmailVerification();
           props.onEmailSubmit(res.user);
         });

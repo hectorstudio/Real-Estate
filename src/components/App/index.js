@@ -8,6 +8,8 @@ import Loading from '../Loading';
 
 import { onAuthStateChanged } from '../../actions/firebase';
 import { saveUser } from '../../actions/auth';
+import { ROUTES } from '../../constants';
+import { getUserByFirebaseId } from '../../actions/users';
 
 function App() {
   const dispatch = useDispatch();
@@ -20,8 +22,10 @@ function App() {
 
       if (user && user.email) {
         user.getIdToken().then((token) => {
-          dispatch(saveUser(user, token));
-          setIsSignedIn(true);
+          getUserByFirebaseId(user.uid).then((data) => {
+            dispatch(saveUser(data, token));
+            setIsSignedIn(true);
+          });
         });
       }
     });
@@ -38,6 +42,7 @@ function App() {
   return (
     <div>
       <Switch>
+        <Route exact path={ROUTES.signUp()} component={Auth} />
         <Route component={component} />
       </Switch>
     </div>

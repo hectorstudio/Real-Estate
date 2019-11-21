@@ -11,3 +11,10 @@ export const addNewUser = (userData) =>
   })
     .then((res) => res.json())
     .then((data) => data);
+
+export const getUserByFirebaseId = (firebaseId) =>
+  fetch(ENDPOINTS.users.firebaseId(firebaseId), {
+    method: 'GET',
+  })
+    .then((res) => res.json())
+    .then((data) => data.length && data[0]);
