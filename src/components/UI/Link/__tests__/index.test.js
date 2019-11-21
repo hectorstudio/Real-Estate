@@ -8,7 +8,7 @@ beforeEach(() => {
   props = {
     children: 'foo',
     to: 'bar',
-  }
+  };
 });
 
 describe('render', () => {

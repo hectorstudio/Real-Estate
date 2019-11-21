@@ -1,4 +1,4 @@
-import { SAVE_USER } from '../../actions/types';
+import { SET_USER } from '../../actions/types';
 import reducer from '../user';
 import initialState from '../../initialState';
 
@@ -16,7 +16,7 @@ it('returns initial state if no state is passed', () => {
   expect(newState).toBe(initialState.user);
 });
 
-it('SAVE_USER sets user object in redux store', () => {
+it('SET_USER sets user object in redux store', () => {
   const userObject = {
     email: 'foo',
     token: 'bar',
@@ -24,7 +24,7 @@ it('SAVE_USER sets user object in redux store', () => {
 
   const newState = reducer(undefined, {
     payload: userObject,
-    type: SAVE_USER,
+    type: SET_USER,
   });
 
   expect(newState).toBe(userObject);

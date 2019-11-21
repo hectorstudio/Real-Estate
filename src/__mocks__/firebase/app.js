@@ -1,9 +1,5 @@
 const auth = jest.fn().mockImplementation(function auth() {
-  let authStateChangedCallback;
-  this.onAuthStateChanged = jest.fn().mockImplementation((cb) => {
-    authStateChangedCallback = cb;
-    return this.unregisterAuthObserver;
-  });
+  this.onAuthStateChanged = jest.fn().mockImplementation(() => this.unregisterAuthObserver);
   this.currentUser = {
     getIdToken: jest.fn().mockResolvedValue('token'),
   };

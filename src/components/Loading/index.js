@@ -3,7 +3,7 @@ import { CircularProgress, Grid } from '@material-ui/core';
 
 import s from './index.module.scss';
 
-function Loading(props) {
+function Loading() {
   return (
     <Grid
       alignItems="center"
@@ -15,7 +15,7 @@ function Loading(props) {
         <CircularProgress />
       </Grid>
     </Grid>
-  )
+  );
 }
 
 export default Loading;

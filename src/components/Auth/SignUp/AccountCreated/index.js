@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Button, Typography } from '@material-ui/core';
 import { useDispatch } from 'react-redux';
 import { push } from 'connected-react-router';
@@ -38,7 +39,11 @@ function AccountCreated(props) {
         Go back to login page
       </Button>
     </>
-  )
+  );
 }
+
+AccountCreated.propTypes = {
+  email: PropTypes.string.isRequired,
+};
 
 export default AccountCreated;

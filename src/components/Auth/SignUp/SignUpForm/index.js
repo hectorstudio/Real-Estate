@@ -1,6 +1,12 @@
 import React, { useState } from 'react';
-import { Button, Grid, Snackbar, Typography } from '@material-ui/core';
+import PropTypes from 'prop-types';
 import useForm from 'react-hook-form';
+import {
+  Button,
+  Grid,
+  Snackbar,
+  Typography,
+} from '@material-ui/core';
 
 import { ROUTES } from '../../../../constants';
 import { createUserWithEmailAndPassword } from '../../../../actions/firebase';
@@ -26,13 +32,13 @@ function SignUpForm(props) {
           firebaseId: res.user.uid,
         };
 
-        addNewUser(newUserData).then((data) => {
+        addNewUser(newUserData).then(() => {
           res.user.sendEmailVerification();
           props.onEmailSubmit(res.user);
         });
       })
       .catch((err) => setErrorMessage(err.message));
-  }
+  };
 
   const handleSnackBarClose = () => setErrorMessage();
 
@@ -40,12 +46,12 @@ function SignUpForm(props) {
     <>
       <Snackbar
         anchorOrigin={{
-          vertical: 'top',
           horizontal: 'center',
+          vertical: 'top',
         }}
-        open={!!errorMessage}
-        onClose={handleSnackBarClose}
         message={errorMessage}
+        onClose={handleSnackBarClose}
+        open={!!errorMessage}
       />
       <form
         className={s.form}
@@ -75,14 +81,14 @@ function SignUpForm(props) {
         <TextField
           autoComplete="new-password"
           fullWidth
+          inputRef={register()}
           label="Confirm password"
           name="repassword"
           required
           type="password"
-          inputRef={register()}
         />
         <Grid container spacing={2}>
-          <Grid item xs={12} sm={6}>
+          <Grid item sm={6} xs={12}>
             <TextField
               autoComplete="given-name"
               className={s.firstName}
@@ -92,7 +98,7 @@ function SignUpForm(props) {
               required
             />
           </Grid>
-          <Grid item xs={12} sm={6}>
+          <Grid item sm={6} xs={12}>
             <TextField
               autoComplete="family-name"
               className={s.lastName}
@@ -122,7 +128,11 @@ function SignUpForm(props) {
         </Grid>
       </form>
     </>
-  )
+  );
 }
+
+SignUpForm.propTypes = {
+  onEmailSubmit: PropTypes.func.isRequired,
+};
 
 export default SignUpForm;

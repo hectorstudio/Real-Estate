@@ -1,6 +1,11 @@
 import React, { useState } from 'react';
-import { Button, Grid, Snackbar, Typography } from '@material-ui/core';
 import useForm from 'react-hook-form';
+import {
+  Button,
+  Grid,
+  Snackbar,
+  Typography,
+} from '@material-ui/core';
 
 import { ROUTES } from '../../../constants';
 import { sendPasswordResetEmail } from '../../../actions/firebase';
@@ -20,7 +25,7 @@ function ForgotPassword() {
 
     sendPasswordResetEmail(email)
       .catch((err) => setErrorMessage(err.message));
-  }
+  };
 
   const handleSnackBarClose = () => setErrorMessage();
 
@@ -28,12 +33,12 @@ function ForgotPassword() {
     <>
       <Snackbar
         anchorOrigin={{
-          vertical: 'top',
           horizontal: 'center',
+          vertical: 'top',
         }}
-        open={!!errorMessage}
-        onClose={handleSnackBarClose}
         message={errorMessage}
+        onClose={handleSnackBarClose}
+        open={!!errorMessage}
       />
       <AuthHeader title="Reset password" />
       <form
@@ -70,7 +75,7 @@ function ForgotPassword() {
         </Grid>
       </form>
     </>
-  )
+  );
 }
 
 export default ForgotPassword;

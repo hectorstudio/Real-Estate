@@ -1,5 +1,5 @@
 import { saveUser } from '../auth';
-import { SAVE_USER } from '../types';
+import { SET_USER } from '../types';
 
 jest.mock('../../helpers', () => ({
   cleanUserObject: (x) => x,
@@ -19,7 +19,7 @@ describe('saveUser', () => {
         ...user,
         token,
       },
-      type: SAVE_USER,
+      type: SET_USER,
     });
   });
 });

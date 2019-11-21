@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Typography } from '@material-ui/core';
 
 import City from '../../../assets/city';
@@ -19,7 +20,15 @@ function AuthHeader(props) {
         {props.title}
       </Typography>
     </div>
-  )
+  );
 }
+
+AuthHeader.propTypes = {
+  title: PropTypes.string,
+};
+
+AuthHeader.defaultProps = {
+  title: '',
+};
 
 export default AuthHeader;

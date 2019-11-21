@@ -1,5 +1,12 @@
 import firebase from 'firebase/app';
-import { initFirebase, onAuthStateChanged, signInWithEmailAndPassword, signOut, createUserWithEmailAndPassword, signInWithPhoneNumber } from '../firebase';
+import {
+  createUserWithEmailAndPassword,
+  initFirebase,
+  onAuthStateChanged,
+  signInWithEmailAndPassword,
+  signInWithPhoneNumber,
+  signOut,
+} from '../firebase';
 
 describe('initFirebase', () => {
   it('calls firebase initializeApp method', () => {

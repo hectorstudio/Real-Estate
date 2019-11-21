@@ -17,7 +17,6 @@ export const onAuthStateChanged = (callback) => firebase.auth().onAuthStateChang
 
 export const sendPasswordResetEmail = (email) => firebase.auth().sendPasswordResetEmail(email);
 
-export const signInWithEmailAndPassword = (email, password) =>
-  firebase.auth().signInWithEmailAndPassword(email, password);
+export const signInWithEmailAndPassword = (email, password) => firebase.auth().signInWithEmailAndPassword(email, password);
 
 export const signOut = () => firebase.auth().signOut();

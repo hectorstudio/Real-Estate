@@ -1,7 +1,12 @@
 import React, { useState } from 'react';
-import { Button, Grid, Snackbar, Typography } from '@material-ui/core';
 import useForm from 'react-hook-form';
 import { useDispatch } from 'react-redux';
+import {
+  Button,
+  Grid,
+  Snackbar,
+  Typography,
+} from '@material-ui/core';
 
 import { ROUTES } from '../../../constants';
 import { saveUser } from '../../../actions/auth';
@@ -32,7 +37,7 @@ function SignIn() {
       .catch((err) => {
         setErrorMessage(err.message);
       });
-  }
+  };
 
   const handleSnackBarClose = () => setErrorMessage();
 
@@ -40,12 +45,12 @@ function SignIn() {
     <>
       <Snackbar
         anchorOrigin={{
-          vertical: 'top',
           horizontal: 'center',
+          vertical: 'top',
         }}
-        open={!!errorMessage}
-        onClose={handleSnackBarClose}
         message={errorMessage}
+        onClose={handleSnackBarClose}
+        open={!!errorMessage}
       />
       <AuthHeader title="Sign in" />
       <form
@@ -99,7 +104,7 @@ function SignIn() {
         </Grid>
       </form>
     </>
-  )
+  );
 }
 
 export default SignIn;

@@ -12,7 +12,7 @@ function SignUp() {
   const setUserEmail = (userObj) => {
     setEmail(userObj.email);
     setUser(userObj);
-  }
+  };
 
   const title = email
     ? 'Your account has been created!'
@@ -27,7 +27,7 @@ function SignUp() {
       <AuthHeader title={title} />
       {component}
     </>
-  )
+  );
 }
 
 export default SignUp;
