@@ -1,0 +1,52 @@
+{
+  "env": {
+    "jest/globals": true
+  },
+  "extends": "airbnb",
+  "parser": "babel-eslint",
+  "plugins": [
+    "babel",
+    "jest",
+    "react-hooks"
+  ],
+  "rules": {
+    "babel/semi": 0,
+    "import/no-cycle": 0,
+    "import/prefer-default-export": 0,
+    "jest/consistent-test-it": ["error", {
+      "fn": "it",
+      "withinDescribe": "it"
+    }],
+    "jest/prefer-called-with": ["warn"],
+    "jest/prefer-todo": ["error"],
+    "jest/prefer-to-be-null": ["error"],
+    "jest/prefer-to-be-undefined": ["error"],
+    "jest/prefer-to-contain": ["error"],
+    "jest/prefer-to-have-length": ["error"],
+    "jsx-a11y/anchor-is-valid": [ "error", {
+      "components": [ "Link" ],
+      "specialLink": [ "to" ]
+    }],
+    "max-len": 0,
+    "no-param-reassign": 0,
+    "no-underscore-dangle": ["error", { "allow": ["_params"] }],
+    "react/destructuring-assignment": 0,
+    "react/jsx-filename-extension": 0,
+    "react/jsx-props-no-spreading": 0,
+    "react/jsx-sort-default-props": ["error"],
+    "react/jsx-sort-props": ["error", { "reservedFirst": false }],
+    "react/prefer-stateless-function": ["error"],
+    "react/sort-prop-types": ["error"],
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "warn",
+    "sort-keys": ["error", "asc", {
+      "caseSensitive": false,
+      "natural": true
+    }]
+  },
+  "settings": {
+    "react": {
+      "version": "16.12.0"
+    }
+  }
+}

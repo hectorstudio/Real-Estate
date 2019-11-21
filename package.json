@@ -3,11 +3,12 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "deploy": "npm run build && firebase deploy",
     "eject": "react-scripts eject",
-    "deploy": "npm run build && firebase deploy"
+    "lint": "eslint src",
+    "start": "react-scripts start",
+    "test": "react-scripts test"
   },
   "dependencies": {
     "@material-ui/core": "^4.6.1",
@@ -29,8 +30,17 @@
     "reselect": "^4.0.0"
   },
   "devDependencies": {
+    "babel-eslint": "^10.0.3",
     "enzyme": "^3.10.0",
     "enzyme-adapter-react-16": "^1.15.1",
+    "eslint": "^6.6.0",
+    "eslint-config-airbnb": "^18.0.1",
+    "eslint-plugin-babel": "^5.3.0",
+    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-jest": "^23.0.4",
+    "eslint-plugin-jsx-a11y": "^6.2.3",
+    "eslint-plugin-react": "^7.16.0",
+    "eslint-plugin-react-hooks": "^2.3.0",
     "jest": "^24.9.0",
     "jest-fetch-mock": "^2.1.2",
     "postcss-normalize": "^8.0.1",
