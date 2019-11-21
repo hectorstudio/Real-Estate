@@ -1,6 +1,10 @@
 @import-normalize;
 
 html, body {
-  margin: 0;
   font-family: Roboto;
+  margin: 0;
+
+  &, #root {
+    height: 100%;
+  }
 }
