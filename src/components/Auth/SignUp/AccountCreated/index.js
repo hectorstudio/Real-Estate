@@ -32,7 +32,6 @@ function AccountCreated(props) {
         className={s.button}
         color="primary"
         fullWidth
-        id="phoneVerifyButton"
         onClick={goToLoginPage}
         variant="outlined"
       >
