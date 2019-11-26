@@ -11,6 +11,7 @@ import {
 import { ROUTES } from '../../../../constants';
 import { createUserWithEmailAndPassword } from '../../../../actions/firebase';
 import { addNewUser } from '../../../../actions/users';
+import signUpForm from '../../../../constants/validation/signUpForm';
 
 import Link from '../../../UI/Link';
 import TextField from '../../../UI/TextField';
@@ -18,15 +19,31 @@ import TextField from '../../../UI/TextField';
 import s from './index.module.scss';
 
 function SignUpForm(props) {
-  const { errors, handleSubmit, register } = useForm();
   const [errorMessage, setErrorMessage] = useState();
+  const {
+    errors,
+    handleSubmit,
+    setError,
+    register,
+  } = useForm({
+    validationSchema: signUpForm,
+  });
 
   const onSubmit = (values) => {
     const { email, password } = values;
 
-    createUserWithEmailAndPassword(email, password)
+    if (values.newPassword !== values.rePassword) {
+      setError('rePassword', 'notMatch', 'Passwords do not match');
+      return Promise.resolve();
+    }
+
+    return createUserWithEmailAndPassword(email, password)
       .then((res) => {
-        const { _password, ...valuesWithoutPassword } = values;
+        const {
+          password: _password,
+          rePassword: _rePassword,
+          ...valuesWithoutPassword
+        } = values;
         const newUserData = {
           ...valuesWithoutPassword,
           firebaseId: res.user.uid,
@@ -61,18 +78,20 @@ function SignUpForm(props) {
         <TextField
           autoComplete="email"
           autoFocus
-          error={!!(errors && errors.email)}
+          error={!!(errors.email)}
           fullWidth
-          inputRef={register({ required: true })}
+          helperText={errors.email && errors.email.message}
+          inputRef={register}
           label="Email Address"
           name="email"
           required
         />
         <TextField
           autoComplete="new-password"
-          error={!!(errors && errors.password)}
+          error={!!(errors.password)}
           fullWidth
-          inputRef={register({ required: true })}
+          helperText={errors.password && errors.password.message}
+          inputRef={register}
           label="Password"
           name="password"
           required
@@ -80,10 +99,12 @@ function SignUpForm(props) {
         />
         <TextField
           autoComplete="new-password"
+          error={!!(errors.rePassword)}
           fullWidth
-          inputRef={register()}
+          helperText={errors.rePassword && errors.rePassword.message}
+          inputRef={register}
           label="Confirm password"
-          name="repassword"
+          name="rePassword"
           required
           type="password"
         />
@@ -92,7 +113,9 @@ function SignUpForm(props) {
             <TextField
               autoComplete="given-name"
               className={s.firstName}
-              inputRef={register({ required: true })}
+              error={!!(errors.firstName)}
+              helperText={errors.firstName && errors.firstName.message}
+              inputRef={register}
               label="First name"
               name="firstName"
               required
@@ -102,7 +125,9 @@ function SignUpForm(props) {
             <TextField
               autoComplete="family-name"
               className={s.lastName}
-              inputRef={register({ required: true })}
+              error={!!(errors.lastName)}
+              helperText={errors.lastName && errors.lastName.message}
+              inputRef={register}
               label="Last name"
               name="lastName"
               required
