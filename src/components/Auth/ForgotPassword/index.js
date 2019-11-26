@@ -7,7 +7,9 @@ import {
   Typography,
 } from '@material-ui/core';
 
+import forgotPasswordForm from '../../../constants/validation/forgotPasswordForm';
 import { ROUTES } from '../../../constants';
+import { getFirebaseErrorMessage } from '../../../helpers';
 import { sendPasswordResetEmail } from '../../../actions/firebase';
 
 import AuthHeader from '../AuthHeader';
@@ -17,14 +19,22 @@ import TextField from '../../UI/TextField';
 import s from './index.module.scss';
 
 function ForgotPassword() {
-  const { errors, handleSubmit, register } = useForm();
   const [errorMessage, setErrorMessage] = useState();
+  const { errors, handleSubmit, register } = useForm({
+    validationSchema: forgotPasswordForm,
+  });
 
   const onSubmit = (values) => {
     const { email } = values;
 
     sendPasswordResetEmail(email)
-      .catch((err) => setErrorMessage(err.message));
+      .then(() => {
+        // TODO: Set notification about email sent
+      })
+      .catch((err) => {
+        const message = getFirebaseErrorMessage(err);
+        return setErrorMessage(message);
+      });
   };
 
   const handleSnackBarClose = () => setErrorMessage();
@@ -49,9 +59,10 @@ function ForgotPassword() {
         <TextField
           autoComplete="email"
           autoFocus
-          error={!!(errors && errors.email)}
+          error={!!(errors.email)}
           fullWidth
-          inputRef={register({ required: true })}
+          helperText={errors.email && errors.email.message}
+          inputRef={register}
           label="Email Address"
           name="email"
           required

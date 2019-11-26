@@ -1,7 +1,7 @@
 import React from 'react';
 import { push } from 'connected-react-router';
 import { useDispatch } from 'react-redux';
-import { Menu as MenuIcon, AccountCircle } from '@material-ui/icons';
+import { AccountCircle } from '@material-ui/icons';
 import {
   AppBar,
   Toolbar,
@@ -46,16 +46,8 @@ function Header() {
         position="static"
       >
         <Toolbar>
-          <IconButton
-            aria-label="menu"
-            className={s.menuButton}
-            color="inherit"
-            edge="start"
-          >
-            <MenuIcon />
-          </IconButton>
           <Typography className={s.title} variant="h6">
-            News
+            PocketBuildings
           </Typography>
           <IconButton
             aria-controls="menu-appbar"

@@ -1,7 +1,7 @@
 const routes = {
   forgotPassword: () => '/forgot-password',
   home: () => '/',
-  passwordReset: () => '/password-reset',
+  passwordReset: () => '/reset',
   profile: () => '/profile',
   signIn: () => '/signin',
   signUp: () => '/signup',
