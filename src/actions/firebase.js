@@ -11,6 +11,8 @@ export const initFirebase = () => {
 
 export const createUserWithEmailAndPassword = (email, password) => firebase.auth().createUserWithEmailAndPassword(email, password);
 
+export const getCurrentUser = () => firebase.auth().currentUser;
+
 export const signInWithPhoneNumber = (phone, recaptcha) => firebase.auth().signInWithPhoneNumber(phone, recaptcha);
 
 export const onAuthStateChanged = (callback) => firebase.auth().onAuthStateChanged(callback);
@@ -18,5 +20,15 @@ export const onAuthStateChanged = (callback) => firebase.auth().onAuthStateChang
 export const sendPasswordResetEmail = (email) => firebase.auth().sendPasswordResetEmail(email);
 
 export const signInWithEmailAndPassword = (email, password) => firebase.auth().signInWithEmailAndPassword(email, password);
+
+export const updatePassword = (newPassword) => getCurrentUser().updatePassword(newPassword);
+
+export const reAuthenticateWithEmailAndPassword = (email, password) => {
+  const credential = firebase.auth.EmailAuthProvider.credential(
+    email,
+    password,
+  );
+  return getCurrentUser().reauthenticateWithCredential(credential);
+};
 
 export const signOut = () => firebase.auth().signOut();

@@ -1,3 +1,9 @@
+.form {
+  :global .MuiInput-root {
+    width: 250px;
+  }
+}
+
 .confirmPassword {
   margin-left: 20px;
 }

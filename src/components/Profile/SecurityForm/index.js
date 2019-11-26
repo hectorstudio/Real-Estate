@@ -1,87 +1,121 @@
-import React from 'react';
+import React, { useState } from 'react';
 import useForm from 'react-hook-form';
-import { useSelector, useDispatch } from 'react-redux';
-import { Button, Grid } from '@material-ui/core';
+import { useSelector } from 'react-redux';
+import { Button, Grid, Snackbar } from '@material-ui/core';
 
 import { getCurrentUser } from '../../../selectors/user';
+import { getFirebaseErrorMessage } from '../../../helpers';
+import { reAuthenticateWithEmailAndPassword, updatePassword } from '../../../actions/firebase';
 
 import TextField from '../../UI/TextField';
 
 import s from './index.module.scss';
-import { updateUser } from '../../../actions/users';
 
 function SecurityForm() {
-  const dispatch = useDispatch();
+  const [snackbarMessage, setSnackbarMessage] = useState();
   const user = useSelector(getCurrentUser);
-  const { errors, handleSubmit, register } = useForm();
+  const {
+    errors,
+    handleSubmit,
+    register,
+    setError,
+  } = useForm();
 
-  const onSubmit = (values) => {
-    const updatedValues = {};
+  const onSubmit = async (values) => {
+    if (values.newPassword !== values.confirmPassword) {
+      setError('confirmPassword', 'notMatch', 'Passwords do not match');
+      return Promise.resolve();
+    }
 
-    if (user.firstName !== values.firstName) updatedValues.firstName = values.firstName;
-    if (user.lastName !== values.lastName) updatedValues.lastName = values.lastName;
-    if (user.phone !== values.phone) updatedValues.phone = values.phone;
-    if (user.address !== values.address) updatedValues.address = values.address;
-    if (user.country !== values.country) updatedValues.country = values.country;
-
-    dispatch(updateUser(updatedValues));
+    return reAuthenticateWithEmailAndPassword(user.email, values.oldPassword)
+      .then(() => {
+        updatePassword(values.newPassword);
+        setSnackbarMessage('Password has been changed');
+      })
+      .catch((error) => {
+        setError('oldPassword', 'reAuthenticateError', getFirebaseErrorMessage(error));
+      });
   };
 
+  React.useEffect(() => {
+    register({ name: 'oldPassword', required: true });
+    register({ name: 'newPassword', required: true });
+    register({ name: 'confirmPassword', required: true });
+  }, [register]);
+
+  const handleSnackBarClose = () => setSnackbarMessage();
+
   return (
-    <form
-      className={s.form}
-      noValidate
-      onSubmit={handleSubmit(onSubmit)}
-    >
-      <Grid
-        container
-        direction="column"
+    <>
+      <form
+        className={s.form}
+        noValidate
+        onSubmit={handleSubmit(onSubmit)}
       >
-        <Grid item>
-          <TextField
-            autoComplete="password"
-            error={!!(errors && errors.oldPassword)}
-            inputRef={register({ required: true })}
-            label="Current password"
-            name="oldPassword"
-            required
-            variant="standard"
-          />
-        </Grid>
-        <Grid container>
+        <Grid
+          container
+          direction="column"
+        >
           <Grid item>
             <TextField
-              autoComplete="new-password"
-              error={!!(errors && errors.newPassword)}
-              inputRef={register({ required: true })}
-              label="New password"
-              name="newPassword"
+              autoComplete="password"
+              error={!!(errors && errors.oldPassword)}
+              helperText={errors.oldPassword && errors.oldPassword.message}
+              inputRef={register}
+              label="Current password"
+              name="oldPassword"
               required
+              type="password"
               variant="standard"
             />
           </Grid>
-          <Grid className={s.confirmPassword} item>
-            <TextField
-              autoComplete="new-password"
-              error={!!(errors && errors.confirmPassword)}
-              inputRef={register({ required: true })}
-              label="Confirm password"
-              name="confirmPassword"
-              required
-              variant="standard"
-            />
+          <Grid container>
+            <Grid item>
+              <TextField
+                autoComplete="new-password"
+                error={!!(errors && errors.newPassword)}
+                inputRef={register}
+                label="New password"
+                name="newPassword"
+                required
+                type="password"
+                variant="standard"
+              />
+            </Grid>
+            <Grid className={s.confirmPassword} item>
+              <TextField
+                autoComplete="new-password"
+                error={!!(errors.confirmPassword)}
+                helperText={errors.confirmPassword && errors.confirmPassword.message}
+                inputRef={register}
+                label="Confirm password"
+                name="confirmPassword"
+                required
+                type="password"
+                variant="standard"
+              />
+            </Grid>
           </Grid>
         </Grid>
-      </Grid>
-      <Button
-        className={s.submit}
-        color="primary"
-        type="submit"
-        variant="contained"
-      >
-        Change password
-      </Button>
-    </form>
+        <Button
+          className={s.submit}
+          color="primary"
+          type="submit"
+          variant="contained"
+        >
+          Change password
+        </Button>
+      </form>
+      <Snackbar
+        anchorOrigin={{
+          horizontal: 'center',
+          vertical: 'top',
+        }}
+        message={snackbarMessage}
+        onClose={handleSnackBarClose}
+        open={!!snackbarMessage}
+      />
+    </>
   );
 }
 
