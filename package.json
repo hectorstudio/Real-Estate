@@ -17,6 +17,7 @@
     "clsx": "^1.0.4",
     "connected-react-router": "^6.6.0",
     "firebase": "^7.4.0",
+    "gcs-browser-upload-stream": "/Users/damianbartosik/Desktop/pocketbuildings/gcs-browser-upload/",
     "immutability-helper": "^3.0.1",
     "node-sass": "^4.13.0",
     "prop-types": "^15.7.2",
