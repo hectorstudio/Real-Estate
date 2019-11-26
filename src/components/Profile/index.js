@@ -1,13 +1,10 @@
 import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
 import {
   Grid,
   List,
   ListItem,
   Typography,
 } from '@material-ui/core';
-
-import { getCurrentUser } from '../../selectors/user';
 
 import Link from '../UI/Link';
 import ProfileForm from './ProfileForm';
@@ -22,7 +19,6 @@ const pages = {
 
 function Profile() {
   const [page, setPage] = useState(pages.personal);
-  const user = useSelector(getCurrentUser);
 
   const changePage = (p) => () => setPage(p);
 

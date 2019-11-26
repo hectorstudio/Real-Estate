@@ -13,12 +13,6 @@ export const addNewUser = (userData) => fetch(ENDPOINTS.users.many(), {
   .then((res) => res.json())
   .then((data) => data);
 
-export const getUserByFirebaseId = (firebaseId) => fetch(ENDPOINTS.users.firebaseId(firebaseId), {
-  method: 'GET',
-})
-  .then((res) => res.json())
-  .then((data) => data.length && data[0]);
-
 export const fetchCurrentUser = (idToken) => (dispatch, getState) => {
   const state = getState();
   const token = idToken || getAuthToken(state);
@@ -31,6 +25,33 @@ export const fetchCurrentUser = (idToken) => (dispatch, getState) => {
   })
     .then((res) => res.json())
     .then((data) => {
-      dispatch(saveUser(data[0], token));
+      dispatch(saveUser(data, token));
+    });
+};
+
+export const updateUser = (values) => (dispatch, getState) => {
+  const state = getState();
+  const token = getAuthToken(state);
+
+  const formBody = {
+    address: values.address,
+    country: values.country,
+    firstName: values.email,
+    lastName: values.lastName,
+    phone: values.phone,
+  };
+
+  return fetch(ENDPOINTS.users.many(), {
+    body: JSON.stringify(formBody),
+    headers: {
+      Accept: 'application/json',
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    },
+    method: 'PATCH',
+  })
+    .then((res) => res.json())
+    .then((data) => {
+      dispatch(saveUser(data, token));
     });
 };

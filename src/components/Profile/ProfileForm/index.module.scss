@@ -1,11 +1,16 @@
-.familyName {
-  margin-left: 20px;
-}
-
-.country {
-  width: 167px;
+.form {
+  :global .MuiInput-root,
+  :global .MuiAutocomplete-inputRoot {
+    width: 250px;
+  }
 }
 
 .submit {
   margin-top: 20px;
+}
+
+.groupFields {
+  :global .MuiGrid-item:not(:first-of-type) {
+    margin-left: 20px;
+  }
 }

@@ -1,14 +1,7 @@
 import React from 'react';
 import useForm from 'react-hook-form';
 import { useSelector, useDispatch } from 'react-redux';
-import {
-  Button,
-  FormControl,
-  Grid,
-  InputLabel,
-  MenuItem,
-  Select,
-} from '@material-ui/core';
+import { Button, Grid } from '@material-ui/core';
 
 import { getCurrentUser } from '../../../selectors/user';
 
