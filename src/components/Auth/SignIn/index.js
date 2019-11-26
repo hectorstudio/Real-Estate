@@ -8,7 +8,9 @@ import {
   Typography,
 } from '@material-ui/core';
 
+import signInForm from '../../../constants/validation/signInForm';
 import { ROUTES } from '../../../constants';
+import { getFirebaseErrorMessage } from '../../../helpers';
 import { saveUser } from '../../../actions/auth';
 import { signInWithEmailAndPassword } from '../../../actions/firebase';
 
@@ -20,8 +22,10 @@ import s from './index.module.scss';
 
 function SignIn() {
   const dispatch = useDispatch();
-  const { errors, handleSubmit, register } = useForm();
   const [errorMessage, setErrorMessage] = useState();
+  const { errors, handleSubmit, register } = useForm({
+    validationSchema: signInForm,
+  });
 
   const onSubmit = (values) => {
     const { email, password } = values;
@@ -35,7 +39,8 @@ function SignIn() {
         }
       })
       .catch((err) => {
-        setErrorMessage(err.message);
+        const message = getFirebaseErrorMessage(err);
+        setErrorMessage(message);
       });
   };
 
@@ -61,19 +66,21 @@ function SignIn() {
         <TextField
           autoComplete="email"
           autoFocus
-          error={!!(errors && errors.email)}
+          error={!!(errors.email)}
           fullWidth
-          inputRef={register({ required: true })}
+          helperText={errors.email && errors.email.message}
+          inputRef={register}
           label="Email Address"
           name="email"
           required
         />
         <TextField
           autoComplete="current-password"
-          error={!!(errors && errors.password)}
+          error={!!(errors.password)}
           fullWidth
+          helperText={errors.password && errors.password.message}
           id="password"
-          inputRef={register({ required: true })}
+          inputRef={register}
           label="Password"
           name="password"
           required
