@@ -6,6 +6,7 @@ import { ROUTES } from '../../constants';
 
 import Header from '../Header';
 import Home from '../Home';
+import Message from '../Message';
 import PrivateRoute from '../PrivateRoute';
 import Profile from '../Profile';
 
@@ -13,15 +14,18 @@ import s from './index.module.scss';
 
 function App() {
   return (
-    <PrivateRoute>
-      <Header />
-      <Container className={s.container}>
-        <Switch>
-          <Route component={Profile} exact path={ROUTES.profile()} />
-          <Route component={Home} />
-        </Switch>
-      </Container>
-    </PrivateRoute>
+    <>
+      <Message />
+      <PrivateRoute>
+        <Header />
+        <Container className={s.container}>
+          <Switch>
+            <Route component={Profile} exact path={ROUTES.profile()} />
+            <Route component={Home} />
+          </Switch>
+        </Container>
+      </PrivateRoute>
+    </>
   );
 }
 
