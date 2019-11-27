@@ -20,6 +20,7 @@
     "firebase": "^7.5.0",
     "gcs-browser-upload-stream": "https://github.com/benjeffery/gcs-browser-upload.git",
     "immutability-helper": "^3.0.1",
+    "material-table": "^1.54.1",
     "node-sass": "^4.13.0",
     "prop-types": "^15.7.2",
     "react": "^16.12.0",

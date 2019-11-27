@@ -6,6 +6,8 @@ import { useDispatch } from 'react-redux';
 import { addNewFile } from '../../actions/files';
 import { setMessage } from '../../actions/message';
 
+import FileList from '../FileList';
+
 import s from './index.module.scss';
 
 function Home() {
@@ -105,6 +107,7 @@ function Home() {
           </Button>
         </Grid>
       </Grid>
+      <FileList />
     </>
   );
 }
