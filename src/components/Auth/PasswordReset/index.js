@@ -4,13 +4,14 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Button, Grid, Typography } from '@material-ui/core';
 import { push } from 'connected-react-router';
 
+import { ROUTES } from '../../../constants';
+import { confirmPasswordReset } from '../../../actions/firebase';
+import { getFirebaseErrorMessage } from '../../../helpers';
+import { getQuery } from '../../../selectors/router';
+import { setMessage } from '../../../actions/message';
+
 import AuthHeader from '../AuthHeader';
 import Link from '../../UI/Link';
-import { ROUTES } from '../../../constants';
-import { getFirebaseErrorMessage } from '../../../helpers';
-import { applyActionCode, updatePassword } from '../../../actions/firebase';
-import { getQuery } from '../../../selectors/router';
-
 import TextField from '../../UI/TextField';
 
 import s from './index.module.scss';
@@ -27,7 +28,7 @@ function PasswordReset() {
 
   useEffect(() => {
     if (!params.oobCode) {
-      dispatch(push(ROUTES.signIn));
+      dispatch(push(ROUTES.signIn()));
     }
   }, [dispatch, params.oobCode]);
 
@@ -37,10 +38,10 @@ function PasswordReset() {
       return Promise.resolve();
     }
 
-    return applyActionCode(params.oobCode)
+    return confirmPasswordReset(params.oobCode, values.newPassword)
       .then(() => {
-        updatePassword(values.newPassword);
-        dispatch(push(ROUTES.signIn));
+        dispatch(setMessage('Password has been changed'));
+        dispatch(push(ROUTES.signIn()));
       })
       .catch((error) => {
         setError('oldPassword', 'reAuthenticateError', getFirebaseErrorMessage(error));

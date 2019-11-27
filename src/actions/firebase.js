@@ -25,6 +25,8 @@ export const updatePassword = (newPassword) => getCurrentUser().updatePassword(n
 
 export const applyActionCode = (code) => firebase.auth().applyActionCode(code);
 
+export const confirmPasswordReset = (oobCode, password) => firebase.auth().confirmPasswordReset(oobCode, password);
+
 export const reAuthenticateWithEmailAndPassword = (email, password) => {
   const credential = firebase.auth.EmailAuthProvider.credential(
     email,
