@@ -7,3 +7,26 @@
   margin-top: 40px;
   margin-right: 20px;
 }
+
+.uploadContainer {
+  height: 200px;
+  margin-bottom: 20px;
+
+  :global .MuiPaper-root {
+    height: 150px;
+  }
+
+  .tile {
+    height: 100%;
+  }
+
+  .clickable {
+    cursor: pointer;
+  }
+
+  .notImplemented{
+    opacity: 0.4;
+    user-select: none;
+    cursor: default;
+  }
+}

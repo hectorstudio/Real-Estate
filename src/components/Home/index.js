@@ -1,7 +1,14 @@
 import React, { useCallback, useState } from 'react';
-import { Button, LinearProgress, Grid } from '@material-ui/core';
 import GcsBrowserUploadStream from 'gcs-browser-upload-stream';
 import { useDispatch } from 'react-redux';
+import { useDropzone } from 'react-dropzone';
+import {
+  Button,
+  LinearProgress,
+  Grid,
+  Paper,
+} from '@material-ui/core';
+import clsx from 'clsx';
 
 import { addNewFile } from '../../actions/files';
 import { setMessage } from '../../actions/message';
@@ -24,10 +31,10 @@ function Home() {
     setUploadProgress(0);
   }, []);
 
-  const onChange = useCallback(async (e) => {
-    if (!e.target.files.length) return;
+  const onChange = useCallback((files) => {
+    if (!files.length) return;
 
-    const file = e.target.files[0];
+    const file = files[0];
 
     dispatch(addNewFile(file.name)).then((data) => {
       const { url } = data;
@@ -59,25 +66,78 @@ function Home() {
       });
   }, [clearUpload, dispatch, onProgress]);
 
+  const {
+    getRootProps: getRootProps1,
+    getInputProps: getInputProps1,
+  } = useDropzone({
+    noDrag: true,
+    onDrop: onChange,
+  });
+
+  const {
+    getRootProps: getRootProps2,
+    getInputProps: getInputProps2,
+    isDragActive: isDragActive2,
+  } = useDropzone({
+    noClick: true,
+    noKeyboard: true,
+    onDrop: onChange,
+  });
+
   return (
     <>
-      <div className={s.root}>
-        You are logged in.
-      </div>
-      <input
-        accept="*"
-        id="contained-button-file"
-        multiple
-        onChange={onChange}
-        style={{ display: 'none' }}
-        type="file"
-      />
-      {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
-      <label htmlFor="contained-button-file">
-        <Button color="primary" component="span" variant="contained">
-          Upload
-        </Button>
-      </label>
+      <Grid className={s.uploadContainer} container spacing={6}>
+        <Grid item xs={4}>
+          <Paper>
+            <Grid
+              {...getRootProps1()}
+              alignItems="center"
+              className={clsx(s.tile, s.clickable)}
+              container
+              justify="center"
+            >
+              <Grid>
+                <input {...getInputProps1()} />
+                Select an item to upload
+              </Grid>
+            </Grid>
+          </Paper>
+        </Grid>
+        <Grid item xs={4}>
+          <Paper>
+            <Grid
+              {...getRootProps2()}
+              alignItems="center"
+              className={s.tile}
+              container
+              justify="center"
+            >
+              <Grid>
+                <input {...getInputProps2()} />
+                {
+                  isDragActive2
+                    ? 'Drop files here'
+                    : 'Drag files to upload'
+                }
+              </Grid>
+            </Grid>
+          </Paper>
+        </Grid>
+        <Grid className={s.notImplemented} item xs={4}>
+          <Paper>
+            <Grid
+              alignItems="center"
+              className={s.tile}
+              container
+              justify="center"
+            >
+              <Grid>
+                Upload files from Dropbox
+              </Grid>
+            </Grid>
+          </Paper>
+        </Grid>
+      </Grid>
       <LinearProgress
         className={s.progress}
         value={uploadProgress}

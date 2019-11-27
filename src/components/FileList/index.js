@@ -40,6 +40,14 @@ const data = [
     name: 'Floor_plan.pdf',
     path: 'Floor_plan.pdf',
   },
+  {
+    addDate: new Date(2018, 4, 12).toDateString(),
+    addUser: 'Mike Tyson',
+    modifyDate: new Date(2019, 11, 4).toDateString(),
+    modifyUser: 'Jon Jones',
+    name: 'Second_Floor.pdf',
+    path: 'Floor_plan.pdf',
+  },
 ];
 
 function FileList() {
