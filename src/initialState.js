@@ -1,6 +1,4 @@
 export default {
-  user: {
-    email: '',
-    token: '',
-  },
+  message: null,
+  user: null,
 };
