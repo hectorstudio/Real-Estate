@@ -1,10 +1,15 @@
 import React, { useCallback, useState } from 'react';
 import { Button, LinearProgress, Grid } from '@material-ui/core';
 import GcsBrowserUploadStream from 'gcs-browser-upload-stream';
+import { useDispatch } from 'react-redux';
+
+import { addNewFile } from '../../actions/files';
+import { setMessage } from '../../actions/message';
 
 import s from './index.module.scss';
 
 function Home() {
+  const dispatch = useDispatch();
   const [uploadProgress, setUploadProgress] = useState(0);
   const [uploadInstance, setUploadInstance] = useState();
 
@@ -22,37 +27,35 @@ function Home() {
 
     const file = e.target.files[0];
 
-    const response = await fetch('http://localhost:9000/files', {
-      body: JSON.stringify({ content_type: file.type, name: file.name }),
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      method: 'POST',
-    });
-    const uploadUrl = await response.json();
+    dispatch(addNewFile(file.name)).then((data) => {
+      const { url } = data;
 
-    const params = {
-      chunkSize: 262144 * 40, // ~10MB
-      file,
-      id: `${file.name}-${new Date().getTime()}`,
-      onProgress: (info) => {
-        console.log(info.uploadedBytes / info.totalBytes);
-        onProgress(info.uploadedBytes / info.totalBytes);
-        if (info.uploadedBytes === info.totalBytes) {
-          alert('Upload completed');
-          clearUpload();
-        }
-      },
-      resumable: true,
-      storage: window.localStorage,
-      url: uploadUrl,
-    };
-    const instance = new GcsBrowserUploadStream.Upload(params);
+      console.log(data);
+      const params = {
+        chunkSize: 262144 * 40, // ~10MB
+        file,
+        id: `${file.name}-${new Date().getTime()}`,
+        onProgress: (info) => {
+          console.log(info.uploadedBytes / info.totalBytes);
+          onProgress(info.uploadedBytes / info.totalBytes);
+          if (info.uploadedBytes === info.totalBytes) {
+            alert('Upload completed');
+            clearUpload();
+          }
+        },
+        resumable: true,
+        storage: window.localStorage,
+        url,
+      };
+      const instance = new GcsBrowserUploadStream.Upload(params);
 
-    setUploadInstance(instance);
-    instance.start();
-  }, [clearUpload, onProgress]);
+      setUploadInstance(instance);
+      instance.start();
+    })
+      .catch(() => {
+        dispatch(setMessage('There was an error during file upload. Please try again.'));
+      });
+  }, [clearUpload, dispatch, onProgress]);
 
   return (
     <>
