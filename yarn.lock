@@ -5672,7 +5672,7 @@ gaze@^1.0.0:
   dependencies:
     globule "^1.0.0"
 
-gcs-browser-upload-stream@/Users/damianbartosik/Desktop/pocketbuildings/gcs-browser-upload/:
+"gcs-browser-upload-stream@file:../gcs-browser-upload":
   version "1.0.1-helix"
   dependencies:
     async-retry "^1.1.1"
@@ -5684,9 +5684,9 @@ gcs-browser-upload-stream@/Users/damianbartosik/Desktop/pocketbuildings/gcs-brow
     uglify-js "^3.0.20"
     watchify "^3.9.0"
 
-"gcs-browser-upload-stream@https://github.com/helix-re/gcs-browser-upload.git":
+"gcs-browser-upload-stream@https://github.com/benjeffery/gcs-browser-upload.git":
   version "1.0.1-helix"
-  resolved "https://github.com/helix-re/gcs-browser-upload.git#79763ac9dba9e90f8a1317d36481674a713c8a99"
+  resolved "https://github.com/benjeffery/gcs-browser-upload.git#ba61c32f8e32518a164e3bdb54ebef791d1f333d"
   dependencies:
     axios "^0.16.2"
     debug "^2.2.0"
