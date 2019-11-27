@@ -4,8 +4,9 @@ import { Button, Typography } from '@material-ui/core';
 import { useDispatch } from 'react-redux';
 import { push } from 'connected-react-router';
 
-import s from './index.module.scss';
 import { ROUTES } from '../../../../constants';
+
+import s from './index.module.scss';
 
 function AccountCreated(props) {
   const dispatch = useDispatch();

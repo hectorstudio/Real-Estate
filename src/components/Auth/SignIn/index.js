@@ -1,17 +1,13 @@
-import React, { useState } from 'react';
+import React from 'react';
 import useForm from 'react-hook-form';
 import { useDispatch } from 'react-redux';
-import {
-  Button,
-  Grid,
-  Snackbar,
-  Typography,
-} from '@material-ui/core';
+import { Button, Grid, Typography } from '@material-ui/core';
 
 import signInForm from '../../../constants/validation/signInForm';
 import { ROUTES } from '../../../constants';
 import { getFirebaseErrorMessage } from '../../../helpers';
 import { saveUser } from '../../../actions/auth';
+import { setMessage } from '../../../actions/message';
 import { signInWithEmailAndPassword } from '../../../actions/firebase';
 
 import AuthHeader from '../AuthHeader';
@@ -22,7 +18,6 @@ import s from './index.module.scss';
 
 function SignIn() {
   const dispatch = useDispatch();
-  const [errorMessage, setErrorMessage] = useState();
   const { errors, handleSubmit, register } = useForm({
     validationSchema: signInForm,
   });
@@ -40,23 +35,12 @@ function SignIn() {
       })
       .catch((err) => {
         const message = getFirebaseErrorMessage(err);
-        setErrorMessage(message);
+        dispatch(setMessage(message));
       });
   };
 
-  const handleSnackBarClose = () => setErrorMessage();
-
   return (
     <>
-      <Snackbar
-        anchorOrigin={{
-          horizontal: 'center',
-          vertical: 'top',
-        }}
-        message={errorMessage}
-        onClose={handleSnackBarClose}
-        open={!!errorMessage}
-      />
       <AuthHeader title="Sign in" />
       <form
         className={s.form}

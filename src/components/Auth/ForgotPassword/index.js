@@ -1,16 +1,14 @@
-import React, { useState } from 'react';
+import React from 'react';
 import useForm from 'react-hook-form';
-import {
-  Button,
-  Grid,
-  Snackbar,
-  Typography,
-} from '@material-ui/core';
+import { Button, Grid, Typography } from '@material-ui/core';
+import { push } from 'connected-react-router';
+import { useDispatch } from 'react-redux';
 
 import forgotPasswordForm from '../../../constants/validation/forgotPasswordForm';
 import { ROUTES } from '../../../constants';
 import { getFirebaseErrorMessage } from '../../../helpers';
 import { sendPasswordResetEmail } from '../../../actions/firebase';
+import { setMessage } from '../../../actions/message';
 
 import AuthHeader from '../AuthHeader';
 import Link from '../../UI/Link';
@@ -19,7 +17,7 @@ import TextField from '../../UI/TextField';
 import s from './index.module.scss';
 
 function ForgotPassword() {
-  const [errorMessage, setErrorMessage] = useState();
+  const dispatch = useDispatch();
   const { errors, handleSubmit, register } = useForm({
     validationSchema: forgotPasswordForm,
   });
@@ -29,27 +27,17 @@ function ForgotPassword() {
 
     sendPasswordResetEmail(email)
       .then(() => {
-        // TODO: Set notification about email sent
+        dispatch(setMessage('Password reset email has been sent'));
+        dispatch(push(ROUTES.signIn()));
       })
       .catch((err) => {
         const message = getFirebaseErrorMessage(err);
-        return setErrorMessage(message);
+        return dispatch(setMessage(message));
       });
   };
 
-  const handleSnackBarClose = () => setErrorMessage();
-
   return (
     <>
-      <Snackbar
-        anchorOrigin={{
-          horizontal: 'center',
-          vertical: 'top',
-        }}
-        message={errorMessage}
-        onClose={handleSnackBarClose}
-        open={!!errorMessage}
-      />
       <AuthHeader title="Reset password" />
       <form
         className={s.form}

@@ -1,25 +1,22 @@
-import React, { useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import useForm from 'react-hook-form';
-import {
-  Button,
-  Grid,
-  Snackbar,
-  Typography,
-} from '@material-ui/core';
+import { useDispatch } from 'react-redux';
+import { Button, Grid, Typography } from '@material-ui/core';
 
-import { ROUTES } from '../../../../constants';
-import { createUserWithEmailAndPassword } from '../../../../actions/firebase';
-import { addNewUser } from '../../../../actions/users';
 import signUpForm from '../../../../constants/validation/signUpForm';
+import { ROUTES } from '../../../../constants';
+import { addNewUser } from '../../../../actions/users';
+import { createUserWithEmailAndPassword } from '../../../../actions/firebase';
 
 import Link from '../../../UI/Link';
 import TextField from '../../../UI/TextField';
 
 import s from './index.module.scss';
+import { setMessage } from '../../../../actions/message';
 
 function SignUpForm(props) {
-  const [errorMessage, setErrorMessage] = useState();
+  const dispatch = useDispatch();
   const {
     errors,
     handleSubmit,
@@ -54,22 +51,11 @@ function SignUpForm(props) {
           props.onEmailSubmit(res.user);
         });
       })
-      .catch((err) => setErrorMessage(err.message));
+      .catch((err) => dispatch(setMessage(err.message)));
   };
-
-  const handleSnackBarClose = () => setErrorMessage();
 
   return (
     <>
-      <Snackbar
-        anchorOrigin={{
-          horizontal: 'center',
-          vertical: 'top',
-        }}
-        message={errorMessage}
-        onClose={handleSnackBarClose}
-        open={!!errorMessage}
-      />
       <form
         className={s.form}
         noValidate

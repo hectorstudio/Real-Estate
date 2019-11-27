@@ -1,18 +1,19 @@
-import React, { useState } from 'react';
+import React from 'react';
 import useForm from 'react-hook-form';
-import { useSelector } from 'react-redux';
-import { Button, Grid, Snackbar } from '@material-ui/core';
+import { useSelector, useDispatch } from 'react-redux';
+import { Button, Grid } from '@material-ui/core';
 
 import { getCurrentUser } from '../../../selectors/user';
 import { getFirebaseErrorMessage } from '../../../helpers';
 import { reAuthenticateWithEmailAndPassword, updatePassword } from '../../../actions/firebase';
+import { setMessage } from '../../../actions/message';
 
 import TextField from '../../UI/TextField';
 
 import s from './index.module.scss';
 
 function SecurityForm() {
-  const [snackbarMessage, setSnackbarMessage] = useState();
+  const dispatch = useDispatch();
   const user = useSelector(getCurrentUser);
   const {
     errors,
@@ -30,7 +31,7 @@ function SecurityForm() {
     return reAuthenticateWithEmailAndPassword(user.email, values.oldPassword)
       .then(() => {
         updatePassword(values.newPassword);
-        setSnackbarMessage('Password has been changed');
+        dispatch(setMessage('Password has been changed'));
       })
       .catch((error) => {
         setError('oldPassword', 'reAuthenticateError', getFirebaseErrorMessage(error));
@@ -42,8 +43,6 @@ function SecurityForm() {
     register({ name: 'newPassword', required: true });
     register({ name: 'confirmPassword', required: true });
   }, [register]);
-
-  const handleSnackBarClose = () => setSnackbarMessage();
 
   return (
     <>
@@ -106,15 +105,6 @@ function SecurityForm() {
           Change password
         </Button>
       </form>
-      <Snackbar
-        anchorOrigin={{
-          horizontal: 'center',
-          vertical: 'top',
-        }}
-        message={snackbarMessage}
-        onClose={handleSnackBarClose}
-        open={!!snackbarMessage}
-      />
     </>
   );
 }

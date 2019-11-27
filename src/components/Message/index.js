@@ -10,9 +10,6 @@ export default function Message(props) {
   const dispatch = useDispatch();
   const message = useSelector(getMessage);
 
-  console.log('MMM');
-  console.log(message);
-
   return (
     <Snackbar
       message={message}
