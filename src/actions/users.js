@@ -1,6 +1,7 @@
 import { ENDPOINTS } from '../constants';
 import { getAuthToken } from '../selectors/user';
 import { saveUser } from './auth';
+import { RECEIVE_USERS } from './types';
 
 export const addNewUser = (userData) => fetch(ENDPOINTS.users.many(), {
   body: JSON.stringify(userData),
@@ -12,6 +13,25 @@ export const addNewUser = (userData) => fetch(ENDPOINTS.users.many(), {
 })
   .then((res) => res.json())
   .then((data) => data);
+
+export const fetchUsers = () => (dispatch, getState) => {
+  const state = getState();
+  const token = getAuthToken(state);
+
+  return fetch(ENDPOINTS.users.many(), {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+    method: 'GET',
+  })
+    .then((res) => res.json())
+    .then((data) => {
+      dispatch({
+        payload: data,
+        type: RECEIVE_USERS,
+      });
+    });
+};
 
 export const fetchCurrentUser = (idToken) => (dispatch, getState) => {
   const state = getState();

@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useState, useEffect } from 'react';
 import GcsBrowserUploadStream from 'gcs-browser-upload-stream';
 import { useDispatch } from 'react-redux';
 import { useDropzone } from 'react-dropzone';
@@ -11,6 +11,7 @@ import {
 import clsx from 'clsx';
 
 import { addNewFile } from '../../actions/files';
+import { fetchUsers } from '../../actions/users';
 import { setMessage } from '../../actions/message';
 
 import FileList from '../FileList';
@@ -21,6 +22,10 @@ function Home() {
   const dispatch = useDispatch();
   const [uploadProgress, setUploadProgress] = useState(0);
   const [uploadInstance, setUploadInstance] = useState();
+
+  useEffect(() => {
+    dispatch(fetchUsers());
+  }, []);
 
   const onProgress = useCallback((progress) => {
     setUploadProgress(progress * 100);
@@ -39,7 +44,6 @@ function Home() {
     dispatch(addNewFile(file.name)).then((data) => {
       const { url } = data;
 
-      console.log(data);
       const params = {
         chunkSize: 262144 * 40, // ~10MB
         file,
@@ -61,8 +65,9 @@ function Home() {
       setUploadInstance(instance);
       instance.start();
     })
-      .catch(() => {
+      .catch((err) => {
         dispatch(setMessage('There was an error during file upload. Please try again.'));
+        console.error(err);
       });
   }, [clearUpload, dispatch, onProgress]);
 
