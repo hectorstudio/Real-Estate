@@ -25,7 +25,7 @@ function Home() {
 
   useEffect(() => {
     dispatch(fetchUsers());
-  }, []);
+  }, [dispatch]);
 
   const onProgress = useCallback((progress) => {
     setUploadProgress(progress * 100);
