@@ -7,3 +7,8 @@ export const countryToFlag = (isoCode) => (typeof String.fromCodePoint !== 'unde
   : isoCode);
 
 export const getFirebaseErrorMessage = (error) => firebaseErrors[error.code] || error.message;
+
+export const getFileFormat = (fileName = '') => {
+  const arr = fileName.split('.');
+  return arr.length > 1 ? arr[arr.length - 1].toLocaleUpperCase() : '';
+};

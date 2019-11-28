@@ -3,41 +3,79 @@ import MaterialTable from 'material-table';
 import { useDispatch, useSelector } from 'react-redux';
 import { Grid } from '@material-ui/core';
 
-import { fetchFiles } from '../../actions/files';
+import { fetchFiles, getDownloadLink } from '../../actions/files';
+import { getFileFormat } from '../../helpers';
+import { getFiles } from '../../selectors/files';
+import { getUsers } from '../../selectors/users';
+import { setMessage } from '../../actions/message';
+
+import Link from '../UI/Link';
 
 import s from './index.module.scss';
-import { getFiles } from '../../selectors/files';
-
-const columns = [
-  {
-    field: 'name',
-    title: 'File name',
-  },
-  {
-    render: (rowData) => '.pdf',
-    title: 'File type',
-  },
-  {
-    field: 'addDate',
-    title: 'Date uploaded',
-  },
-  {
-    field: 'modifyDate',
-    title: 'Date modified',
-  },
-  {
-    field: 'addUser',
-    title: 'Uploaded by',
-  },
-  {
-    field: 'modifyUser',
-    title: 'Modified by',
-  },
-];
 
 function FileList() {
   const dispatch = useDispatch();
   const files = useSelector(getFiles);
+  const users = useSelector(getUsers);
+
+  const columns = [
+    {
+      render: (rowData) => (
+        <Link
+          to="/"
+          variant="body1"
+        >
+          {`${rowData.name}`}
+        </Link>
+      ),
+      title: 'File name',
+    },
+    {
+      render: (rowData) => getFileFormat(rowData.name),
+      title: 'File type',
+    },
+    {
+      field: 'addDate',
+      title: 'Date uploaded',
+    },
+    {
+      field: 'modifyDate',
+      title: 'Date modified',
+    },
+    {
+      // field: 'addUser',
+      render: (rowData) => {
+        const { addUserId } = rowData;
+        const user = users.find((x) => x.id === addUserId);
+
+        if (!user) return null;
+
+        return (
+          <Link
+            to="/"
+            variant="body1"
+          >
+            {`${user.firstName} ${user.lastName}`}
+          </Link>
+        );
+      },
+      title: 'Uploaded by',
+    },
+    {
+      field: 'modifyUser',
+      title: 'Modified by',
+    },
+  ];
+
+  const downloadFile = (fileId) => {
+    dispatch(getDownloadLink(fileId)).then((url) => {
+      window.open(url);
+    })
+      .catch((err) => {
+        dispatch(setMessage('Unable to download file.'));
+        console.error(err);
+      });
+  };
 
   useEffect(() => {
     dispatch(fetchFiles());
@@ -51,6 +89,11 @@ function FileList() {
             icon: 'edit',
             onClick: () => {},
             tooltip: 'Edit',
+          },
+          {
+            icon: 'get_app',
+            onClick: (e, rowData) => downloadFile(rowData.id),
+            tooltip: 'Download',
           },
           {
             icon: 'delete',

@@ -43,3 +43,16 @@ export const addNewFile = (name) => (dispatch, getState) => {
       return data;
     });
 };
+
+export const getDownloadLink = (fileId) => (dispatch, getState) => {
+  const state = getState();
+  const token = getAuthToken(state);
+
+  return fetch(ENDPOINTS.files.download(fileId), {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+    method: 'GET',
+  })
+    .then((res) => res.json());
+};

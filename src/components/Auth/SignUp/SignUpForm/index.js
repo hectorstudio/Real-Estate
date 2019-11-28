@@ -8,12 +8,12 @@ import signUpForm from '../../../../constants/validation/signUpForm';
 import { ROUTES } from '../../../../constants';
 import { addNewUser } from '../../../../actions/users';
 import { createUserWithEmailAndPassword } from '../../../../actions/firebase';
+import { setMessage } from '../../../../actions/message';
 
 import Link from '../../../UI/Link';
 import TextField from '../../../UI/TextField';
 
 import s from './index.module.scss';
-import { setMessage } from '../../../../actions/message';
 
 function SignUpForm(props) {
   const dispatch = useDispatch();
@@ -29,7 +29,7 @@ function SignUpForm(props) {
   const onSubmit = (values) => {
     const { email, password } = values;
 
-    if (values.newPassword !== values.rePassword) {
+    if (values.password !== values.rePassword) {
       setError('rePassword', 'notMatch', 'Passwords do not match');
       return Promise.resolve();
     }
