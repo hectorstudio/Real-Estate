@@ -1,0 +1,17 @@
+name: CI
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v1
+    - name: Yarn CLI
+      uses: CultureHQ/actions-yarn@v1.0.1
+    - name: Install dependencies
+      run: yarn
+    - name: Build and deploy
+      run: yarn deploy --token "${{ secrets.FIREBASE_TOKEN }}"
