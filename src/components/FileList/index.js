@@ -1,7 +1,8 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useCallback, useState } from 'react';
 import MaterialTable from 'material-table';
 import { useDispatch, useSelector } from 'react-redux';
 import { Grid } from '@material-ui/core';
+import clsx from 'clsx';
 
 import { fetchFiles, getDownloadLink } from '../../actions/files';
 import { getFileFormat } from '../../helpers';
@@ -12,11 +13,36 @@ import { setMessage } from '../../actions/message';
 import Link from '../UI/Link';
 
 import s from './index.module.scss';
+import Details from './Details';
 
 function FileList() {
   const dispatch = useDispatch();
   const files = useSelector(getFiles);
   const users = useSelector(getUsers);
+  const [tableReady, setTableReady] = useState(false);
+
+  const tableRef = useCallback((table) => {
+    if (!table) return;
+
+    // return
+    (function updateTableState() {
+      if (!table.state.data.length && files.length) {
+        setTimeout(updateTableState, 50);
+        return;
+      }
+
+      table.state.data.forEach((row, i) => {
+        // Toggle only rows that have hidden details panel
+        if (row && !row.tableData.showDetailPanel) {
+          table.onToggleDetailPanel([i], (rowData) => <Details data={rowData} />);
+        }
+
+        if (!tableReady && i === table.state.data.length - 1) {
+          setTableReady(true);
+        }
+      });
+    }());
+  }, [files.length, tableReady]);
 
   const columns = [
     {
@@ -29,6 +55,10 @@ function FileList() {
         </Link>
       ),
       title: 'File name',
+    },
+    {
+      render: (rowData) => rowData.status,
+      title: 'Status',
     },
     {
       render: (rowData) => getFileFormat(rowData.name),
@@ -82,7 +112,7 @@ function FileList() {
   }, [dispatch]);
 
   return (
-    <div className={s.root}>
+    <div className={clsx(s.root, tableReady && s.tableWithDetails)}>
       <MaterialTable
         actions={[
           {
@@ -106,12 +136,18 @@ function FileList() {
           Container: Grid,
         }}
         data={files}
+        detailPanel={[{
+          icon: () => null,
+          render: () => null,
+        }]}
         options={{
           actionsColumnIndex: -1,
+          draggable: false,
           search: false,
           showTitle: false,
           toolbar: false,
         }}
+        tableRef={tableRef}
       />
     </div>
   );

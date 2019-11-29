@@ -1,3 +1,26 @@
 .root {
   margin-top: 40px;
 }
+
+.tableWithDetails {
+  // Hide an icon that opens detail panel
+  :global .MuiTableHead-root {
+    :global tr.MuiTableRow-root {
+      :global .MuiTableCell-root:first-of-type {
+        display: none;
+      }
+    }
+  }
+
+  :global .MuiTableBody-root {
+    :global tr.MuiTableRow-root:nth-of-type(odd) {
+      :global .MuiTableCell-root:first-of-type {
+        display: none;
+      }
+
+      :global .MuiTableCell-root {
+        border: 0;
+      }
+    }
+  }
+}
