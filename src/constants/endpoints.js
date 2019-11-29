@@ -2,6 +2,7 @@ const API_URL = process.env.REACT_APP_API_URL;
 
 export default {
   files: {
+    download: (fileId) => `${API_URL}files/download/${fileId}`,
     many: () => `${API_URL}files`,
   },
   users: {
