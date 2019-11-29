@@ -29,9 +29,10 @@ function Header() {
 
   const logOut = () => {
     handleClose();
-    signOut();
-    dispatch(push(ROUTES.home()));
-    window.location.reload();
+    signOut().then(() => {
+      dispatch(push(ROUTES.home()));
+      window.location.reload();
+    });
   };
 
   const profile = () => {
