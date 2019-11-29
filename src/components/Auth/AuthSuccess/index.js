@@ -4,31 +4,28 @@ import { Button, Typography } from '@material-ui/core';
 import { useDispatch } from 'react-redux';
 import { push } from 'connected-react-router';
 
-import { ROUTES } from '../../../../constants';
+import { ROUTES } from '../../../constants';
 
 import s from './index.module.scss';
 
-function AccountCreated(props) {
+function AuthSuccess(props) {
   const dispatch = useDispatch();
 
   const goToLoginPage = () => dispatch(push(ROUTES.home()));
 
+  const TypographyComponent = (content, key) => (
+    <Typography
+      className={s.paragraph}
+      key={key}
+      variant="body1"
+    >
+      {content}
+    </Typography>
+  );
+
   return (
     <>
-      <Typography
-        className={s.paragraph}
-        variant="body1"
-      >
-        {'A verification email has been sent to '}
-        <b>{props.email}</b>
-        {'.'}
-      </Typography>
-      <Typography
-        className={s.paragraph}
-        variant="body1"
-      >
-        {'Please click on the link attached to the email to activate your account.'}
-      </Typography>
+      {props.body.map((content, i) => TypographyComponent(content, i))}
       <Button
         className={s.button}
         color="primary"
@@ -42,8 +39,8 @@ function AccountCreated(props) {
   );
 }
 
-AccountCreated.propTypes = {
-  email: PropTypes.string.isRequired,
+AuthSuccess.propTypes = {
+  body: PropTypes.arrayOf(PropTypes.node).isRequired,
 };
 
-export default AccountCreated;
+export default AuthSuccess;

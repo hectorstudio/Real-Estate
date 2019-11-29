@@ -2,16 +2,14 @@ import React, { useState } from 'react';
 
 import AuthHeader from '../AuthHeader';
 
+import AuthSuccess from '../AuthSuccess';
 import SignUpForm from './SignUpForm';
-import AccountCreated from './AccountCreated';
 
 function SignUp() {
-  const [email, setEmail] = useState();
-  const [user, setUser] = useState();
+  const [email, setEmail] = useState('foo');
 
   const setUserEmail = (userObj) => {
     setEmail(userObj.email);
-    setUser(userObj);
   };
 
   const title = email
@@ -19,7 +17,20 @@ function SignUp() {
     : 'Sign up';
 
   const component = email
-    ? <AccountCreated email={email} user={user} />
+    ? (
+      <AuthSuccess
+        body={[
+          (
+            <>
+              {'A verification email has been sent to '}
+              <b>{email}</b>
+              {'.'}
+            </>
+          ),
+          'Please click on the link attached to the email to activate your account.',
+        ]}
+      />
+    )
     : <SignUpForm onEmailSubmit={setUserEmail} />;
 
   return (
