@@ -11,6 +11,7 @@ import {
 import clsx from 'clsx';
 
 import { addNewFile } from '../../actions/files';
+import { addNewUpload, deleteUpload, updateUpload } from '../../actions/uploads';
 import { fetchUsers } from '../../actions/users';
 import { setMessage } from '../../actions/message';
 
@@ -42,17 +43,21 @@ function Home() {
     const file = files[0];
 
     dispatch(addNewFile(file.name)).then((data) => {
-      const { url } = data;
+      const { file: fileObj, url } = data;
+
+      const uploadId = fileObj.id;
 
       const params = {
         chunkSize: 262144 * 40, // ~10MB
         file,
-        id: `${file.name}-${new Date().getTime()}`,
+        id: uploadId,
         onProgress: (info) => {
           console.log(info.uploadedBytes / info.totalBytes);
           onProgress(info.uploadedBytes / info.totalBytes);
+          dispatch(updateUpload(uploadId, info.uploadedBytes, info.totalBytes));
           if (info.uploadedBytes === info.totalBytes) {
             alert('Upload completed');
+            dispatch(deleteUpload(uploadId));
             clearUpload();
           }
         },
@@ -64,6 +69,8 @@ function Home() {
 
       setUploadInstance(instance);
       instance.start();
+
+      dispatch(addNewUpload(uploadId, file.size, instance));
     })
       .catch((err) => {
         dispatch(setMessage('There was an error during file upload. Please try again.'));

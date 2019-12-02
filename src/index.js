@@ -7,11 +7,14 @@ import { StylesProvider } from '@material-ui/core/styles';
 import * as serviceWorker from './serviceWorker';
 import App from './components/App';
 import store, { history } from './configureStore';
+import { WINDOW_UPLOADS_KEY } from './constants';
 import { initFirebase } from './actions/firebase';
 
 import './styles/index.scss';
 
 initFirebase();
+
+window[WINDOW_UPLOADS_KEY] = {};
 
 ReactDOM.render((
   <Provider store={store}>

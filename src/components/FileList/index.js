@@ -73,7 +73,6 @@ function FileList() {
       title: 'Date modified',
     },
     {
-      // field: 'addUser',
       render: (rowData) => {
         const { addUserId } = rowData;
         const user = users.find((x) => x.id === addUserId);
@@ -140,6 +139,7 @@ function FileList() {
           icon: () => null,
           render: () => null,
         }]}
+        isLoading={!tableReady}
         options={{
           actionsColumnIndex: -1,
           draggable: false,

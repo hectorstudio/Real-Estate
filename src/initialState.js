@@ -5,6 +5,7 @@ import { fileSchema, userSchema } from './schemas';
 export default {
   files: normalize({}, [fileSchema]),
   message: null,
+  uploads: {},
   user: {},
   users: normalize({}, [userSchema]),
 };

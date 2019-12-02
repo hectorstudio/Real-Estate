@@ -11,3 +11,6 @@ export const firebaseConfig = {
   projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
   storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
 };
+
+// Key name for storing uploads under window object (window.[WINDOW_UPLOADS_KEY])
+export const WINDOW_UPLOADS_KEY = '_pbUploads';
