@@ -21,12 +21,12 @@ export const fetchFiles = () => (dispatch, getState) => {
     });
 };
 
-export const addNewFile = (name) => (dispatch, getState) => {
+export const addNewFile = (name, size) => (dispatch, getState) => {
   const state = getState();
   const token = getAuthToken(state);
 
   return fetch(ENDPOINTS.files.many(), {
-    body: JSON.stringify({ name }),
+    body: JSON.stringify({ name, size }),
     headers: {
       Accept: 'application/json',
       Authorization: `Bearer ${token}`,

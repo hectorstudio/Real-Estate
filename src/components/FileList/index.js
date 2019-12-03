@@ -1,8 +1,8 @@
 import React, { useEffect, useCallback, useState } from 'react';
 import MaterialTable from 'material-table';
 import { useDispatch, useSelector } from 'react-redux';
-import { Grid } from '@material-ui/core';
-import clsx from 'clsx';
+import fileSize from 'filesize';
+import { Grid, Button } from '@material-ui/core';
 
 import { fetchFiles, getDownloadLink, deleteFile } from '../../actions/files';
 import { getFileFormat } from '../../helpers';
@@ -11,7 +11,6 @@ import { getUsers } from '../../selectors/users';
 import { setMessage } from '../../actions/message';
 
 import Link from '../UI/Link';
-import Details from './Details';
 
 import s from './index.module.scss';
 
@@ -19,30 +18,7 @@ function FileList() {
   const dispatch = useDispatch();
   const files = useSelector(getFiles);
   const users = useSelector(getUsers);
-  const [tableReady, setTableReady] = useState(false);
-
-  const tableRef = useCallback((table) => {
-    if (!table) return;
-
-    // return
-    (function updateTableState() {
-      if (!table.state.data.length && files.length) {
-        setTimeout(updateTableState, 50);
-        return;
-      }
-
-      table.state.data.forEach((row, i) => {
-        // Toggle only rows that have hidden details panel
-        if (row && !row.tableData.showDetailPanel) {
-          table.onToggleDetailPanel([i], (rowData) => <Details data={rowData} />);
-        }
-
-        if (!tableReady && i === table.state.data.length - 1) {
-          setTableReady(true);
-        }
-      });
-    }());
-  }, [files.length, tableReady]);
+  const [selectedItems, setSelectedItems] = useState([]);
 
   const columns = [
     {
@@ -57,13 +33,17 @@ function FileList() {
       title: 'File name',
     },
     {
-      render: (rowData) => rowData.status,
-      title: 'Status',
-    },
-    {
       render: (rowData) => getFileFormat(rowData.name),
       title: 'File type',
     },
+    {
+      render: (rowData) => fileSize(rowData.size || 0),
+      title: 'File size',
+    },
+    // {
+    //   render: (rowData) => rowData.status,
+    //   title: 'Status',
+    // },
     {
       render: (rowData) => new Date(rowData.addDate).toLocaleDateString('default', {
         day: '2-digit',
@@ -116,12 +96,16 @@ function FileList() {
     });
   };
 
+  const onSelectionChange = useCallback((array) => {
+    setSelectedItems(array);
+  }, []);
+
   useEffect(() => {
     dispatch(fetchFiles());
   }, [dispatch]);
 
   return (
-    <div className={clsx(s.root, tableReady && s.tableWithDetails)}>
+    <div className={s.root}>
       <MaterialTable
         actions={[
           {
@@ -143,21 +127,23 @@ function FileList() {
         columns={columns}
         components={{
           Container: Grid,
+          Toolbar: () => (
+            <Grid className={s.tableToolbar} container>
+              <Grid item>
+                <Button disabled={!selectedItems.length} variant="outlined">Delete selected</Button>
+              </Grid>
+            </Grid>
+          ),
         }}
         data={files}
-        detailPanel={[{
-          icon: () => null,
-          render: () => null,
-        }]}
-        isLoading={!tableReady}
+        onSelectionChange={onSelectionChange}
         options={{
-          actionsColumnIndex: -1,
+          actionsColumnIndex: 0,
           draggable: false,
-          search: false,
-          showTitle: false,
-          toolbar: false,
+          pageSize: 10,
+          pageSizeOptions: [10, 20, 50, 100],
+          selection: true,
         }}
-        tableRef={tableRef}
       />
     </div>
   );

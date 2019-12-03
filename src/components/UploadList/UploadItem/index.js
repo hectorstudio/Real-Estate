@@ -17,8 +17,9 @@ import {
 } from '@material-ui/icons';
 
 import { WINDOW_UPLOADS_KEY } from '../../../constants';
+import { deleteFile } from '../../../actions/files';
 import { getFileById } from '../../../selectors/files';
-import { resumeUpload, pauseUpload } from '../../../actions/uploads';
+import { resumeUpload, pauseUpload, deleteUpload } from '../../../actions/uploads';
 
 import s from './index.module.scss';
 
@@ -47,6 +48,11 @@ function UploadItem(props) {
   const pause = () => {
     dispatch(pauseUpload(file.id));
     uploadInstance.pause();
+  };
+
+  const onDelete = () => {
+    dispatch(deleteFile(file.id));
+    dispatch(deleteUpload(file.id));
   };
 
   return (
@@ -78,7 +84,7 @@ function UploadItem(props) {
               <Pause />
             </IconButton>
           )}
-        <IconButton size="small">
+        <IconButton onClick={onDelete} size="small">
           <Clear />
         </IconButton>
       </ListItemSecondaryAction>
@@ -88,6 +94,6 @@ function UploadItem(props) {
 
 UploadItem.propTypes = {
   upload: PropTypes.shape().isRequired,
-}
+};
 
 export default UploadItem;

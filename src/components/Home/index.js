@@ -35,7 +35,7 @@ function Home() {
 
     const file = files[0];
 
-    dispatch(addNewFile(file.name)).then((data) => {
+    dispatch(addNewFile(file.name, file.size)).then((data) => {
       const { file: fileObj, url } = data;
 
       const uploadId = fileObj.id;
