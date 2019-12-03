@@ -27,3 +27,19 @@ export const updateUpload = (fileId, uploaded) => (dispatch) => dispatch({
   },
   type: UPDATE_FILE_UPLOAD,
 });
+
+export const resumeUpload = (fileId) => (dispatch) => dispatch({
+  payload: {
+    id: fileId,
+    paused: false,
+  },
+  type: UPDATE_FILE_UPLOAD,
+});
+
+export const pauseUpload = (fileId) => (dispatch) => dispatch({
+  payload: {
+    id: fileId,
+    paused: true,
+  },
+  type: UPDATE_FILE_UPLOAD,
+});
