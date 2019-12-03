@@ -17,7 +17,7 @@ import {
 } from '@material-ui/icons';
 
 import { WINDOW_UPLOADS_KEY } from '../../../constants';
-import { deleteFile } from '../../../actions/files';
+import { deleteFiles } from '../../../actions/files';
 import { getFileById } from '../../../selectors/files';
 import { resumeUpload, pauseUpload, deleteUpload } from '../../../actions/uploads';
 
@@ -51,7 +51,7 @@ function UploadItem(props) {
   };
 
   const onDelete = () => {
-    dispatch(deleteFile(file.id));
+    dispatch(deleteFiles([file.id]));
     dispatch(deleteUpload(file.id));
   };
 

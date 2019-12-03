@@ -4,7 +4,7 @@ import { normalize } from 'normalizr';
 import initialState from '../initialState';
 import { fileSchema } from '../schemas';
 import {
-  DELETE_FILE,
+  DELETE_FILES,
   RECEIVE_FILES,
   RECEIVE_POST_FILE,
 } from '../actions/types';
@@ -30,14 +30,12 @@ export default (state = initialState.files, action) => {
           $push: [action.payload.id],
         },
       });
-    case DELETE_FILE:
+    case DELETE_FILES:
       return update(state, {
         entities: {
-          $unset: [action.payload.id],
+          $unset: [action.payload.ids],
         },
-        result: {
-          $splice: [[state.result.indexOf(action.payload.id), 1]],
-        },
+        result: (arr) => arr.filter((id) => action.payload.ids.indexOf(id) === -1),
       });
     default:
       return state;

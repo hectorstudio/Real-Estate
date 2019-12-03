@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import fileSize from 'filesize';
 import { Grid, Button } from '@material-ui/core';
 
-import { fetchFiles, getDownloadLink, deleteFile } from '../../actions/files';
+import { fetchFiles, getDownloadLink, deleteFiles } from '../../actions/files';
 import { getFileFormat } from '../../helpers';
 import { getFiles } from '../../selectors/files';
 import { getUsers } from '../../selectors/users';
@@ -91,7 +91,7 @@ function FileList() {
   };
 
   const onDeleteFile = (fileId) => {
-    dispatch(deleteFile(fileId)).then(() => {
+    dispatch(deleteFiles([fileId])).then(() => {
       dispatch(setMessage('File has been deleted.'));
     });
   };
@@ -99,6 +99,11 @@ function FileList() {
   const onSelectionChange = useCallback((array) => {
     setSelectedItems(array);
   }, []);
+
+  const onDeleteFiles = () => {
+    const ids = selectedItems.map((item) => item.id);
+    dispatch(deleteFiles(ids));
+  };
 
   useEffect(() => {
     dispatch(fetchFiles());
@@ -130,7 +135,13 @@ function FileList() {
           Toolbar: () => (
             <Grid className={s.tableToolbar} container>
               <Grid item>
-                <Button disabled={!selectedItems.length} variant="outlined">Delete selected</Button>
+                <Button
+                  disabled={!selectedItems.length}
+                  onClick={onDeleteFiles}
+                  variant="outlined"
+                >
+                  Delete selected
+                </Button>
               </Grid>
             </Grid>
           ),

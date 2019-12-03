@@ -4,7 +4,7 @@ export const SET_ID_TOKEN = 'SET_ID_TOKEN';
 export const SET_MESSAGE = 'SET_MESSAGE';
 
 export const ADD_FILE_UPLOAD = 'ADD_FILE_UPLOAD';
-export const DELETE_FILE = 'DELETE_FILE';
+export const DELETE_FILES = 'DELETE_FILES';
 export const DELETE_FILE_UPLOAD = 'DELETE_FILE_UPLOAD';
 export const RECEIVE_FILES = 'RECEIVE_FILES';
 export const RECEIVE_POST_FILE = 'RECEIVE_POST_FILE';
