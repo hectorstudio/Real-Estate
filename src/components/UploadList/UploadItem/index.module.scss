@@ -1,0 +1,26 @@
+.root {
+  max-width: 300px;
+
+  .rootContent {
+    padding-bottom: 0;
+  }
+}
+
+.item {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.itemActions {
+  right: 0;
+  top: 8px;
+  transform: initial;
+
+  > *:not(:last-of-type) {
+    margin-right: 4px;
+  }
+}
+
+.progress {
+  margin-top: 8px;
+}

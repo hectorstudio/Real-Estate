@@ -1,13 +1,8 @@
-import React, { useCallback, useState, useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import GcsBrowserUploadStream from 'gcs-browser-upload-stream';
 import { useDispatch } from 'react-redux';
 import { useDropzone } from 'react-dropzone';
-import {
-  Button,
-  LinearProgress,
-  Grid,
-  Paper,
-} from '@material-ui/core';
+import { Grid, Paper } from '@material-ui/core';
 import clsx from 'clsx';
 
 import { addNewFile } from '../../actions/files';
@@ -16,26 +11,24 @@ import { fetchUsers } from '../../actions/users';
 import { setMessage } from '../../actions/message';
 
 import FileList from '../FileList';
+import UploadList from '../UploadList';
 
 import s from './index.module.scss';
 
 function Home() {
   const dispatch = useDispatch();
-  const [uploadProgress, setUploadProgress] = useState(0);
-  const [uploadInstance, setUploadInstance] = useState();
 
   useEffect(() => {
     dispatch(fetchUsers());
   }, [dispatch]);
 
-  const onProgress = useCallback((progress) => {
-    setUploadProgress(progress * 100);
-  }, []);
+  const onUploadProgress = useCallback((uploadId, uploaded, totalBytes) => {
+    dispatch(updateUpload(uploadId, uploaded, totalBytes));
+  }, [dispatch]);
 
-  const clearUpload = useCallback(() => {
-    setUploadInstance();
-    setUploadProgress(0);
-  }, []);
+  const clearUpload = useCallback((id) => {
+    dispatch(deleteUpload(id));
+  }, [dispatch]);
 
   const onChange = useCallback((files) => {
     if (!files.length) return;
@@ -52,12 +45,11 @@ function Home() {
         file,
         id: uploadId,
         onProgress: (info) => {
-          onProgress(info.uploadedBytes / info.totalBytes);
-          dispatch(updateUpload(uploadId, info.uploadedBytes, info.totalBytes));
+          onUploadProgress(uploadId, info.uploadedBytes, info.totalBytes);
+
           if (info.uploadedBytes === info.totalBytes) {
             dispatch(setMessage('Upload completed'));
-            dispatch(deleteUpload(uploadId));
-            clearUpload();
+            clearUpload(uploadId);
           }
         },
         resumable: true,
@@ -66,7 +58,6 @@ function Home() {
       };
       const instance = new GcsBrowserUploadStream.Upload(params);
 
-      setUploadInstance(instance);
       instance.start();
 
       dispatch(addNewUpload(uploadId, file.size, instance));
@@ -75,7 +66,7 @@ function Home() {
         dispatch(setMessage('There was an error during file upload. Please try again.'));
         console.error(err);
       });
-  }, [clearUpload, dispatch, onProgress]);
+  }, [clearUpload, dispatch, onUploadProgress]);
 
   const {
     getRootProps: getRootProps1,
@@ -149,35 +140,7 @@ function Home() {
           </Paper>
         </Grid>
       </Grid>
-      <LinearProgress
-        className={s.progress}
-        value={uploadProgress}
-        variant="determinate"
-      />
-      <Grid container>
-        <Grid className={s.item} item>
-          <Button
-            color="primary"
-            component="span"
-            disabled={!uploadInstance}
-            onClick={() => uploadInstance.pause()}
-            variant="outlined"
-          >
-            Pause
-          </Button>
-        </Grid>
-        <Grid className={s.item} item>
-          <Button
-            color="primary"
-            component="span"
-            disabled={!uploadInstance}
-            onClick={() => uploadInstance.unpause()}
-            variant="outlined"
-          >
-            Continue
-          </Button>
-        </Grid>
-      </Grid>
+      <UploadList />
       <FileList />
     </>
   );

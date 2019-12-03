@@ -65,7 +65,11 @@ function FileList() {
       title: 'File type',
     },
     {
-      field: 'addDate',
+      render: (rowData) => new Date(rowData.addDate).toLocaleDateString('default', {
+        day: '2-digit',
+        month: 'short',
+        year: 'numeric',
+      }),
       title: 'Date uploaded',
     },
     {
