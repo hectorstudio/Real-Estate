@@ -4,16 +4,16 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Grid } from '@material-ui/core';
 import clsx from 'clsx';
 
-import { fetchFiles, getDownloadLink } from '../../actions/files';
+import { fetchFiles, getDownloadLink, deleteFile } from '../../actions/files';
 import { getFileFormat } from '../../helpers';
 import { getFiles } from '../../selectors/files';
 import { getUsers } from '../../selectors/users';
 import { setMessage } from '../../actions/message';
 
 import Link from '../UI/Link';
+import Details from './Details';
 
 import s from './index.module.scss';
-import Details from './Details';
 
 function FileList() {
   const dispatch = useDispatch();
@@ -98,12 +98,18 @@ function FileList() {
 
   const downloadFile = (fileId) => {
     dispatch(getDownloadLink(fileId)).then((url) => {
-      window.open(url);
+      window.location.href = url;
     })
       .catch((err) => {
         dispatch(setMessage('Unable to download file.'));
         console.error(err);
       });
+  };
+
+  const onDeleteFile = (fileId) => {
+    dispatch(deleteFile(fileId)).then(() => {
+      dispatch(setMessage('File has been deleted.'));
+    });
   };
 
   useEffect(() => {
@@ -126,7 +132,7 @@ function FileList() {
           },
           {
             icon: 'delete',
-            onClick: () => { },
+            onClick: (e, rowData) => onDeleteFile(rowData.id),
             tooltip: 'Delete',
           },
         ]}

@@ -2,8 +2,12 @@ import update from 'immutability-helper';
 import { normalize } from 'normalizr';
 
 import initialState from '../initialState';
-import { RECEIVE_FILES, RECEIVE_POST_FILE } from '../actions/types';
 import { fileSchema } from '../schemas';
+import {
+  DELETE_FILE,
+  RECEIVE_FILES,
+  RECEIVE_POST_FILE,
+} from '../actions/types';
 
 export default (state = initialState.files, action) => {
   switch (action.type) {
@@ -24,6 +28,15 @@ export default (state = initialState.files, action) => {
         },
         result: {
           $push: [action.payload.id],
+        },
+      });
+    case DELETE_FILE:
+      return update(state, {
+        entities: {
+          $unset: [action.payload.id],
+        },
+        result: {
+          $splice: [[state.result.indexOf(action.payload.id), 1]],
         },
       });
     default:

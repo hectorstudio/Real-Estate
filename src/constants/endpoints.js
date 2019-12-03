@@ -4,6 +4,7 @@ export default {
   files: {
     download: (fileId) => `${API_URL}files/download/${fileId}`,
     many: () => `${API_URL}files`,
+    one: (fileId) => `${API_URL}files/${fileId}`,
   },
   users: {
     currentUser: () => `${API_URL}users/currentUser`,

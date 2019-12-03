@@ -52,11 +52,10 @@ function Home() {
         file,
         id: uploadId,
         onProgress: (info) => {
-          console.log(info.uploadedBytes / info.totalBytes);
           onProgress(info.uploadedBytes / info.totalBytes);
           dispatch(updateUpload(uploadId, info.uploadedBytes, info.totalBytes));
           if (info.uploadedBytes === info.totalBytes) {
-            alert('Upload completed');
+            dispatch(setMessage('Upload completed'));
             dispatch(deleteUpload(uploadId));
             clearUpload();
           }

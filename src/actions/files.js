@@ -1,6 +1,6 @@
 import { getAuthToken } from '../selectors/user';
 import { ENDPOINTS } from '../constants';
-import { RECEIVE_FILES, RECEIVE_POST_FILE } from './types';
+import { RECEIVE_FILES, RECEIVE_POST_FILE, DELETE_FILE } from './types';
 
 export const fetchFiles = () => (dispatch, getState) => {
   const state = getState();
@@ -55,4 +55,23 @@ export const getDownloadLink = (fileId) => (dispatch, getState) => {
     method: 'GET',
   })
     .then((res) => res.json());
+};
+
+export const deleteFile = (fileId) => (dispatch, getState) => {
+  const state = getState();
+  const token = getAuthToken(state);
+
+  return fetch(ENDPOINTS.files.one(fileId), {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+    method: 'DELETE',
+  })
+    .then((res) => res.json())
+    .then(() => dispatch({
+      payload: {
+        id: fileId,
+      },
+      type: DELETE_FILE,
+    }));
 };
