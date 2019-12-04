@@ -6,14 +6,16 @@ import {
   AppBar,
   Toolbar,
   IconButton,
-  Typography,
   Menu,
   MenuItem,
 } from '@material-ui/core';
 
-import s from './index.module.scss';
 import { ROUTES } from '../../constants';
 import { signOut } from '../../actions/firebase';
+
+import Logo from '../../assets/logo.svg';
+
+import s from './index.module.scss';
 
 function Header() {
   const dispatch = useDispatch();
@@ -47,9 +49,12 @@ function Header() {
         position="static"
       >
         <Toolbar>
-          <Typography className={s.title} variant="h6">
+          <div className={s.logoWrapper}>
+            <img alt="Pocket Buildings" className={s.logo} src={Logo} />
+          </div>
+          {/* <Typography className={s.title} variant="h6">
             PocketBuildings
-          </Typography>
+          </Typography> */}
           <IconButton
             aria-controls="menu-appbar"
             aria-haspopup="true"

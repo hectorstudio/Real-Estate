@@ -6,7 +6,7 @@ import AuthSuccess from '../AuthSuccess';
 import SignUpForm from './SignUpForm';
 
 function SignUp() {
-  const [email, setEmail] = useState('foo');
+  const [email, setEmail] = useState();
 
   const setUserEmail = (userObj) => {
     setEmail(userObj.email);

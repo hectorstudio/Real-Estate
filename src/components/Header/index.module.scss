@@ -11,3 +11,11 @@
 .title {
   flex-grow: 1;
 }
+
+.logoWrapper {
+  flex-grow: 1;
+
+  .logo {
+    height: 40px;
+  }
+}

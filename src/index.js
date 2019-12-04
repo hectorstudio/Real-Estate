@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { ConnectedRouter } from 'connected-react-router';
-import { StylesProvider } from '@material-ui/core/styles';
+import { StylesProvider, ThemeProvider } from '@material-ui/core/styles';
 
 import * as serviceWorker from './serviceWorker';
 import App from './components/App';
@@ -11,6 +11,7 @@ import { WINDOW_UPLOADS_KEY } from './constants';
 import { initFirebase } from './actions/firebase';
 
 import './styles/index.scss';
+import theme from './styles/theme';
 
 initFirebase();
 
@@ -18,11 +19,13 @@ window[WINDOW_UPLOADS_KEY] = {};
 
 ReactDOM.render((
   <Provider store={store}>
-    <ConnectedRouter history={history}>
-      <StylesProvider injectFirst>
-        <App />
-      </StylesProvider>
-    </ConnectedRouter>
+    <ThemeProvider theme={theme}>
+      <ConnectedRouter history={history}>
+        <StylesProvider injectFirst>
+          <App />
+        </StylesProvider>
+      </ConnectedRouter>
+    </ThemeProvider>
   </Provider>
 ), document.getElementById('root'));
 
