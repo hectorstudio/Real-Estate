@@ -70,13 +70,14 @@ function Header() {
               horizontal: 'right',
               vertical: 'top',
             }}
+            className={s.menu}
             id="menu-appbar"
             keepMounted
             onClose={handleClose}
             open={!!anchorEl}
             transformOrigin={{
               horizontal: 'right',
-              vertical: 'top',
+              vertical: 'bottom',
             }}
           >
             <MenuItem onClick={profile}>Profile</MenuItem>

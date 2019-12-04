@@ -9,6 +9,7 @@ import Home from '../Home';
 import Message from '../Message';
 import PrivateRoute from '../PrivateRoute';
 import Profile from '../Profile';
+import Building from '../Building';
 
 import s from './index.module.scss';
 
@@ -21,6 +22,7 @@ function App() {
         <Container className={s.container}>
           <Switch>
             <Route component={Profile} exact path={ROUTES.profile()} />
+            <Route component={Building} exact path={ROUTES.building()} />
             <Route component={Home} />
           </Switch>
         </Container>

@@ -19,3 +19,10 @@
     height: 40px;
   }
 }
+
+.menu {
+  :global .MuiPaper-root {
+    margin-top: 40px;
+    min-width: 120px;
+  }
+}

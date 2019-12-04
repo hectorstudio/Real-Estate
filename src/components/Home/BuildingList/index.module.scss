@@ -1,0 +1,11 @@
+.root {
+  margin-top: 40px;
+
+  :global .MuiTableRow-root:empty {
+    display: none;
+  }
+}
+
+.tableToolbar {
+  margin-bottom: 20px;
+}
