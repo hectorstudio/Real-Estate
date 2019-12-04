@@ -2,6 +2,7 @@ import React from 'react';
 import useForm from 'react-hook-form';
 import { useDispatch } from 'react-redux';
 import { Button, Grid, Typography } from '@material-ui/core';
+import { push } from 'connected-react-router';
 
 import signInForm from '../../../constants/validation/signInForm';
 import { ROUTES } from '../../../constants';
@@ -30,6 +31,7 @@ function SignIn() {
         if (user.email) {
           user.getIdToken().then((token) => {
             dispatch(saveUser(user, token));
+            dispatch(push(ROUTES.home()));
           });
         }
       })

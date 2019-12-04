@@ -14,6 +14,7 @@ import { ROUTES } from '../../constants';
 import { signOut } from '../../actions/firebase';
 
 import Logo from '../../assets/logo.svg';
+import Link from '../UI/Link';
 
 import s from './index.module.scss';
 
@@ -50,11 +51,10 @@ function Header() {
       >
         <Toolbar>
           <div className={s.logoWrapper}>
-            <img alt="Pocket Buildings" className={s.logo} src={Logo} />
+            <Link to={ROUTES.home()}>
+              <img alt="Pocket Buildings" className={s.logo} src={Logo} />
+            </Link>
           </div>
-          {/* <Typography className={s.title} variant="h6">
-            PocketBuildings
-          </Typography> */}
           <IconButton
             aria-controls="menu-appbar"
             aria-haspopup="true"
