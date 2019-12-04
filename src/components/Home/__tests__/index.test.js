@@ -1,12 +1,15 @@
 import React from 'react';
-import { mount } from 'enzyme';
+import { shallow } from 'enzyme';
 
 import Home from '..';
 
+jest.mock('../../FileList', () => function FileList() { return null; });
+jest.mock('../../UploadList', () => function UploadList() { return null; });
+
 describe('render', () => {
   it('root element', () => {
-    const wrapper = mount(<Home />);
+    const wrapper = shallow(<Home />);
 
-    expect(wrapper.find('.root')).toHaveLength(1);
+    expect(wrapper.children()).toHaveLength(3);
   });
 });

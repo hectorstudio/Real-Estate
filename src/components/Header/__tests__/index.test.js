@@ -1,11 +1,11 @@
 import React from 'react';
-import { mount } from 'enzyme';
+import { mount, shallow } from 'enzyme';
 
-import Home from '..';
+import Header from '..';
 
 describe('render', () => {
   it('root element', () => {
-    const wrapper = mount(<Home />);
+    const wrapper = shallow(<Header />);
 
     expect(wrapper.find('.root')).toHaveLength(1);
   });

@@ -1,5 +1,6 @@
 import {
   getPathname,
+  getQuery,
   getSearch,
 } from '../router';
 
@@ -29,5 +30,19 @@ describe('getSearch', () => {
     const selection = getSearch(state);
 
     expect(selection).toBe('foo');
+  });
+});
+
+describe('getQuery', () => {
+  it('returns query', () => {
+    const query = {
+      a: 'b',
+      foo: 'bar',
+    };
+    state.router.location.query = query;
+
+    const selection = getQuery(state);
+
+    expect(selection).toBe(query);
   });
 });
