@@ -1,0 +1,24 @@
+.root {
+  :global .MuiGrid-item {
+    margin: 10px 0;
+  }
+}
+
+.form {
+  margin-top: 20px;
+
+  :global .MuiInput-root,
+  :global .MuiAutocomplete-inputRoot {
+    width: 250px;
+  }
+}
+
+.submit {
+  margin-top: 30px;
+}
+
+.groupFields {
+  :global .MuiGrid-item:not(:first-of-type) {
+    margin-left: 20px;
+  }
+}
