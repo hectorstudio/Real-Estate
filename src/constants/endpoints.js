@@ -6,6 +6,7 @@ export default {
     one: (fileId) => `${API_URL}buildings/${fileId}`,
   },
   files: {
+    buildingId: (buildingId) => `${API_URL}files/${buildingId}`,
     download: (fileId) => `${API_URL}files/download/${fileId}`,
     many: () => `${API_URL}files`,
     one: (fileId) => `${API_URL}files/${fileId}`,

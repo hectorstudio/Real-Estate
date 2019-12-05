@@ -9,6 +9,7 @@ import { getFileFormat } from '../../helpers';
 import { getFiles } from '../../selectors/files';
 import { getUsers } from '../../selectors/users';
 import { setMessage } from '../../actions/message';
+import { getCurrentBuildingId } from '../../selectors/router';
 
 import Link from '../UI/Link';
 
@@ -18,6 +19,7 @@ function FileList() {
   const dispatch = useDispatch();
   const files = useSelector(getFiles);
   const users = useSelector(getUsers);
+  const currentBuildingId = useSelector(getCurrentBuildingId);
   const [selectedItems, setSelectedItems] = useState([]);
 
   const columns = [
@@ -106,8 +108,8 @@ function FileList() {
   };
 
   useEffect(() => {
-    dispatch(fetchFiles());
-  }, [dispatch]);
+    dispatch(fetchFiles(currentBuildingId));
+  }, [currentBuildingId, dispatch]);
 
   return (
     <div className={s.root}>
