@@ -1,12 +1,12 @@
 import React from 'react';
-import { mount } from 'enzyme';
+import { shallow } from 'enzyme';
 
-import Home from '..';
+import Profile from '..';
 
 describe('render', () => {
   it('root element', () => {
-    // const wrapper = mount(<Home />);
+    const wrapper = shallow(<Profile />);
 
-    // expect(wrapper.find('.root')).toHaveLength(1);
+    expect(wrapper.find('.root')).toHaveLength(1);
   });
 });

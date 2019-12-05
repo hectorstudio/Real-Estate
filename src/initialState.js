@@ -1,8 +1,14 @@
 import { normalize } from 'normalizr';
 
-import { fileSchema, userSchema, uploadSchema } from './schemas';
+import {
+  buildingSchema,
+  fileSchema,
+  uploadSchema,
+  userSchema,
+} from './schemas';
 
 export default {
+  buildings: normalize({}, [buildingSchema]),
   files: normalize({}, [fileSchema]),
   message: null,
   uploads: normalize({}, [uploadSchema]),

@@ -13,9 +13,23 @@
 }
 
 .logoWrapper {
+  align-items: center;
+  display: flex;
   flex-grow: 1;
 
   .logo {
     height: 40px;
   }
+}
+
+.menu {
+  :global .MuiPaper-root {
+    margin-top: 40px;
+    min-width: 120px;
+  }
+}
+
+.divider {
+  margin: 0 20px;
+  height: 20px;
 }
