@@ -17,7 +17,7 @@ import { signOut } from '../../actions/firebase';
 import { getCurrentBuildingId } from '../../selectors/router';
 import { getBuildingById } from '../../selectors/buildings';
 
-import Logo from '../../assets/logo.svg';
+import Logo from '../../assets/logo3.svg';
 import Link from '../UI/Link';
 
 import s from './index.module.scss';
