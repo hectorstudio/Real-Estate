@@ -1,6 +1,6 @@
 import React from 'react';
 import { push } from 'connected-react-router';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { AccountCircle } from '@material-ui/icons';
 import {
   AppBar,
@@ -8,10 +8,14 @@ import {
   IconButton,
   Menu,
   MenuItem,
+  Divider,
+  Typography,
 } from '@material-ui/core';
 
 import { ROUTES } from '../../constants';
 import { signOut } from '../../actions/firebase';
+import { getCurrentBuildingId } from '../../selectors/router';
+import { getBuildingById } from '../../selectors/buildings';
 
 import Logo from '../../assets/logo.svg';
 import Link from '../UI/Link';
@@ -21,6 +25,9 @@ import s from './index.module.scss';
 function Header() {
   const dispatch = useDispatch();
   const [anchorEl, setAnchorEl] = React.useState(null);
+
+  const currentBuildingId = useSelector(getCurrentBuildingId);
+  const currentBuilding = useSelector((state) => getBuildingById(state, currentBuildingId));
 
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
@@ -54,6 +61,12 @@ function Header() {
             <Link to={ROUTES.home()}>
               <img alt="Pocket Buildings" className={s.logo} src={Logo} />
             </Link>
+            {currentBuilding && (
+              <>
+                <Divider className={s.divider} orientation="vertical" />
+                <Typography variant="body1">{currentBuilding.name}</Typography>
+              </>
+            )}
           </div>
           <IconButton
             aria-controls="menu-appbar"

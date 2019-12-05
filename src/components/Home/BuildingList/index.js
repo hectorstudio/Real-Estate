@@ -4,14 +4,15 @@ import { useSelector } from 'react-redux';
 import { Grid } from '@material-ui/core';
 
 import { getBuildings } from '../../../selectors/buildings';
+import { ROUTES } from '../../../constants';
 
 import Link from '../../UI/Link';
 
 import s from './index.module.scss';
-import { ROUTES } from '../../../constants';
 
 function BuildingList() {
   const buildings = useSelector(getBuildings);
+  // eslint-disable-next-line no-unused-vars
   const [selectedItems, setSelectedItems] = useState([]);
 
   const columns = [

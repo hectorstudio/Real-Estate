@@ -8,3 +8,9 @@ export const getBuildings = createSelector(
   getBuildingEntities,
   (ids, entities) => ids.map((id) => entities[id]),
 );
+
+export const getBuildingById = createSelector(
+  getBuildings,
+  (state, id) => id,
+  (buildings, id) => buildings.find((building) => building.id === id),
+);
