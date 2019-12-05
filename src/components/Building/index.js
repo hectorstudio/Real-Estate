@@ -1,15 +1,16 @@
 import React, { useCallback, useEffect } from 'react';
 import GcsBrowserUploadStream from 'gcs-browser-upload-stream';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useDropzone } from 'react-dropzone';
 import { Grid, Paper } from '@material-ui/core';
 import clsx from 'clsx';
 
 import { addNewFile } from '../../actions/files';
 import { addNewUpload, deleteUpload, updateUpload } from '../../actions/uploads';
-import { fetchUsers } from '../../actions/users';
-import { setMessage } from '../../actions/message';
 import { fetchBuildings } from '../../actions/buildings';
+import { fetchUsers } from '../../actions/users';
+import { getCurrentBuildingId } from '../../selectors/router';
+import { setMessage } from '../../actions/message';
 
 import FileList from '../FileList';
 import UploadList from '../UploadList';
@@ -18,6 +19,7 @@ import s from './index.module.scss';
 
 function Building() {
   const dispatch = useDispatch();
+  const currentBuildingId = useSelector(getCurrentBuildingId);
 
   useEffect(() => {
     dispatch(fetchUsers());
@@ -37,7 +39,7 @@ function Building() {
 
     const file = files[0];
 
-    dispatch(addNewFile(file.name, file.size)).then((data) => {
+    dispatch(addNewFile(currentBuildingId, file.name, file.size)).then((data) => {
       const { file: fileObj, url } = data;
 
       const uploadId = fileObj.id;
@@ -68,7 +70,7 @@ function Building() {
         dispatch(setMessage('There was an error during file upload. Please try again.'));
         console.error(err);
       });
-  }, [clearUpload, dispatch, onUploadProgress]);
+  }, [clearUpload, currentBuildingId, dispatch, onUploadProgress]);
 
   const {
     getRootProps: getRootProps1,
