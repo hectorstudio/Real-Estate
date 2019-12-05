@@ -10,6 +10,7 @@ import Message from '../Message';
 import PrivateRoute from '../PrivateRoute';
 import Profile from '../Profile';
 import Building from '../Building';
+import NewBuilding from '../NewBuilding';
 
 import s from './index.module.scss';
 
@@ -21,6 +22,7 @@ function App() {
         <Header />
         <Container className={s.container}>
           <Switch>
+            <Route component={NewBuilding} exact path={ROUTES.building('new')} />
             <Route component={Profile} exact path={ROUTES.profile()} />
             <Route component={Building} exact path={ROUTES.building()} />
             <Route component={Home} />
