@@ -12,6 +12,8 @@ import { ROUTES } from '../../constants';
 
 import BuildingList from './BuildingList';
 
+import s from './index.module.scss';
+
 function Home() {
   const dispatch = useDispatch();
 
@@ -20,7 +22,11 @@ function Home() {
   }, [dispatch]);
 
   return (
-    <>
+    <Grid
+      className={s.root}
+      container
+      direction="column"
+    >
       <Grid container justify="space-between">
         <Grid item>
           <Typography variant="h5">Your buildings</Typography>
@@ -36,7 +42,7 @@ function Home() {
         </Grid>
       </Grid>
       <BuildingList />
-    </>
+    </Grid>
   );
 }
 

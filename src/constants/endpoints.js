@@ -16,6 +16,6 @@ export default {
     firebaseId: (firebaseId) => `${API_URL}users/firebase/${firebaseId}`,
     many: () => `${API_URL}users/`,
     one: (userId) => `${API_URL}users/${userId}`,
-    verify: (userId) => `${API_URL}users/${userId}/verify`,
+    verify: () => `${API_URL}users/verify`,
   },
 };
