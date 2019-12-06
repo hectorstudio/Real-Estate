@@ -29,7 +29,7 @@ function Home() {
     >
       <Grid container justify="space-between">
         <Grid item>
-          <Typography variant="h5">Your buildings</Typography>
+          <Typography variant="h5">All buildings</Typography>
         </Grid>
         <Grid item>
           <Button

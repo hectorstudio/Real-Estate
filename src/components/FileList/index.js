@@ -2,7 +2,8 @@ import React, { useEffect, useCallback, useState } from 'react';
 import MaterialTable from 'material-table';
 import { useDispatch, useSelector } from 'react-redux';
 import fileSize from 'filesize';
-import { Grid, Button } from '@material-ui/core';
+import { Grid, Button, IconButton } from '@material-ui/core';
+import { Delete, GetApp } from '@material-ui/icons';
 
 import { fetchFiles, getDownloadLink, deleteFiles } from '../../actions/files';
 import { getFileFormat } from '../../helpers';
@@ -21,6 +22,22 @@ function FileList() {
   const users = useSelector(getUsers);
   const currentBuildingId = useSelector(getCurrentBuildingId);
   const [selectedItems, setSelectedItems] = useState([]);
+
+  const downloadFile = (fileId) => {
+    dispatch(getDownloadLink(fileId)).then((url) => {
+      window.location.href = url;
+    })
+      .catch((err) => {
+        dispatch(setMessage('Unable to download file.'));
+        console.error(err);
+      });
+  };
+
+  const onDeleteFile = (fileId) => {
+    dispatch(deleteFiles([fileId])).then(() => {
+      dispatch(setMessage('File has been deleted.'));
+    });
+  };
 
   const columns = [
     {
@@ -80,23 +97,24 @@ function FileList() {
       field: 'modifyUser',
       title: 'Modified by',
     },
+    {
+      render: (rowData) => (
+        <Grid container>
+          <Grid item>
+            <IconButton onClick={() => downloadFile(rowData.id)}>
+              <GetApp />
+            </IconButton>
+          </Grid>
+          <Grid item>
+            <IconButton onClick={() => onDeleteFile(rowData.id)}>
+              <Delete />
+            </IconButton>
+          </Grid>
+        </Grid>
+      ),
+      title: 'Actions',
+    },
   ];
-
-  const downloadFile = (fileId) => {
-    dispatch(getDownloadLink(fileId)).then((url) => {
-      window.location.href = url;
-    })
-      .catch((err) => {
-        dispatch(setMessage('Unable to download file.'));
-        console.error(err);
-      });
-  };
-
-  const onDeleteFile = (fileId) => {
-    dispatch(deleteFiles([fileId])).then(() => {
-      dispatch(setMessage('File has been deleted.'));
-    });
-  };
 
   const onSelectionChange = useCallback((array) => {
     setSelectedItems(array);
@@ -153,7 +171,7 @@ function FileList() {
         data={files}
         onSelectionChange={onSelectionChange}
         options={{
-          actionsColumnIndex: 0,
+          actionsColumnIndex: -1,
           draggable: false,
           pageSize: 10,
           pageSizeOptions: [10, 20, 50, 100],
