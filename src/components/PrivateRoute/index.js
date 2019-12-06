@@ -21,9 +21,11 @@ function PrivateRoute(props) {
   const [loading, setLoading] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
+  const authRoutes = [ROUTES.signIn(), ROUTES.signUp(), ROUTES.forgotPassword()];
+  const isAuthRoute = authRoutes.includes(pathname);
+
   useEffect(() => {
-    const authRoutes = [ROUTES.signIn(), ROUTES.signUp(), ROUTES.forgotPassword()];
-    if (authRoutes.includes(pathname) || isAuthenticated) {
+    if (isAuthRoute || isAuthenticated) {
       setLoading(false);
       return;
     }
@@ -45,7 +47,7 @@ function PrivateRoute(props) {
         });
       });
     });
-  }, [dispatch, isAuthenticated, pathname]);
+  }, [dispatch, isAuthRoute, isAuthenticated, pathname]);
 
   let actionComponent = null;
   switch (params.mode) {
@@ -70,7 +72,7 @@ function PrivateRoute(props) {
     return <Loading />;
   }
 
-  return isAuthenticated
+  return (isAuthenticated && !isAuthRoute)
     ? props.children
     : <Auth />;
 }

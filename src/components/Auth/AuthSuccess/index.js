@@ -11,7 +11,7 @@ import s from './index.module.scss';
 function AuthSuccess(props) {
   const dispatch = useDispatch();
 
-  const goToLoginPage = () => dispatch(push(ROUTES.home()));
+  const goBack = () => dispatch(push(ROUTES.home()));
 
   const TypographyComponent = (content, key) => (
     <Typography
@@ -30,10 +30,10 @@ function AuthSuccess(props) {
         className={s.button}
         color="primary"
         fullWidth
-        onClick={goToLoginPage}
+        onClick={goBack}
         variant="outlined"
       >
-        Go back to login page
+        Go back
       </Button>
     </>
   );
