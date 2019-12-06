@@ -18,7 +18,7 @@
     "clsx": "1.0.4",
     "connected-react-router": "6.6.1",
     "filesize": "6.0.1",
-    "firebase": "7.5.0",
+    "firebase": "7.5.1",
     "gcs-browser-upload-stream": "https://github.com/benjeffery/gcs-browser-upload.git",
     "immutability-helper": "3.0.1",
     "material-table": "1.54.1",
