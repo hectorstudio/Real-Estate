@@ -12,5 +12,10 @@ export const firebaseConfig = {
   storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
 };
 
+export const authActionModes = {
+  resetPassword: 'resetPassword',
+  verifyEmail: 'verifyEmail',
+};
+
 // Key name for storing uploads under window object (window.[WINDOW_UPLOADS_KEY])
 export const WINDOW_UPLOADS_KEY = '_pbUploads';

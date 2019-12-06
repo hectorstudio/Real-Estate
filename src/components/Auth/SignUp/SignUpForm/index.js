@@ -7,7 +7,7 @@ import { Button, Grid, Typography } from '@material-ui/core';
 import signUpForm from '../../../../constants/validation/signUpForm';
 import { ROUTES } from '../../../../constants';
 import { addNewUser } from '../../../../actions/users';
-import { createUserWithEmailAndPassword } from '../../../../actions/firebase';
+import { createUserWithEmailAndPassword, sendEmailVerification } from '../../../../actions/firebase';
 import { setMessage } from '../../../../actions/message';
 
 import Link from '../../../UI/Link';
@@ -50,6 +50,8 @@ function SignUpForm(props) {
           res.user.sendEmailVerification();
           props.onEmailSubmit(res.user);
         });
+
+        sendEmailVerification();
       })
       .catch((err) => dispatch(setMessage(err.message)));
   };

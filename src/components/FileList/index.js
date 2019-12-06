@@ -108,7 +108,9 @@ function FileList() {
   };
 
   useEffect(() => {
-    dispatch(fetchFiles(currentBuildingId));
+    if (currentBuildingId) {
+      dispatch(fetchFiles(currentBuildingId));
+    }
   }, [currentBuildingId, dispatch]);
 
   return (

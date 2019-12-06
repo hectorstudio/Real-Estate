@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 
 import AuthHeader from '../AuthHeader';
-
 import AuthSuccess from '../AuthSuccess';
 import SignUpForm from './SignUpForm';
 

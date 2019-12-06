@@ -4,10 +4,9 @@ import { Route, Switch } from 'react-router';
 
 import { ROUTES } from '../../constants';
 
+import ForgotPassword from './ForgotPassword';
 import SignIn from './SignIn';
 import SignUp from './SignUp';
-import ForgotPassword from './ForgotPassword';
-import PasswordReset from './PasswordReset';
 
 function Auth() {
   return (
@@ -15,7 +14,6 @@ function Auth() {
       <Switch>
         <Route exact path={ROUTES.signUp()} render={() => <SignUp />} />
         <Route exact path={ROUTES.forgotPassword()} render={() => <ForgotPassword />} />
-        <Route exact path={ROUTES.passwordReset()} render={() => <PasswordReset />} />
         <Route render={() => <SignIn />} />
       </Switch>
     </Container>

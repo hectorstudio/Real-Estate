@@ -1,20 +1,33 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { Container } from '@material-ui/core';
 
 import { onAuthStateChanged } from '../../actions/firebase';
 import { setIdToken } from '../../actions/auth';
 import { fetchCurrentUser } from '../../actions/users';
+import { authActionModes, ROUTES } from '../../constants';
+import { getQuery, getPathname } from '../../selectors/router';
 
-import Loading from '../Loading';
 import Auth from '../Auth';
+import Loading from '../Loading';
+import PasswordReset from '../Auth/PasswordReset';
+import VerifyEmail from '../Auth/VerifyEmail';
 
 function PrivateRoute(props) {
   const dispatch = useDispatch();
+  const params = useSelector(getQuery);
+  const pathname = useSelector(getPathname);
   const [loading, setLoading] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
+    const authRoutes = [ROUTES.signIn(), ROUTES.signUp(), ROUTES.forgotPassword()];
+    if (authRoutes.includes(pathname) || isAuthenticated) {
+      setLoading(false);
+      return;
+    }
+
     onAuthStateChanged((user) => {
       if (!user || !user.email) {
         setLoading(false);
@@ -32,7 +45,26 @@ function PrivateRoute(props) {
         });
       });
     });
-  }, [dispatch]);
+  }, [dispatch, isAuthenticated, pathname]);
+
+  let actionComponent = null;
+  switch (params.mode) {
+    case authActionModes.resetPassword:
+      actionComponent = <PasswordReset />;
+      break;
+    case authActionModes.verifyEmail:
+      actionComponent = <VerifyEmail />;
+      break;
+    default:
+  }
+
+  if (actionComponent && params.oobCode) {
+    return (
+      <Container component="main" maxWidth="xs">
+        {actionComponent}
+      </Container>
+    );
+  }
 
   if (loading) {
     return <Loading />;

@@ -7,3 +7,11 @@ export default {
   [userNotFound]: 'Invalid email address or password', // No user found with that email address
   [wrongPassword]: 'The password is invalid.', // Reauthenticate password is wrong
 };
+
+// TODO:
+// https://firebase.google.com/docs/reference/js/firebase.auth.Auth.html#applyactioncode
+export const expiredActionCode = 'auth/expired-action-code';
+export const invalidActionCode = 'auth/invalid-action-code';
+export const userDisabled = 'auth/user-disabled';
+
+export const tooManyRequests = 'auth/too-many-requests';

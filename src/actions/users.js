@@ -75,3 +75,19 @@ export const updateUser = (values) => (dispatch, getState) => {
       dispatch(saveUser(data, token));
     });
 };
+
+export const verifyEmail = () => (dispatch, getState) => {
+  const state = getState();
+  const token = getAuthToken(state);
+
+  return fetch(ENDPOINTS.users.verify(), {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+    method: 'PATCH',
+  })
+    .then((res) => res.json())
+    .then((data) => {
+      dispatch(saveUser(data, token));
+    });
+};

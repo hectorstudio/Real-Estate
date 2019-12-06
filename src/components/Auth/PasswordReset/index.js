@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import useForm from 'react-hook-form';
 import { useSelector, useDispatch } from 'react-redux';
 import { Button, Grid, Typography } from '@material-ui/core';
@@ -26,12 +26,6 @@ function PasswordReset() {
     setError,
   } = useForm();
 
-  useEffect(() => {
-    if (!params.oobCode) {
-      dispatch(push(ROUTES.signIn()));
-    }
-  }, [dispatch, params.oobCode]);
-
   const onSubmit = async (values) => {
     if (values.newPassword !== values.confirmPassword) {
       setError('confirmPassword', 'notMatch', 'Passwords do not match');
@@ -45,6 +39,7 @@ function PasswordReset() {
       })
       .catch((error) => {
         setError('oldPassword', 'reAuthenticateError', getFirebaseErrorMessage(error));
+        dispatch(push(ROUTES.signIn()));
       });
   };
 

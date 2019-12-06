@@ -35,4 +35,6 @@ export const reAuthenticateWithEmailAndPassword = (email, password) => {
   return getCurrentUser().reauthenticateWithCredential(credential);
 };
 
+export const sendEmailVerification = () => firebase.auth().currentUser.sendEmailVerification();
+
 export const signOut = () => firebase.auth().signOut();
