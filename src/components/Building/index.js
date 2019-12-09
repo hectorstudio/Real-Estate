@@ -37,39 +37,39 @@ function Building() {
   const onChange = useCallback((files) => {
     if (!files.length) return;
 
-    const file = files[0];
+    files.forEach((file) => {
+      dispatch(addNewFile(currentBuildingId, file.name, file.size)).then((data) => {
+        const { file: fileObj, url } = data;
 
-    dispatch(addNewFile(currentBuildingId, file.name, file.size)).then((data) => {
-      const { file: fileObj, url } = data;
+        const uploadId = fileObj.id;
 
-      const uploadId = fileObj.id;
+        const params = {
+          chunkSize: 262144 * 40, // ~10MB
+          file,
+          id: uploadId,
+          onProgress: (info) => {
+            onUploadProgress(uploadId, info.uploadedBytes, info.totalBytes);
 
-      const params = {
-        chunkSize: 262144 * 40, // ~10MB
-        file,
-        id: uploadId,
-        onProgress: (info) => {
-          onUploadProgress(uploadId, info.uploadedBytes, info.totalBytes);
+            if (info.uploadedBytes === info.totalBytes) {
+              dispatch(setMessage('Upload completed'));
+              clearUpload(uploadId);
+            }
+          },
+          resumable: true,
+          storage: window.localStorage,
+          url,
+        };
+        const instance = new GcsBrowserUploadStream.Upload(params);
 
-          if (info.uploadedBytes === info.totalBytes) {
-            dispatch(setMessage('Upload completed'));
-            clearUpload(uploadId);
-          }
-        },
-        resumable: true,
-        storage: window.localStorage,
-        url,
-      };
-      const instance = new GcsBrowserUploadStream.Upload(params);
+        instance.start();
 
-      instance.start();
-
-      dispatch(addNewUpload(uploadId, file.size, instance));
-    })
-      .catch((err) => {
-        dispatch(setMessage('There was an error during file upload. Please try again.'));
-        console.error(err);
-      });
+        dispatch(addNewUpload(uploadId, file.size, instance));
+      })
+        .catch((err) => {
+          dispatch(setMessage('There was an error during file upload. Please try again.'));
+          console.error(err);
+        });
+    });
   }, [clearUpload, currentBuildingId, dispatch, onUploadProgress]);
 
   const {
