@@ -23,7 +23,7 @@ function UploadList() {
     <Card className={s.root} raised>
       <CardContent className={s.rootContent}>
         <Typography component="h6" variant="h6">
-          Downloads
+          Uploads
         </Typography>
         <List className={s.uploadList}>
           {uploads.map((obj) => <UploadItem key={obj.id} upload={obj} />)}

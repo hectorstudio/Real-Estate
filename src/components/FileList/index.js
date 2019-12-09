@@ -12,6 +12,7 @@ import { getUsers } from '../../selectors/users';
 import { setMessage } from '../../actions/message';
 import { getCurrentBuildingId } from '../../selectors/router';
 
+import Dialog from '../UI/Dialog';
 import Link from '../UI/Link';
 
 import s from './index.module.scss';
@@ -21,7 +22,10 @@ function FileList() {
   const files = useSelector(getFiles);
   const users = useSelector(getUsers);
   const currentBuildingId = useSelector(getCurrentBuildingId);
+
   const [selectedItems, setSelectedItems] = useState([]);
+  const [deleteConfirmOpened, setDeleteConfirmOpened] = useState(false);
+  const [deleteList, setDeleteList] = useState([]);
 
   const downloadFile = (fileId) => {
     dispatch(getDownloadLink(fileId)).then((url) => {
@@ -33,11 +37,27 @@ function FileList() {
       });
   };
 
-  const onDeleteFile = (fileId) => {
-    dispatch(deleteFiles([fileId])).then(() => {
-      dispatch(setMessage('File has been deleted.'));
-    });
+  const onDeleteFiles = (list) => () => {
+    const ids = list || selectedItems.map((item) => item.id);
+    setDeleteList(ids);
+    setDeleteConfirmOpened(true);
   };
+
+  const doDeleteFiles = () => {
+    dispatch(deleteFiles(deleteList));
+    dispatch(setMessage(`File${deleteList.length > 1 ? 's have' : ' has'} been deleted.`));
+    setDeleteConfirmOpened(false);
+  };
+
+  const onSelectionChange = useCallback((array) => {
+    setSelectedItems(array);
+  }, []);
+
+  useEffect(() => {
+    if (currentBuildingId) {
+      dispatch(fetchFiles(currentBuildingId));
+    }
+  }, [currentBuildingId, dispatch]);
 
   const columns = [
     {
@@ -106,7 +126,7 @@ function FileList() {
             </IconButton>
           </Grid>
           <Grid item>
-            <IconButton onClick={() => onDeleteFile(rowData.id)}>
+            <IconButton onClick={() => onDeleteFiles([rowData.id])()}>
               <Delete />
             </IconButton>
           </Grid>
@@ -116,23 +136,20 @@ function FileList() {
     },
   ];
 
-  const onSelectionChange = useCallback((array) => {
-    setSelectedItems(array);
-  }, []);
-
-  const onDeleteFiles = () => {
-    const ids = selectedItems.map((item) => item.id);
-    dispatch(deleteFiles(ids));
-  };
-
-  useEffect(() => {
-    if (currentBuildingId) {
-      dispatch(fetchFiles(currentBuildingId));
-    }
-  }, [currentBuildingId, dispatch]);
-
   return (
     <div className={s.root}>
+      <Dialog
+        content={(
+          <p>
+            {'Deleting files will put them in Trash for 30 days. After this time, you won\'t be able to preview or download them.'}
+          </p>
+        )}
+        okText="Yes, delete"
+        onCancel={() => setDeleteConfirmOpened(false)}
+        onOk={doDeleteFiles}
+        open={deleteConfirmOpened}
+        title="Are you sure?"
+      />
       <MaterialTable
         actions={[
           {
@@ -147,7 +164,7 @@ function FileList() {
           },
           {
             icon: 'delete',
-            onClick: (e, rowData) => onDeleteFile(rowData.id),
+            onClick: (e, rowData) => onDeleteFiles([rowData.id])(),
             tooltip: 'Delete',
           },
         ]}
@@ -159,7 +176,7 @@ function FileList() {
               <Grid item>
                 <Button
                   disabled={!selectedItems.length}
-                  onClick={onDeleteFiles}
+                  onClick={onDeleteFiles()}
                   variant="outlined"
                 >
                   Delete selected
