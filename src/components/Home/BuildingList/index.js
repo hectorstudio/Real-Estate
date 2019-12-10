@@ -70,6 +70,8 @@ function BuildingList() {
   // }, []);
 
   const mapRef = useCallback((node) => {
+    if (process.env.NODE_ENV === 'development') return;
+
     loadGoogleMaps({
       key: 'AIzaSyDNq0toolno9-6DWW52N4BxPv_OBpRYW_Q',
       libraries: [
@@ -133,7 +135,13 @@ function BuildingList() {
           primary={building.name}
           secondary={(
             <>
-              <Typography component="div" variant="body2">{building.company}</Typography>
+              <Typography
+                className={s.company}
+                component="span"
+                variant="body2"
+              >
+                {building.company}
+              </Typography>
               {`${building.address}, ${building.city}`}
             </>
           )}
