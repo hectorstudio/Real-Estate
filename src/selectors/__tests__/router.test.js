@@ -2,6 +2,7 @@ import {
   getPathname,
   getQuery,
   getSearch,
+  getCurrentBuildingId,
 } from '../router';
 
 let state;
@@ -44,5 +45,25 @@ describe('getQuery', () => {
     const selection = getQuery(state);
 
     expect(selection).toBe(query);
+  });
+});
+
+describe('getCurrentBuildingId', () => {
+  it('returns building id from pathname', () => {
+    const pathname = '/foo';
+    state.router.location.pathname = pathname;
+
+    const selection = getCurrentBuildingId(state);
+
+    expect(selection).toBe('foo');
+  });
+
+  it('returns null if nothing matches regexp', () => {
+    const pathname = '';
+    state.router.location.pathname = pathname;
+
+    const selection = getCurrentBuildingId(state);
+
+    expect(selection).toBeNull();
   });
 });

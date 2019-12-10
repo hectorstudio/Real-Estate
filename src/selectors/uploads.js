@@ -9,7 +9,7 @@ export const getUploads = createSelector(
   (ids, entities) => ids.map((id) => entities[id]),
 );
 
-export const getUpload = createSelector(
+export const getUploadById = createSelector(
   getUploadEntities,
   (state, id) => id,
   (entities, id) => entities[id],
