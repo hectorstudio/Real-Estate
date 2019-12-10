@@ -2,6 +2,7 @@ import { ENDPOINTS } from '../constants';
 import { getAuthToken } from '../selectors/user';
 import {
   RECEIVE_GET_BUILDINGS,
+  RECEIVE_PATCH_BUILDING,
 } from './types';
 
 export const addNewBuilding = (userData) => fetch(ENDPOINTS.buildings.many(), {
@@ -31,6 +32,36 @@ export const fetchBuildings = () => (dispatch, getState) => {
       dispatch({
         payload: data,
         type: RECEIVE_GET_BUILDINGS,
+      });
+    });
+};
+
+export const updateBuilding = (buildingId, values) => (dispatch, getState) => {
+  const state = getState();
+  const token = getAuthToken(state);
+
+  const formBody = {
+    address: values.address,
+    city: values.city,
+    company: values.company,
+    country: values.country,
+    name: values.name,
+  };
+
+  return fetch(ENDPOINTS.buildings.one(buildingId), {
+    body: JSON.stringify(formBody),
+    headers: {
+      Accept: 'application/json',
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    },
+    method: 'PATCH',
+  })
+    .then((res) => res.json())
+    .then((data) => {
+      dispatch({
+        payload: data,
+        type: RECEIVE_PATCH_BUILDING,
       });
     });
 };

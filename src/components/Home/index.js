@@ -34,7 +34,7 @@ function Home() {
         <Grid item>
           <Button
             color="primary"
-            onClick={() => dispatch(push(ROUTES.building('new')))}
+            onClick={() => dispatch(push(ROUTES.building.main('new')))}
             variant="contained"
           >
             Add new building

@@ -121,7 +121,7 @@ function BuildingList() {
         alignItems="flex-start"
         button
         disableRipple
-        onClick={() => dispatch(push(ROUTES.building(building.id)))}
+        onClick={() => dispatch(push(ROUTES.building.main(building.id)))}
       >
         {/* <ListItemIcon>
           <Checkbox />

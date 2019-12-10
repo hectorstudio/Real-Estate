@@ -1,5 +1,8 @@
 const routes = {
-  building: (id = ':buildingId') => `/${id}`,
+  building: {
+    edit: (id = ':buildingId') => `/${id}/edit`,
+    main: (id = ':buildingId') => `/${id}`,
+  },
   forgotPassword: () => '/forgot-password',
   home: () => '/',
   profile: () => '/profile',

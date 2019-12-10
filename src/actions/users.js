@@ -56,6 +56,7 @@ export const updateUser = (values) => (dispatch, getState) => {
   const formBody = {
     address: values.address,
     country: values.country,
+    // FIXME: \/
     firstName: values.email,
     lastName: values.lastName,
     phone: values.phone,

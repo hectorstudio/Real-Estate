@@ -65,6 +65,7 @@ function Header() {
               <>
                 <Divider className={s.divider} orientation="vertical" />
                 <Typography variant="body1">{currentBuilding.name}</Typography>
+                <Link className={s.edit} to={ROUTES.building.edit(currentBuildingId)}>Edit</Link>
               </>
             )}
           </div>

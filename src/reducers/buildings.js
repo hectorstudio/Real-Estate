@@ -6,6 +6,7 @@ import { buildingSchema } from '../schemas';
 import {
   RECEIVE_GET_BUILDINGS,
   RECEIVE_POST_BUILDING,
+  RECEIVE_PATCH_BUILDING,
 } from '../actions/types';
 
 export default (state = initialState.files, action) => {
@@ -27,6 +28,16 @@ export default (state = initialState.files, action) => {
         },
         result: {
           $push: [action.payload.id],
+        },
+      });
+    case RECEIVE_PATCH_BUILDING:
+      return update(state, {
+        entities: {
+          buildings: {
+            [action.payload.id]: {
+              $set: action.payload,
+            },
+          },
         },
       });
     default:
