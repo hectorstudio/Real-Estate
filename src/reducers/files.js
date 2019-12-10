@@ -6,6 +6,7 @@ import { fileSchema } from '../schemas';
 import {
   DELETE_FILES,
   RECEIVE_FILES,
+  RECEIVE_PATCH_FILE,
   RECEIVE_POST_FILE,
 } from '../actions/types';
 
@@ -36,6 +37,16 @@ export default (state = initialState.files, action) => {
           $unset: [action.payload.ids],
         },
         result: (arr) => arr.filter((id) => action.payload.ids.indexOf(id) === -1),
+      });
+    case RECEIVE_PATCH_FILE:
+      return update(state, {
+        entities: {
+          files: {
+            [action.payload.id]: {
+              $set: action.payload,
+            },
+          },
+        },
       });
     default:
       return state;

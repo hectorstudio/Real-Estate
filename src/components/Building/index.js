@@ -1,11 +1,10 @@
 import React, { useCallback, useEffect } from 'react';
-import GcsBrowserUploadStream from 'gcs-browser-upload-stream';
 import { useDispatch, useSelector } from 'react-redux';
 import { useDropzone } from 'react-dropzone';
 import { Grid, Paper } from '@material-ui/core';
 import clsx from 'clsx';
 
-import { addNewFile } from '../../actions/files';
+import { addNewFile, markFileAsUploaded } from '../../actions/files';
 import { addNewUpload, deleteUpload, updateUpload } from '../../actions/uploads';
 import { fetchBuildings } from '../../actions/buildings';
 import { fetchUsers } from '../../actions/users';
@@ -16,6 +15,8 @@ import FileList from '../FileList';
 import UploadList from '../UploadList';
 
 import s from './index.module.scss';
+import { UPLOAD_CONFIG } from '../../constants';
+import { createUploadInstance, getUploadUrlStorageItemKey } from '../../helpers';
 
 function Building() {
   const dispatch = useDispatch();
@@ -26,13 +27,19 @@ function Building() {
     dispatch(fetchBuildings());
   }, [dispatch]);
 
+  const clearUpload = useCallback((id) => {
+    dispatch(deleteUpload(id));
+  }, [dispatch]);
+
   const onUploadProgress = useCallback((uploadId, uploaded, totalBytes) => {
     dispatch(updateUpload(uploadId, uploaded, totalBytes));
   }, [dispatch]);
 
-  const clearUpload = useCallback((id) => {
-    dispatch(deleteUpload(id));
-  }, [dispatch]);
+  const onUploadComplete = useCallback((uploadId) => {
+    dispatch(markFileAsUploaded(uploadId));
+    clearUpload(uploadId);
+    dispatch(setMessage('Upload completed'));
+  }, [clearUpload, dispatch]);
 
   const onChange = useCallback((files) => {
     if (!files.length) return;
@@ -44,33 +51,30 @@ function Building() {
         const uploadId = fileObj.id;
 
         const params = {
-          chunkSize: 262144 * 40, // ~10MB
           file,
           id: uploadId,
-          onProgress: (info) => {
-            onUploadProgress(uploadId, info.uploadedBytes, info.totalBytes);
-
-            if (info.uploadedBytes === info.totalBytes) {
-              dispatch(setMessage('Upload completed'));
-              clearUpload(uploadId);
-            }
-          },
-          resumable: true,
-          storage: window.localStorage,
           url,
         };
-        const instance = new GcsBrowserUploadStream.Upload(params);
+        const newUploadInstance = createUploadInstance(params, onUploadProgress, onUploadComplete);
 
-        instance.start();
+        dispatch(addNewUpload(uploadId, file.size, newUploadInstance));
 
-        dispatch(addNewUpload(uploadId, file.size, instance));
+        const key = getUploadUrlStorageItemKey(fileObj.id);
+        window.localStorage.setItem(key, JSON.stringify({
+          expire: UPLOAD_CONFIG.uploadUrlExpiry,
+          url,
+        }));
+
+        setTimeout(() => {
+          newUploadInstance.start();
+        }, 0);
       })
         .catch((err) => {
           dispatch(setMessage('There was an error during file upload. Please try again.'));
           console.error(err);
         });
     });
-  }, [clearUpload, currentBuildingId, dispatch, onUploadProgress]);
+  }, [currentBuildingId, dispatch, onUploadComplete, onUploadProgress]);
 
   const {
     getRootProps: getRootProps1,

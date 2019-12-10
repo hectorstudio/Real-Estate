@@ -43,6 +43,7 @@ function FileList() {
     setDeleteConfirmOpened(true);
   };
 
+  // FIXME: Remove deleted ids from selectedItems
   const doDeleteFiles = () => {
     dispatch(deleteFiles(deleteList));
     dispatch(setMessage(`File${deleteList.length > 1 ? 's have' : ' has'} been deleted.`));

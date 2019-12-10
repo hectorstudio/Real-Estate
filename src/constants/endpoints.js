@@ -10,6 +10,8 @@ export default {
     download: (fileId) => `${API_URL}files/download/${fileId}`,
     many: () => `${API_URL}files`,
     one: (fileId) => `${API_URL}files/${fileId}`,
+    success: (fileId) => `${API_URL}files/success/${fileId}`,
+    upload: (fileId) => `${API_URL}files/upload/${fileId}`,
   },
   users: {
     currentUser: () => `${API_URL}users/currentUser`,

@@ -17,5 +17,22 @@ export const authActionModes = {
   verifyEmail: 'verifyEmail',
 };
 
+export const FILE_STATUS = {
+  DELETED: 'DELETED',
+  PREVIEW: 'PREVIEW_GENERATION',
+  PROCESSING: 'PROCESSING',
+  READY: 'READY',
+  UPLOADING: 'UPLOADING',
+};
+
 // Key name for storing uploads under window object (window.[WINDOW_UPLOADS_KEY])
 export const WINDOW_UPLOADS_KEY = '_pbUploads';
+// Key name for storing resumable upload urls in local storage (Add underscore and id, example: {key}_{id})
+export const WINDOW_UPLOAD_URLS_KEY = '_pbResumableUploadUrl';
+
+export const UPLOAD_CONFIG = {
+  chunkSize: 262144 * 40, // ~10MB
+  resumable: true,
+  storage: window.localStorage,
+  uploadUrlExpiry: Date.now() + 1000 * 60 * 60 * 24 * 7, // One week
+};

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import {
   Card,
@@ -7,15 +7,41 @@ import {
   Typography,
 } from '@material-ui/core';
 
+import { getUploadingFiles } from '../../selectors/files';
 import { getUploads } from '../../selectors/uploads';
+import { getGcsLocalStorageItemKey } from '../../helpers';
+
+import UploadItem from './UploadItem';
 
 import s from './index.module.scss';
-import UploadItem from './UploadItem';
 
 function UploadList() {
   const uploads = useSelector(getUploads);
+  const uploadingFiles = useSelector(getUploadingFiles);
+  const [filesToReupload, setFilesToReupload] = useState([]);
 
-  if (!uploads.length) {
+  useEffect(() => {
+    if (!uploadingFiles.length) {
+      setFilesToReupload([]);
+      return;
+    }
+
+    const filesToReuploadTemp = [];
+    uploadingFiles.forEach((file) => {
+      if (uploads.find((up) => up.id === file.id)) return;
+
+      const key = getGcsLocalStorageItemKey(file.id);
+      const storageItem = window.localStorage.getItem(key);
+      if (storageItem) {
+        filesToReuploadTemp.push(file);
+      }
+    });
+
+    setFilesToReupload(filesToReuploadTemp);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [uploadingFiles, uploads.length]);
+
+  if (!uploads.length && !filesToReupload.length) {
     return null;
   }
 
@@ -26,6 +52,7 @@ function UploadList() {
           Uploads
         </Typography>
         <List className={s.uploadList}>
+          {filesToReupload.map((obj) => <UploadItem key={obj.id} reupload upload={obj} />)}
           {uploads.map((obj) => <UploadItem key={obj.id} upload={obj} />)}
         </List>
       </CardContent>
