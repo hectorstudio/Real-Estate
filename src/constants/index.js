@@ -36,3 +36,14 @@ export const UPLOAD_CONFIG = {
   storage: window.localStorage,
   uploadUrlExpiry: Date.now() + 1000 * 60 * 60 * 24 * 7, // One week
 };
+
+// Permissions
+export const ROLES = {
+  ADMIN: 'ADMIN',
+  VIEWER: 'VIEWER',
+};
+export const CONTENT_TYPES = {
+  buildings: 'buildings',
+  files: 'files',
+  portfolios: 'portfolios',
+};

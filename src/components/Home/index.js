@@ -11,6 +11,7 @@ import { fetchBuildings } from '../../actions/buildings';
 import { ROUTES } from '../../constants';
 
 import BuildingList from './BuildingList';
+import Container from '../UI/Container';
 
 import s from './index.module.scss';
 
@@ -22,27 +23,29 @@ function Home() {
   }, [dispatch]);
 
   return (
-    <Grid
-      className={s.root}
-      container
-      direction="column"
-    >
-      <Grid container justify="space-between">
-        <Grid item>
-          <Typography variant="h5">All buildings</Typography>
+    <Container>
+      <Grid
+        className={s.root}
+        container
+        direction="column"
+      >
+        <Grid container justify="space-between">
+          <Grid item>
+            <Typography variant="h5">All buildings</Typography>
+          </Grid>
+          <Grid item>
+            <Button
+              color="primary"
+              onClick={() => dispatch(push(ROUTES.building.main('new')))}
+              variant="contained"
+            >
+              Add new building
+            </Button>
+          </Grid>
         </Grid>
-        <Grid item>
-          <Button
-            color="primary"
-            onClick={() => dispatch(push(ROUTES.building.main('new')))}
-            variant="contained"
-          >
-            Add new building
-          </Button>
-        </Grid>
+        <BuildingList />
       </Grid>
-      <BuildingList />
-    </Grid>
+    </Container>
   );
 }
 

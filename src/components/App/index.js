@@ -33,9 +33,8 @@ function App() {
         <Header />
         <Switch>
           <Route component={NewBuilding} exact path={ROUTES.building.main('new')} />
-          <Route component={Building} exact path={ROUTES.building.edit()} />
           <Route component={Profile} exact path={ROUTES.profile()} />
-          <Route component={Building} exact path={ROUTES.building.main()} />
+          <Route component={Building} path={ROUTES.building.main()} />
           <Route component={Home} />
         </Switch>
       </PrivateRoute>

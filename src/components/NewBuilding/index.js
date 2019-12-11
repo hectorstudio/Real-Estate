@@ -12,6 +12,8 @@ import { addNewBuilding } from '../../actions/buildings';
 import { countryToFlag } from '../../helpers';
 import { setMessage } from '../../actions/message';
 
+import Container from '../UI/Container';
+
 import s from './index.module.scss';
 
 function NewBuilding() {
@@ -46,101 +48,103 @@ function NewBuilding() {
   }, [register]);
 
   return (
-    <div className={s.root}>
-      <Button
-        color="secondary"
-        onClick={() => dispatch(push(ROUTES.home()))}
-        type="submit"
-        variant="outlined"
-      >
-        Go back
-      </Button>
-      <form
-        className={s.form}
-        noValidate
-        onSubmit={handleSubmit(onSubmit)}
-      >
-        <Grid
-          container
-          direction="column"
-        >
-          <Grid item>
-            <TextField
-              error={!!(errors.name)}
-              inputRef={register}
-              label="Building name"
-              name="name"
-              required
-              variant="standard"
-            />
-          </Grid>
-          <Grid item>
-            <TextField
-              error={!!(errors.name)}
-              inputRef={register}
-              label="Company"
-              name="company"
-              required
-              variant="standard"
-            />
-          </Grid>
-          <Grid item>
-            <TextField
-              error={!!(errors.name)}
-              inputRef={register}
-              label="Address"
-              name="address"
-              required
-              variant="standard"
-            />
-          </Grid>
-          <Grid item>
-            <TextField
-              error={!!(errors.city)}
-              inputRef={register}
-              label="City"
-              name="city"
-              required
-              variant="standard"
-            />
-          </Grid>
-          <Grid item>
-            <Autocomplete
-              autoHighlight
-              getOptionLabel={(option) => option.label}
-              onChange={onCountryChange}
-              options={countries}
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  fullWidth
-                  inputProps={{
-                    ...params.inputProps,
-                    autoComplete: 'disabled', // disable native autocomplete and autofill
-                  }}
-                  label="Country"
-                  variant="standard"
-                />
-              )}
-              renderOption={(option) => (
-                <>
-                  <span>{countryToFlag(option.code)}</span>
-                  {`${option.label} (${option.code})`}
-                </>
-              )}
-            />
-          </Grid>
-        </Grid>
+    <Container maxWidth="lg">
+      <div className={s.root}>
         <Button
-          className={s.submit}
-          color="primary"
+          color="secondary"
+          onClick={() => dispatch(push(ROUTES.home()))}
           type="submit"
-          variant="contained"
+          variant="outlined"
         >
-          Add new building
+          Go back
         </Button>
-      </form>
-    </div>
+        <form
+          className={s.form}
+          noValidate
+          onSubmit={handleSubmit(onSubmit)}
+        >
+          <Grid
+            container
+            direction="column"
+          >
+            <Grid item>
+              <TextField
+                error={!!(errors.name)}
+                inputRef={register}
+                label="Building name"
+                name="name"
+                required
+                variant="standard"
+              />
+            </Grid>
+            <Grid item>
+              <TextField
+                error={!!(errors.name)}
+                inputRef={register}
+                label="Company"
+                name="company"
+                required
+                variant="standard"
+              />
+            </Grid>
+            <Grid item>
+              <TextField
+                error={!!(errors.name)}
+                inputRef={register}
+                label="Address"
+                name="address"
+                required
+                variant="standard"
+              />
+            </Grid>
+            <Grid item>
+              <TextField
+                error={!!(errors.city)}
+                inputRef={register}
+                label="City"
+                name="city"
+                required
+                variant="standard"
+              />
+            </Grid>
+            <Grid item>
+              <Autocomplete
+                autoHighlight
+                getOptionLabel={(option) => option.label}
+                onChange={onCountryChange}
+                options={countries}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    fullWidth
+                    inputProps={{
+                      ...params.inputProps,
+                      autoComplete: 'disabled', // disable native autocomplete and autofill
+                    }}
+                    label="Country"
+                    variant="standard"
+                  />
+                )}
+                renderOption={(option) => (
+                  <>
+                    <span>{countryToFlag(option.code)}</span>
+                    {`${option.label} (${option.code})`}
+                  </>
+                )}
+              />
+            </Grid>
+          </Grid>
+          <Button
+            className={s.submit}
+            color="primary"
+            type="submit"
+            variant="contained"
+          >
+            Add new building
+          </Button>
+        </form>
+      </div>
+    </Container>
   );
 }
 

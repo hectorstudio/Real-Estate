@@ -6,7 +6,11 @@
   .item {
     padding-bottom: 0;
     padding-top: 0;
-    width: 50%;
+    flex-grow: 1;
+  }
+
+  .mapWrapper {
+    flex-grow: 3;
   }
 
   :global .MuiTableRow-root:empty {

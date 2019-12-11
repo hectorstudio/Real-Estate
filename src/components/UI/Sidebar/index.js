@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
+import { matchPath } from 'react-router';
+import clsx from 'clsx';
 import {
   Drawer,
   Icon,
@@ -8,11 +10,18 @@ import {
   ListItem,
   ListItemIcon,
   ListItemText,
+  Divider,
 } from '@material-ui/core';
+
+import { useSelector } from 'react-redux';
+import { getPathname } from '../../../selectors/router';
 
 import LinkButton from '../LinkButton';
 
 const useStyles = makeStyles((theme) => ({
+  activeItem: {
+    color: theme.palette.primary.main,
+  },
   drawerPaper: {
     borderRight: 0,
     width: 240,
@@ -33,6 +42,7 @@ const useStyles = makeStyles((theme) => ({
 
 function Sidebar(props) {
   const s = useStyles();
+  const pathname = useSelector(getPathname);
 
   return (
     <Drawer
@@ -43,25 +53,32 @@ function Sidebar(props) {
     >
       <div className={s.toolbar} />
       <List className={s.list}>
-        {props.items.map((item) => (
-          <ListItem
-            component={LinkButton}
-            key={item.to}
-            to={item.to}
-          >
-            {item.icon && (
-              <ListItemIcon className={s.icon}><Icon>{item.icon}</Icon></ListItemIcon>
-            )}
-            <ListItemText>{item.label}</ListItemText>
-          </ListItem>
-        ))}
+        {props.items.filter((i) => i).map((item) => (item === 'divider'
+          ? <Divider key={item} variant="middle" />
+          : (
+            <ListItem
+              className={clsx({ [s.activeItem]: matchPath(item.to, pathname)?.isExact })}
+              component={LinkButton}
+              key={item.to}
+              to={item.to}
+            >
+              {item.icon && (
+                <ListItemIcon
+                  className={clsx(s.icon, { [s.activeItem]: matchPath(item.to, pathname) ?.isExact })}
+                >
+                  <Icon>{item.icon}</Icon>
+                </ListItemIcon>
+              )}
+              <ListItemText>{item.label}</ListItemText>
+            </ListItem>
+          )))}
       </List>
     </Drawer>
   );
 }
 
 Sidebar.propTypes = {
-  items: PropTypes.arrayOf(PropTypes.shape()).isRequired,
+  items: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.shape(), PropTypes.string])).isRequired,
 };
 
 export default Sidebar;
