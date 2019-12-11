@@ -5,15 +5,15 @@ import { Autocomplete } from '@material-ui/lab';
 import useForm from 'react-hook-form';
 import { push } from 'connected-react-router';
 
-import countries from '../../constants/countries';
-import { ROUTES } from '../../constants';
-import { updateBuilding } from '../../actions/buildings';
-import { countryToFlag } from '../../helpers';
-import { getCurrentBuildingId } from '../../selectors/router';
-import { setMessage } from '../../actions/message';
+import countries from '../../../constants/countries';
+import { ROUTES } from '../../../constants';
+import { countryToFlag } from '../../../helpers';
+import { getBuildingById } from '../../../selectors/buildings';
+import { getCurrentBuildingId } from '../../../selectors/router';
+import { setMessage } from '../../../actions/message';
+import { updateBuilding } from '../../../actions/buildings';
 
 import s from './index.module.scss';
-import { getBuildingById } from '../../selectors/buildings';
 
 function EditBuilding() {
   const dispatch = useDispatch();
@@ -49,6 +49,7 @@ function EditBuilding() {
 
   const onCountryChange = (e, value) => setValue('country', value.code);
 
+  // FIXME: Default values when refreshing page
   React.useEffect(() => {
     register({ name: 'name' });
     register({ name: 'company' });
@@ -60,14 +61,6 @@ function EditBuilding() {
 
   return (
     <div className={s.root}>
-      <Button
-        color="secondary"
-        onClick={() => dispatch(push(ROUTES.building.main(currentBuildingId)))}
-        type="submit"
-        variant="outlined"
-      >
-        Go back
-      </Button>
       <form
         className={s.form}
         noValidate

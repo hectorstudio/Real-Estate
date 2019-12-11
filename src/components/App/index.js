@@ -1,11 +1,13 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Route, Switch } from 'react-router';
-import { Container } from '@material-ui/core';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { ROUTES } from '../../constants';
+import { getAuthToken } from '../../selectors/user';
+import { fetchUsers } from '../../actions/users';
+import { fetchBuildings } from '../../actions/buildings';
 
 import Building from '../Building';
-import EditBuilding from '../EditBuilding';
 import Header from '../Header';
 import Home from '../Home';
 import Message from '../Message';
@@ -13,23 +15,29 @@ import NewBuilding from '../NewBuilding';
 import PrivateRoute from '../PrivateRoute';
 import Profile from '../Profile';
 
-import s from './index.module.scss';
-
 function App() {
+  const dispatch = useDispatch();
+  const token = useSelector(getAuthToken);
+
+  useEffect(() => {
+    if (token) {
+      dispatch(fetchUsers());
+      dispatch(fetchBuildings());
+    }
+  }, [dispatch, token]);
+
   return (
     <>
       <Message />
       <PrivateRoute>
         <Header />
-        <Container className={s.container}>
-          <Switch>
-            <Route component={NewBuilding} exact path={ROUTES.building.main('new')} />
-            <Route component={EditBuilding} exact path={ROUTES.building.edit()} />
-            <Route component={Profile} exact path={ROUTES.profile()} />
-            <Route component={Building} exact path={ROUTES.building.main()} />
-            <Route component={Home} />
-          </Switch>
-        </Container>
+        <Switch>
+          <Route component={NewBuilding} exact path={ROUTES.building.main('new')} />
+          <Route component={Building} exact path={ROUTES.building.edit()} />
+          <Route component={Profile} exact path={ROUTES.profile()} />
+          <Route component={Building} exact path={ROUTES.building.main()} />
+          <Route component={Home} />
+        </Switch>
       </PrivateRoute>
     </>
   );

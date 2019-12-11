@@ -2,11 +2,13 @@
   :global .MuiGrid-item {
     margin: 10px 0;
   }
+
+  :global .MuiGrid-item:first-of-type {
+    margin-top: 0;
+  }
 }
 
 .form {
-  margin-top: 20px;
-
   :global .MuiInput-root,
   :global .MuiAutocomplete-inputRoot {
     width: 250px;
