@@ -14,10 +14,11 @@ import {
 import countries from '../../../constants/countries';
 import { ROUTES, ROLES } from '../../../constants';
 import { countryToFlag } from '../../../helpers';
-import { getBuildingById } from '../../../selectors/buildings';
+import { getBuildingById, getBuildingPermissionByBuildingIdAndUserId } from '../../../selectors/buildings';
 import { getCurrentBuildingId } from '../../../selectors/router';
 import { setMessage } from '../../../actions/message';
 import { updateBuilding } from '../../../actions/buildings';
+import { getCurrentUser } from '../../../selectors/user';
 
 import s from './index.module.scss';
 
@@ -25,6 +26,8 @@ function EditBuilding() {
   const dispatch = useDispatch();
   const currentBuildingId = useSelector(getCurrentBuildingId);
   const building = useSelector((state) => getBuildingById(state, currentBuildingId)) || {};
+  const user = useSelector(getCurrentUser);
+  const permission = useSelector((state) => getBuildingPermissionByBuildingIdAndUserId(state, currentBuildingId, user.id)) || {};
   const {
     errors,
     handleSubmit,
@@ -65,8 +68,8 @@ function EditBuilding() {
   }, [register]);
 
   useEffect(() => {
-    if (building && building.role !== ROLES.ADMIN) dispatch(push(ROUTES.building.main(currentBuildingId)));
-  }, [building, currentBuildingId, dispatch]);
+    if (building && permission.role !== ROLES.ADMIN) dispatch(push(ROUTES.building.main(currentBuildingId)));
+  }, [building, currentBuildingId, dispatch, permission.role]);
 
   return (
     <div className={s.root}>

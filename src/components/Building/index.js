@@ -12,12 +12,12 @@ import EditBuilding from './EditBuilding';
 import Files from './Files';
 import Sidebar from '../UI/Sidebar';
 import Share from './Share';
+import Profile from './Profile';
 
 function Building() {
   const currentBuildingId = useSelector(getCurrentBuildingId);
   const user = useSelector(getCurrentUser);
   const permission = useSelector((state) => getBuildingPermissionByBuildingIdAndUserId(state, currentBuildingId, user.id)) || {};
-
   return (
     <>
       <Sidebar
@@ -32,13 +32,13 @@ function Building() {
             label: 'Files',
             to: ROUTES.building.files(currentBuildingId),
           },
-          {
+          [ROLES.EDITOR, ROLES.ADMIN].includes(permission.role) && 'divider',
+          [ROLES.EDITOR, ROLES.ADMIN].includes(permission.role) && {
             icon: 'share',
             label: 'Share',
             to: ROUTES.building.share(currentBuildingId),
           },
-          permission.role === ROLES.ADMIN && 'divider',
-          permission.role === ROLES.ADMIN && {
+          [ROLES.ADMIN].includes(permission.role) && {
             icon: 'build',
             label: 'Preferences',
             to: ROUTES.building.edit(currentBuildingId),
@@ -49,8 +49,8 @@ function Building() {
         <Switch>
           <Route component={EditBuilding} exact path={ROUTES.building.edit()} />
           <Route component={Files} exact path={ROUTES.building.files()} />
-          <Route component={Files} exact path={ROUTES.building.main()} />
           <Route component={Share} exact path={ROUTES.building.share()} />
+          <Route component={Profile} exact path={ROUTES.building.main()} />
         </Switch>
       </Container>
     </>
