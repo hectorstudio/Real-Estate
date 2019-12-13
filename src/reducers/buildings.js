@@ -5,8 +5,11 @@ import initialState from '../initialState';
 import { buildingSchema } from '../schemas';
 import {
   RECEIVE_GET_BUILDINGS,
-  RECEIVE_POST_BUILDING,
   RECEIVE_PATCH_BUILDING,
+  RECEIVE_PATCH_BUILDING_PERMISSION,
+  RECEIVE_POST_BUILDING,
+  RECEIVE_DELETE_BUILDING_PERMISSION,
+  RECEIVE_POST_BUILDING_PERMISSION,
 } from '../actions/types';
 
 export default (state = initialState.files, action) => {
@@ -37,6 +40,36 @@ export default (state = initialState.files, action) => {
             [action.payload.id]: {
               $set: action.payload,
             },
+          },
+        },
+      });
+    case RECEIVE_PATCH_BUILDING_PERMISSION:
+      return update(state, {
+        entities: {
+          permissions: {
+            [action.payload.id]: {
+              role: {
+                $set: action.payload.role,
+              },
+            },
+          },
+        },
+      });
+    case RECEIVE_POST_BUILDING_PERMISSION:
+      return update(state, {
+        entities: {
+          permissions: {
+            [action.payload.id]: {
+              $set: action.payload,
+            },
+          },
+        },
+      });
+    case RECEIVE_DELETE_BUILDING_PERMISSION:
+      return update(state, {
+        entities: {
+          permissions: {
+            $unset: [action.payload.id],
           },
         },
       });
