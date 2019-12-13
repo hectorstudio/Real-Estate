@@ -5,8 +5,9 @@ import initialState from '../initialState';
 import { buildingSchema } from '../schemas';
 import {
   RECEIVE_GET_BUILDINGS,
-  RECEIVE_POST_BUILDING,
   RECEIVE_PATCH_BUILDING,
+  RECEIVE_PATCH_BUILDING_PERMISSION,
+  RECEIVE_POST_BUILDING,
 } from '../actions/types';
 
 export default (state = initialState.files, action) => {
@@ -36,6 +37,18 @@ export default (state = initialState.files, action) => {
           buildings: {
             [action.payload.id]: {
               $set: action.payload,
+            },
+          },
+        },
+      });
+    case RECEIVE_PATCH_BUILDING_PERMISSION:
+      return update(state, {
+        entities: {
+          permissions: {
+            [action.payload.id]: {
+              role: {
+                $set: action.payload.role,
+              },
             },
           },
         },

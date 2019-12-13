@@ -10,6 +10,7 @@ import Container from '../UI/Container';
 import EditBuilding from './EditBuilding';
 import Files from './Files';
 import Sidebar from '../UI/Sidebar';
+import Share from './Share';
 
 function Building() {
   const currentBuildingId = useSelector(getCurrentBuildingId);
@@ -29,6 +30,11 @@ function Building() {
             label: 'Files',
             to: ROUTES.building.files(currentBuildingId),
           },
+          {
+            icon: 'share',
+            label: 'Share',
+            to: ROUTES.building.share(currentBuildingId),
+          },
           building && building.role === ROLES.ADMIN && 'divider',
           building && building.role === ROLES.ADMIN && {
             icon: 'build',
@@ -42,6 +48,7 @@ function Building() {
           <Route component={EditBuilding} exact path={ROUTES.building.edit()} />
           <Route component={Files} exact path={ROUTES.building.files()} />
           <Route component={Files} exact path={ROUTES.building.main()} />
+          <Route component={Share} exact path={ROUTES.building.share()} />
         </Switch>
       </Container>
     </>

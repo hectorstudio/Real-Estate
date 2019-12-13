@@ -78,7 +78,7 @@ function Sidebar(props) {
 }
 
 Sidebar.propTypes = {
-  items: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.shape(), PropTypes.string])).isRequired,
+  items: PropTypes.arrayOf(PropTypes.any).isRequired,
 };
 
 export default Sidebar;
