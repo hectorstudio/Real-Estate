@@ -4,6 +4,8 @@ import {
   RECEIVE_GET_BUILDINGS,
   RECEIVE_PATCH_BUILDING,
   RECEIVE_PATCH_BUILDING_PERMISSION,
+  RECEIVE_POST_BUILDING_PERMISSION,
+  RECEIVE_DELETE_BUILDING_PERMISSION,
 } from './types';
 
 export const addNewBuilding = (userData) => fetch(ENDPOINTS.buildings.many(), {
@@ -85,14 +87,67 @@ export const updateBuildingPermission = (permissionId, buildingId, userId, role)
     },
     method: 'PATCH',
   }).then((res) => res.json())
-    .then((data) => {
-      console.log(data);
+    .then(() => {
       dispatch({
         payload: {
           id: permissionId,
           role,
         },
         type: RECEIVE_PATCH_BUILDING_PERMISSION,
+      });
+    });
+};
+
+export const addBuildingPermission = (buildingId, email, role) => (dispatch, getState) => {
+  const state = getState();
+  const token = getAuthToken(state);
+
+  const formBody = {
+    email,
+    role,
+  };
+
+  return fetch(ENDPOINTS.buildings.permissions(buildingId), {
+    body: JSON.stringify(formBody),
+    headers: {
+      Accept: 'application/json',
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    },
+    method: 'POST',
+  }).then((res) => res.json())
+    .then((data) => {
+      dispatch({
+        payload: data,
+        type: RECEIVE_POST_BUILDING_PERMISSION,
+      });
+      return data;
+    });
+};
+
+export const deleteBuildingPermission = (buildingId, userId, permissionId) => (dispatch, getState) => {
+  const state = getState();
+  const token = getAuthToken(state);
+
+  const formBody = {
+    userId,
+  };
+
+  return fetch(ENDPOINTS.buildings.permissions(buildingId), {
+    body: JSON.stringify(formBody),
+    headers: {
+      Accept: 'application/json',
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    },
+    method: 'DELETE',
+  }).then((res) => res.json())
+    .then(() => {
+      dispatch({
+        payload: {
+          id: permissionId,
+        },
+        type: RECEIVE_DELETE_BUILDING_PERMISSION,
       });
     });
 };
