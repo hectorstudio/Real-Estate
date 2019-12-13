@@ -4,12 +4,14 @@ import { useDropzone } from 'react-dropzone';
 import { Grid, Paper } from '@material-ui/core';
 import clsx from 'clsx';
 
-import { UPLOAD_CONFIG } from '../../../constants';
+import { UPLOAD_CONFIG, ROLES } from '../../../constants';
 import { addNewFile, markFileAsUploaded } from '../../../actions/files';
 import { addNewUpload, deleteUpload, updateUpload } from '../../../actions/uploads';
 import { createUploadInstance, getUploadUrlStorageItemKey } from '../../../helpers';
 import { getCurrentBuildingId } from '../../../selectors/router';
 import { setMessage } from '../../../actions/message';
+import { getCurrentUser } from '../../../selectors/user';
+import { getBuildingPermissionByBuildingIdAndUserId } from '../../../selectors/buildings';
 
 import FileList from '../../FileList';
 import UploadList from '../../UploadList';
@@ -19,6 +21,8 @@ import s from './index.module.scss';
 function Files() {
   const dispatch = useDispatch();
   const currentBuildingId = useSelector(getCurrentBuildingId);
+  const user = useSelector(getCurrentUser);
+  const permission = useSelector((state) => getBuildingPermissionByBuildingIdAndUserId(state, currentBuildingId, user.id)) || {};
 
   const clearUpload = useCallback((id) => {
     dispatch(deleteUpload(id));
@@ -89,58 +93,60 @@ function Files() {
 
   return (
     <>
-      <Grid className={s.uploadContainer} container spacing={6}>
-        <Grid item xs={4}>
-          <Paper>
-            <Grid
-              {...getRootProps1()}
-              alignItems="center"
-              className={clsx(s.tile, s.clickable)}
-              container
-              justify="center"
-            >
-              <Grid>
-                <input {...getInputProps1()} />
-                Select an item to upload
+      {[ROLES.CONTRIBUTOR, ROLES.EDITOR, ROLES.ADMIN].includes(permission.role) && (
+        <Grid className={s.uploadContainer} container spacing={6}>
+          <Grid item xs={4}>
+            <Paper>
+              <Grid
+                {...getRootProps1()}
+                alignItems="center"
+                className={clsx(s.tile, s.clickable)}
+                container
+                justify="center"
+              >
+                <Grid>
+                  <input {...getInputProps1()} />
+                  Select an item to upload
+                </Grid>
               </Grid>
-            </Grid>
-          </Paper>
-        </Grid>
-        <Grid item xs={4}>
-          <Paper>
-            <Grid
-              {...getRootProps2()}
-              alignItems="center"
-              className={s.tile}
-              container
-              justify="center"
-            >
-              <Grid>
-                <input {...getInputProps2()} />
-                {
-                  isDragActive2
-                    ? 'Drop files here'
-                    : 'Drag files to upload'
-                }
+            </Paper>
+          </Grid>
+          <Grid item xs={4}>
+            <Paper>
+              <Grid
+                {...getRootProps2()}
+                alignItems="center"
+                className={s.tile}
+                container
+                justify="center"
+              >
+                <Grid>
+                  <input {...getInputProps2()} />
+                  {
+                    isDragActive2
+                      ? 'Drop files here'
+                      : 'Drag files to upload'
+                  }
+                </Grid>
               </Grid>
-            </Grid>
-          </Paper>
-        </Grid>
-        <Grid className={s.notImplemented} item xs={4}>
-          <Paper>
-            <Grid
-              alignItems="center"
-              className={s.tile}
-              container
-              justify="center"
-            >
-              <Grid>
-                Upload files from Dropbox
+            </Paper>
+          </Grid>
+          <Grid className={s.notImplemented} item xs={4}>
+            <Paper>
+              <Grid
+                alignItems="center"
+                className={s.tile}
+                container
+                justify="center"
+              >
+                <Grid>
+                  Upload files from Dropbox
+                </Grid>
               </Grid>
-            </Grid>
-          </Paper>
+            </Paper>
+          </Grid>
         </Grid>
-      </Grid>
+      )}
       <UploadList />
       <FileList />
     </>

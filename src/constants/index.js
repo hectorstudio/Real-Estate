@@ -40,6 +40,8 @@ export const UPLOAD_CONFIG = {
 // Permissions
 export const ROLES = {
   ADMIN: 'ADMIN',
+  CONTRIBUTOR: 'CONTRIBUTOR',
+  EDITOR: 'EDITOR',
   VIEWER: 'VIEWER',
 };
 export const CONTENT_TYPES = {

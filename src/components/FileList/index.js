@@ -5,12 +5,15 @@ import fileSize from 'filesize';
 import { Grid, Button, IconButton } from '@material-ui/core';
 import { Delete, GetApp } from '@material-ui/icons';
 
+import { ROLES } from '../../constants';
 import { fetchFiles, getDownloadLink, deleteFiles } from '../../actions/files';
+import { getBuildingPermissionByBuildingIdAndUserId } from '../../selectors/buildings';
+import { getCurrentBuildingId } from '../../selectors/router';
+import { getCurrentUser } from '../../selectors/user';
 import { getFileFormat } from '../../helpers';
 import { getFiles } from '../../selectors/files';
 import { getUsers } from '../../selectors/users';
 import { setMessage } from '../../actions/message';
-import { getCurrentBuildingId } from '../../selectors/router';
 
 import Dialog from '../UI/Dialog';
 import Link from '../UI/Link';
@@ -22,6 +25,8 @@ function FileList() {
   const files = useSelector(getFiles);
   const users = useSelector(getUsers);
   const currentBuildingId = useSelector(getCurrentBuildingId);
+  const currentUser = useSelector(getCurrentUser);
+  const permission = useSelector((state) => getBuildingPermissionByBuildingIdAndUserId(state, currentBuildingId, currentUser.id)) || {};
 
   const [selectedItems, setSelectedItems] = useState([]);
   const [deleteConfirmOpened, setDeleteConfirmOpened] = useState(false);
@@ -126,11 +131,13 @@ function FileList() {
               <GetApp />
             </IconButton>
           </Grid>
-          <Grid item>
-            <IconButton onClick={() => onDeleteFiles([rowData.id])()}>
-              <Delete />
-            </IconButton>
-          </Grid>
+          {[ROLES.EDITOR, ROLES.ADMIN].includes(permission.role) && (
+            <Grid item>
+              <IconButton onClick={() => onDeleteFiles([rowData.id])()}>
+                <Delete />
+              </IconButton>
+            </Grid>
+          )}
         </Grid>
       ),
       title: 'Actions',

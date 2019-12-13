@@ -154,8 +154,10 @@ function Share() {
                 name="role"
                 onChange={onChangeInvitePermissions}
               >
-                <MenuItem value={ROLES.ADMIN}>Admin</MenuItem>
                 <MenuItem value={ROLES.VIEWER}>Viewer</MenuItem>
+                <MenuItem value={ROLES.CONTRIBUTOR}>Contributor</MenuItem>
+                <MenuItem value={ROLES.Editor}>Editor</MenuItem>
+                <MenuItem value={ROLES.ADMIN}>Admin</MenuItem>
               </Select>
             </ListItemSecondaryAction>
           </ListItem>
@@ -193,8 +195,10 @@ function Share() {
                       onChange={onChangeExistingPermission(item.id, item.contentId, item.userId)}
                       value={item.role}
                     >
-                      <MenuItem value="ADMIN">Admin</MenuItem>
-                      <MenuItem value="VIEWER">Viewer</MenuItem>
+                      <MenuItem value={ROLES.VIEWER}>Viewer</MenuItem>
+                      <MenuItem value={ROLES.CONTRIBUTOR}>Contributor</MenuItem>
+                      <MenuItem value={ROLES.Editor}>Editor</MenuItem>
+                      <MenuItem value={ROLES.ADMIN}>Admin</MenuItem>
                     </Select>
                   </Grid>
                   <Grid item>

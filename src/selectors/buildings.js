@@ -28,7 +28,8 @@ export const getBuildingPermissionsByBuildingId = createSelector(
 );
 
 export const getBuildingPermissionByBuildingIdAndUserId = createSelector(
-  getBuildingPermissionsByBuildingId,
-  (state, userId) => userId,
-  (buildingPermissions, id) => buildingPermissions.filter((x) => x.userId === id),
+  getBuildingPermissions,
+  (state, buildingId) => buildingId,
+  (state, buildingId, userId) => userId,
+  (buildingPermissions, buildingId, userId) => buildingPermissions.find((x) => x.contentId === buildingId && x.userId === userId),
 );

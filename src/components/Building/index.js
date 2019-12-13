@@ -3,8 +3,9 @@ import { Route, Switch } from 'react-router';
 import { useSelector } from 'react-redux';
 
 import { ROUTES, ROLES } from '../../constants';
-import { getBuildingById } from '../../selectors/buildings';
+import { getBuildingPermissionByBuildingIdAndUserId } from '../../selectors/buildings';
 import { getCurrentBuildingId } from '../../selectors/router';
+import { getCurrentUser } from '../../selectors/user';
 
 import Container from '../UI/Container';
 import EditBuilding from './EditBuilding';
@@ -14,7 +15,8 @@ import Share from './Share';
 
 function Building() {
   const currentBuildingId = useSelector(getCurrentBuildingId);
-  const building = useSelector((state) => getBuildingById(state, currentBuildingId));
+  const user = useSelector(getCurrentUser);
+  const permission = useSelector((state) => getBuildingPermissionByBuildingIdAndUserId(state, currentBuildingId, user.id)) || {};
 
   return (
     <>
@@ -35,8 +37,8 @@ function Building() {
             label: 'Share',
             to: ROUTES.building.share(currentBuildingId),
           },
-          building && building.role === ROLES.ADMIN && 'divider',
-          building && building.role === ROLES.ADMIN && {
+          permission.role === ROLES.ADMIN && 'divider',
+          permission.role === ROLES.ADMIN && {
             icon: 'build',
             label: 'Preferences',
             to: ROUTES.building.edit(currentBuildingId),
