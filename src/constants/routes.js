@@ -3,6 +3,7 @@ const routes = {
     edit: (id = ':buildingId') => `/${id}/edit`,
     files: (id = ':buildingId') => `/${id}/files`,
     main: (id = ':buildingId') => `/${id}`,
+    share: (id = ':buildingId') => `/${id}/share`,
   },
   forgotPassword: () => '/forgot-password',
   home: () => '/',

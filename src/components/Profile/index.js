@@ -6,6 +6,7 @@ import {
   Typography,
 } from '@material-ui/core';
 
+import Container from '../UI/Container';
 import Link from '../UI/Link';
 import ProfileForm from './ProfileForm';
 import SecurityForm from './SecurityForm';
@@ -32,7 +33,7 @@ function Profile() {
   }
 
   return (
-    <div className={s.root}>
+    <Container maxWidth="lg">
       <Typography variant="h5">Preferences</Typography>
       <Grid
         className={s.grid}
@@ -66,7 +67,7 @@ function Profile() {
           {component}
         </Grid>
       </Grid>
-    </div>
+    </Container>
   );
 }
 

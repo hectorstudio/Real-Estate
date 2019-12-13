@@ -1,12 +1,18 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Button, TextField, Grid } from '@material-ui/core';
 import { Autocomplete } from '@material-ui/lab';
 import useForm from 'react-hook-form';
 import { push } from 'connected-react-router';
+import {
+  Button,
+  FormControlLabel,
+  Grid,
+  Switch,
+  TextField,
+} from '@material-ui/core';
 
 import countries from '../../../constants/countries';
-import { ROUTES } from '../../../constants';
+import { ROUTES, ROLES } from '../../../constants';
 import { countryToFlag } from '../../../helpers';
 import { getBuildingById } from '../../../selectors/buildings';
 import { getCurrentBuildingId } from '../../../selectors/router';
@@ -50,7 +56,7 @@ function EditBuilding() {
   const onCountryChange = (e, value) => setValue('country', value.code);
 
   // FIXME: Default values when refreshing page
-  React.useEffect(() => {
+  useEffect(() => {
     register({ name: 'name' });
     register({ name: 'company' });
     register({ name: 'city' });
@@ -58,6 +64,9 @@ function EditBuilding() {
     register({ name: 'country' });
   }, [register]);
 
+  useEffect(() => {
+    if (building && building.role !== ROLES.ADMIN) dispatch(push(ROUTES.building.main(currentBuildingId)));
+  }, [building, currentBuildingId, dispatch]);
 
   return (
     <div className={s.root}>
@@ -139,6 +148,20 @@ function EditBuilding() {
                   {`${option.label} (${option.code})`}
                 </>
               )}
+            />
+          </Grid>
+          <Grid item>
+            <FormControlLabel
+              control={(
+                <Switch
+                  checked={false}
+                  color="primary"
+                  disabled
+                  onChange={() => {}}
+                  value="public"
+                />
+              )}
+              label="Visible to the public"
             />
           </Grid>
         </Grid>
