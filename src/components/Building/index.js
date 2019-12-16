@@ -23,7 +23,7 @@ function Building() {
   return (
     <>
       <Header />
-      <Grid container spacing={3}>
+      <Grid container spacing={3} wrap="nowrap">
         <Grid item>
           <Sidebar
             items={[
