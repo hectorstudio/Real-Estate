@@ -15,6 +15,7 @@ import { getBuildingPermissionByBuildingIdAndUserId } from '../../../selectors/b
 
 import FileList from '../../FileList';
 import UploadList from '../../UploadList';
+import LayoutPaper from '../../UI/LayoutPaper';
 
 import s from './index.module.scss';
 
@@ -92,7 +93,7 @@ function Files() {
   });
 
   return (
-    <>
+    <Grid item>
       {[ROLES.CONTRIBUTOR, ROLES.EDITOR, ROLES.ADMIN].includes(permission.role) && (
         <Grid className={s.uploadContainer} container spacing={6}>
           <Grid item xs={4}>
@@ -148,8 +149,10 @@ function Files() {
         </Grid>
       )}
       <UploadList />
-      <FileList />
-    </>
+      <LayoutPaper>
+        <FileList />
+      </LayoutPaper>
+    </Grid>
   );
 }
 

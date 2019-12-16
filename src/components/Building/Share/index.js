@@ -3,7 +3,6 @@ import { useSelector, useDispatch } from 'react-redux';
 import { makeStyles } from '@material-ui/styles';
 import {
   Avatar,
-  Breadcrumbs,
   List,
   ListItem,
   ListItemAvatar,
@@ -11,25 +10,23 @@ import {
   ListItemText,
   MenuItem,
   Select,
-  Typography,
   TextField,
   Button,
-  ListSubheader,
   Grid,
   IconButton,
   Icon,
 } from '@material-ui/core';
 import useForm from 'react-hook-form';
 
-import Link from '../../UI/Link';
 import { getCurrentBuildingId } from '../../../selectors/router';
-import { ROUTES, ROLES } from '../../../constants';
-import { getBuildingById, getBuildingPermissionsByBuildingId } from '../../../selectors/buildings';
+import { ROLES } from '../../../constants';
+import { getBuildingPermissionsByBuildingId, getBuildingPermissionByBuildingIdAndUserId } from '../../../selectors/buildings';
 import { getUsers } from '../../../selectors/users';
 import { updateBuildingPermission, addBuildingPermission, deleteBuildingPermission } from '../../../actions/buildings';
 import { setMessage } from '../../../actions/message';
 import inviteUser from '../../../constants/validation/inviteUser';
 import { getCurrentUser } from '../../../selectors/user';
+import LayoutPaper from '../../UI/LayoutPaper';
 
 const useStyles = makeStyles((theme) => ({
   breadcrumbs: {
@@ -50,6 +47,9 @@ const useStyles = makeStyles((theme) => ({
   list: {
     maxWidth: 400,
   },
+  root: {
+    flexGrow: 1,
+  },
   submitItem: {
     marginTop: theme.spacing(4),
   },
@@ -62,8 +62,8 @@ function Share() {
   const dispatch = useDispatch();
   const currentBuildingId = useSelector(getCurrentBuildingId);
   const currentUser = useSelector(getCurrentUser);
-  const building = useSelector((state) => getBuildingById(state, currentBuildingId));
   const permissions = useSelector((state) => getBuildingPermissionsByBuildingId(state, currentBuildingId));
+  const permission = useSelector((state) => getBuildingPermissionByBuildingIdAndUserId(state, currentBuildingId, currentUser.id)) || {};
   const users = useSelector(getUsers);
 
   const {
@@ -113,111 +113,109 @@ function Share() {
   }, [register]);
 
   return (
-    <div>
-      {building && (
-        <Breadcrumbs aria-label="breadcrumb" className={s.breadcrumbs}>
-          <Link color="inherit" to={ROUTES.building.main(currentBuildingId)}>
-            {building.name}
-          </Link>
-          <Typography color="textPrimary">Permissions</Typography>
-        </Breadcrumbs>
-      )}
-      <List className={s.list}>
-        <ListSubheader>
-          <Typography variant="h6">Invite</Typography>
-        </ListSubheader>
-        <form
-          className={s.inviteForm}
-          noValidate
-          onSubmit={handleSubmit(onSubmit)}
-        >
-          <ListItem>
-            <ListItemText>
-              <TextField
-                classes={{
-                  root: s.textField,
-                }}
-                error={!!(errors.email)}
-                inputRef={register}
-                label="Email"
-                name="email"
-                required
-                variant="standard"
-              />
-            </ListItemText>
-            <ListItemSecondaryAction className={s.inviteSelect}>
-              <Select
-                defaultValue={ROLES.VIEWER}
-                displayEmpty
-                error={!!(errors.role)}
-                inputRef={register}
-                name="role"
-                onChange={onChangeInvitePermissions}
+    <Grid className={s.root} item>
+      <Grid container direction="column" spacing={3}>
+        <Grid item>
+          <LayoutPaper>
+            <List className={s.list}>
+              <form
+                className={s.inviteForm}
+                noValidate
+                onSubmit={handleSubmit(onSubmit)}
               >
-                <MenuItem value={ROLES.VIEWER}>Viewer</MenuItem>
-                <MenuItem value={ROLES.CONTRIBUTOR}>Contributor</MenuItem>
-                <MenuItem value={ROLES.Editor}>Editor</MenuItem>
-                <MenuItem value={ROLES.ADMIN}>Admin</MenuItem>
-              </Select>
-            </ListItemSecondaryAction>
-          </ListItem>
-          <ListItem className={s.submitItem}>
-            <ListItemSecondaryAction>
-              <Button
-                className={s.submit}
-                color="primary"
-                type="submit"
-                variant="contained"
-              >
-                Invite user
-              </Button>
-            </ListItemSecondaryAction>
-          </ListItem>
-        </form>
-        <ListSubheader className={s.invitedSubheader}>
-          <Typography variant="h6">People</Typography>
-        </ListSubheader>
-        {permissions.map((item) => {
-          const user = users.find((u) => u.id === item.userId);
-          return (
-            <ListItem key={item.id}>
-              <ListItemAvatar>
-                <Avatar>{`${user.firstName.slice(0, 1)}${user.lastName.slice(0, 1)}`}</Avatar>
-              </ListItemAvatar>
-              <ListItemText>
-                {`${user.firstName} ${user.lastName}`}
-              </ListItemText>
-              <ListItemSecondaryAction>
-                <Grid container>
-                  <Grid item>
+                <ListItem>
+                  <ListItemText>
+                    <TextField
+                      classes={{
+                        root: s.textField,
+                      }}
+                      error={!!(errors.email)}
+                      inputRef={register}
+                      label="Email"
+                      name="email"
+                      required
+                      variant="standard"
+                    />
+                  </ListItemText>
+                  <ListItemSecondaryAction className={s.inviteSelect}>
                     <Select
+                      defaultValue={ROLES.VIEWER}
                       displayEmpty
-                      onChange={onChangeExistingPermission(item.id, item.contentId, item.userId)}
-                      value={item.role}
+                      error={!!(errors.role)}
+                      inputRef={register}
+                      name="role"
+                      onChange={onChangeInvitePermissions}
                     >
                       <MenuItem value={ROLES.VIEWER}>Viewer</MenuItem>
                       <MenuItem value={ROLES.CONTRIBUTOR}>Contributor</MenuItem>
                       <MenuItem value={ROLES.Editor}>Editor</MenuItem>
-                      <MenuItem value={ROLES.ADMIN}>Admin</MenuItem>
+                      {permission.role === ROLES.ADMIN && <MenuItem value={ROLES.ADMIN}>Admin</MenuItem>}
                     </Select>
-                  </Grid>
-                  <Grid item>
-                    <IconButton
-                      className={s.deleteIcon}
-                      disabled={item.userId === currentUser.id}
-                      onClick={deletePermission(item.userId, item.id)}
-                      size="small"
+                  </ListItemSecondaryAction>
+                </ListItem>
+                <ListItem className={s.submitItem}>
+                  <ListItemSecondaryAction>
+                    <Button
+                      className={s.submit}
+                      color="primary"
+                      type="submit"
+                      variant="contained"
                     >
-                      <Icon>close</Icon>
-                    </IconButton>
-                  </Grid>
-                </Grid>
-              </ListItemSecondaryAction>
-            </ListItem>
-          );
-        })}
-      </List>
-    </div>
+                      Invite
+                    </Button>
+                  </ListItemSecondaryAction>
+                </ListItem>
+              </form>
+            </List>
+          </LayoutPaper>
+        </Grid>
+        <Grid item>
+          <LayoutPaper>
+            <List className={s.list}>
+              {permissions.map((item) => {
+                const user = users.find((u) => u.id === item.userId);
+                return (
+                  <ListItem key={item.id}>
+                    <ListItemAvatar>
+                      <Avatar>{`${user.firstName.slice(0, 1)}${user.lastName.slice(0, 1)}`}</Avatar>
+                    </ListItemAvatar>
+                    <ListItemText>
+                      {`${user.firstName} ${user.lastName}`}
+                    </ListItemText>
+                    <ListItemSecondaryAction>
+                      <Grid container>
+                        <Grid item>
+                          <Select
+                            displayEmpty
+                            onChange={onChangeExistingPermission(item.id, item.contentId, item.userId)}
+                            value={item.role}
+                          >
+                            <MenuItem value={ROLES.VIEWER}>Viewer</MenuItem>
+                            <MenuItem value={ROLES.CONTRIBUTOR}>Contributor</MenuItem>
+                            <MenuItem value={ROLES.Editor}>Editor</MenuItem>
+                            {permission.role === ROLES.ADMIN && <MenuItem value={ROLES.ADMIN}>Admin</MenuItem>}
+                          </Select>
+                        </Grid>
+                        <Grid item>
+                          <IconButton
+                            className={s.deleteIcon}
+                            disabled={item.userId === currentUser.id}
+                            onClick={deletePermission(item.userId, item.id)}
+                            size="small"
+                          >
+                            <Icon>close</Icon>
+                          </IconButton>
+                        </Grid>
+                      </Grid>
+                    </ListItemSecondaryAction>
+                  </ListItem>
+                );
+              })}
+            </List>
+          </LayoutPaper>
+        </Grid>
+      </Grid>
+    </Grid>
   );
 }
 

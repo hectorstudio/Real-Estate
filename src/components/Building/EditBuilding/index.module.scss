@@ -1,4 +1,6 @@
 .root {
+  flex-grow: 1;
+
   :global .MuiGrid-item {
     margin: 10px 0;
   }

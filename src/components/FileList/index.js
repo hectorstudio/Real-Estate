@@ -127,13 +127,13 @@ function FileList() {
       render: (rowData) => (
         <Grid container>
           <Grid item>
-            <IconButton onClick={() => downloadFile(rowData.id)}>
+            <IconButton onClick={() => downloadFile(rowData.id)} size="small">
               <GetApp />
             </IconButton>
           </Grid>
           {[ROLES.EDITOR, ROLES.ADMIN].includes(permission.role) && (
             <Grid item>
-              <IconButton onClick={() => onDeleteFiles([rowData.id])()}>
+              <IconButton onClick={() => onDeleteFiles([rowData.id])()} size="small">
                 <Delete />
               </IconButton>
             </Grid>
