@@ -20,6 +20,9 @@ import { setMessage } from '../../../actions/message';
 import { updateBuilding } from '../../../actions/buildings';
 import { getCurrentUser } from '../../../selectors/user';
 
+import LayoutPaper from '../../UI/LayoutPaper';
+
+// TODO: styles
 import s from './index.module.scss';
 
 function EditBuilding() {
@@ -72,112 +75,114 @@ function EditBuilding() {
   }, [building, currentBuildingId, dispatch, permission.role]);
 
   return (
-    <div className={s.root}>
-      <form
-        className={s.form}
-        noValidate
-        onSubmit={handleSubmit(onSubmit)}
-      >
-        <Grid
-          container
-          direction="column"
+    <Grid className={s.root} item>
+      <LayoutPaper>
+        <form
+          className={s.form}
+          noValidate
+          onSubmit={handleSubmit(onSubmit)}
         >
-          <Grid item>
-            <TextField
-              defaultValue={building.name}
-              error={!!(errors.name)}
-              inputRef={register}
-              label="Building name"
-              name="name"
-              required
-              variant="standard"
-            />
+          <Grid
+            container
+            direction="column"
+          >
+            <Grid item>
+              <TextField
+                defaultValue={building.name}
+                error={!!(errors.name)}
+                inputRef={register}
+                label="Building name"
+                name="name"
+                required
+                variant="standard"
+              />
+            </Grid>
+            <Grid item>
+              <TextField
+                defaultValue={building.company}
+                error={!!(errors.company)}
+                inputRef={register}
+                label="Company"
+                name="company"
+                required
+                variant="standard"
+              />
+            </Grid>
+            <Grid item>
+              <TextField
+                defaultValue={building.address}
+                error={!!(errors.address)}
+                inputRef={register}
+                label="Address"
+                name="address"
+                required
+                variant="standard"
+              />
+            </Grid>
+            <Grid item>
+              <TextField
+                defaultValue={building.city}
+                error={!!(errors.city)}
+                inputRef={register}
+                label="City"
+                name="city"
+                required
+                variant="standard"
+              />
+            </Grid>
+            <Grid item>
+              <Autocomplete
+                autoHighlight
+                defaultValue={countries.find((x) => x.code === building.country)}
+                getOptionLabel={(option) => option.label}
+                onChange={onCountryChange}
+                options={countries}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    fullWidth
+                    inputProps={{
+                      ...params.inputProps,
+                      autoComplete: 'disabled', // disable native autocomplete and autofill
+                    }}
+                    label="Country"
+                    variant="standard"
+                  />
+                )}
+                renderOption={(option) => (
+                  <>
+                    <span>{countryToFlag(option.code)}</span>
+                    {`${option.label} (${option.code})`}
+                  </>
+                )}
+              />
+            </Grid>
+            <Grid item>
+              <FormControlLabel
+                control={(
+                  <Switch
+                    checked={false}
+                    color="primary"
+                    disabled
+                    onChange={() => {}}
+                    value="public"
+                  />
+                )}
+                label="Visible to the public"
+              />
+            </Grid>
           </Grid>
-          <Grid item>
-            <TextField
-              defaultValue={building.company}
-              error={!!(errors.company)}
-              inputRef={register}
-              label="Company"
-              name="company"
-              required
-              variant="standard"
-            />
-          </Grid>
-          <Grid item>
-            <TextField
-              defaultValue={building.address}
-              error={!!(errors.address)}
-              inputRef={register}
-              label="Address"
-              name="address"
-              required
-              variant="standard"
-            />
-          </Grid>
-          <Grid item>
-            <TextField
-              defaultValue={building.city}
-              error={!!(errors.city)}
-              inputRef={register}
-              label="City"
-              name="city"
-              required
-              variant="standard"
-            />
-          </Grid>
-          <Grid item>
-            <Autocomplete
-              autoHighlight
-              defaultValue={countries.find((x) => x.code === building.country)}
-              getOptionLabel={(option) => option.label}
-              onChange={onCountryChange}
-              options={countries}
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  fullWidth
-                  inputProps={{
-                    ...params.inputProps,
-                    autoComplete: 'disabled', // disable native autocomplete and autofill
-                  }}
-                  label="Country"
-                  variant="standard"
-                />
-              )}
-              renderOption={(option) => (
-                <>
-                  <span>{countryToFlag(option.code)}</span>
-                  {`${option.label} (${option.code})`}
-                </>
-              )}
-            />
-          </Grid>
-          <Grid item>
-            <FormControlLabel
-              control={(
-                <Switch
-                  checked={false}
-                  color="primary"
-                  disabled
-                  onChange={() => {}}
-                  value="public"
-                />
-              )}
-              label="Visible to the public"
-            />
-          </Grid>
-        </Grid>
-        <Button
-          className={s.submit}
-          color="primary"
-          type="submit"
-          variant="contained"
-        >
-          Save changes
-        </Button>
-      </form>
-    </div>
+          <Button
+            className={s.submit}
+            color="primary"
+            type="submit"
+            variant="contained"
+          >
+            Save changes
+          </Button>
+        </form>
+      </LayoutPaper>
+    </Grid>
   );
 }
 

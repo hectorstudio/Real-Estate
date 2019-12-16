@@ -9,7 +9,6 @@ import {
   ListItem,
   ListItemIcon,
   ListItemText,
-  Divider,
   Paper,
 } from '@material-ui/core';
 
@@ -40,25 +39,22 @@ function Sidebar(props) {
   return (
     <Paper className={s.drawerPaper}>
       <List className={s.list}>
-        {items.map((item, i) => (
-          <>
-            <ListItem
-              className={clsx({ [s.activeItem]: matchPath(item.to, pathname)?.isExact })}
-              component={LinkButton}
-              key={item.to}
-              to={item.to}
-            >
-              {item.icon && (
-                <ListItemIcon
-                  className={clsx(s.icon, { [s.activeItem]: matchPath(item.to, pathname) ?.isExact })}
-                >
-                  <Icon>{item.icon}</Icon>
-                </ListItemIcon>
-              )}
-              <ListItemText>{item.label}</ListItemText>
-            </ListItem>
-            {(i + 100 < items.length) && <Divider key={item} variant="middle" />}
-          </>
+        {items.map((item) => (
+          <ListItem
+            className={clsx({ [s.activeItem]: matchPath(item.to, pathname)?.isExact })}
+            component={LinkButton}
+            key={item.to}
+            to={item.to}
+          >
+            {item.icon && (
+              <ListItemIcon
+                className={clsx(s.icon, { [s.activeItem]: matchPath(item.to, pathname) ?.isExact })}
+              >
+                <Icon>{item.icon}</Icon>
+              </ListItemIcon>
+            )}
+            <ListItemText>{item.label}</ListItemText>
+          </ListItem>
         ))}
       </List>
     </Paper>
