@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { Route, Switch } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
+import { makeStyles } from '@material-ui/styles';
 
 import { ROUTES } from '../../constants';
 import { getAuthToken } from '../../selectors/user';
@@ -14,10 +15,23 @@ import Message from '../Message';
 import NewBuilding from '../NewBuilding';
 import PrivateRoute from '../PrivateRoute';
 import Profile from '../Profile';
+import Container from '../UI/Container';
+
+const useTheme = makeStyles((theme) => {
+  console.log(theme);
+  return {
+    root: {
+      background: theme.palette.background.default,
+      height: '100%',
+    },
+  };
+});
 
 function App() {
   const dispatch = useDispatch();
   const token = useSelector(getAuthToken);
+
+  const s = useTheme();
 
   useEffect(() => {
     if (token) {
@@ -27,18 +41,20 @@ function App() {
   }, [dispatch, token]);
 
   return (
-    <>
+    <div className={s.root}>
       <Message />
       <PrivateRoute>
         <Header />
-        <Switch>
-          <Route component={NewBuilding} exact path={ROUTES.building.main('new')} />
-          <Route component={Profile} exact path={ROUTES.profile()} />
-          <Route component={Building} path={ROUTES.building.main()} />
-          <Route component={Home} />
-        </Switch>
+        <Container maxWidth="lg">
+          <Switch>
+            <Route component={NewBuilding} exact path={ROUTES.building.main('new')} />
+            <Route component={Profile} exact path={ROUTES.profile()} />
+            <Route component={Building} path={ROUTES.building.main()} />
+            <Route component={Home} />
+          </Switch>
+        </Container>
       </PrivateRoute>
-    </>
+    </div>
   );
 }
 

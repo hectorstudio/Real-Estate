@@ -4,13 +4,13 @@ import { makeStyles } from '@material-ui/core/styles';
 import { matchPath } from 'react-router';
 import clsx from 'clsx';
 import {
-  Drawer,
   Icon,
   List,
   ListItem,
   ListItemIcon,
   ListItemText,
   Divider,
+  Paper,
 } from '@material-ui/core';
 
 import { useSelector } from 'react-redux';
@@ -24,19 +24,10 @@ const useStyles = makeStyles((theme) => ({
   },
   drawerPaper: {
     borderRight: 0,
-    width: 240,
+    width: 220,
   },
   icon: {
     minWidth: theme.spacing(5),
-  },
-  list: {
-    borderRight: `solid ${theme.palette.divider} 1px`,
-    paddingBottom: theme.spacing(3),
-    paddingTop: 0,
-  },
-  toolbar: {
-    ...theme.mixins.toolbar,
-    marginBottom: theme.spacing(5),
   },
 }));
 
@@ -44,18 +35,13 @@ function Sidebar(props) {
   const s = useStyles();
   const pathname = useSelector(getPathname);
 
+  const items = props.items.filter((i) => i);
+
   return (
-    <Drawer
-      classes={{
-        paper: s.drawerPaper,
-      }}
-      variant="permanent"
-    >
-      <div className={s.toolbar} />
+    <Paper className={s.drawerPaper}>
       <List className={s.list}>
-        {props.items.filter((i) => i).map((item) => (item === 'divider'
-          ? <Divider key={item} variant="middle" />
-          : (
+        {items.map((item, i) => (
+          <>
             <ListItem
               className={clsx({ [s.activeItem]: matchPath(item.to, pathname)?.isExact })}
               component={LinkButton}
@@ -71,9 +57,11 @@ function Sidebar(props) {
               )}
               <ListItemText>{item.label}</ListItemText>
             </ListItem>
-          )))}
+            {(i + 100 < items.length) && <Divider key={item} variant="middle" />}
+          </>
+        ))}
       </List>
-    </Drawer>
+    </Paper>
   );
 }
 
