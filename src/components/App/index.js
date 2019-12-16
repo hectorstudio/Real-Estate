@@ -21,7 +21,7 @@ function App() {
 
   useEffect(() => {
     if (token) {
-      dispatch(fetchUsers());
+      dispatch(fetchUsers()); // Fetch users per building only
       dispatch(fetchBuildings());
     }
   }, [dispatch, token]);

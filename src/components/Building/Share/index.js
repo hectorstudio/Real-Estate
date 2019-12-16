@@ -24,7 +24,7 @@ import useForm from 'react-hook-form';
 import Link from '../../UI/Link';
 import { getCurrentBuildingId } from '../../../selectors/router';
 import { ROUTES, ROLES } from '../../../constants';
-import { getBuildingById, getBuildingPermissionsByBuildingId } from '../../../selectors/buildings';
+import { getBuildingById, getBuildingPermissionsByBuildingId, getBuildingPermissionByBuildingIdAndUserId } from '../../../selectors/buildings';
 import { getUsers } from '../../../selectors/users';
 import { updateBuildingPermission, addBuildingPermission, deleteBuildingPermission } from '../../../actions/buildings';
 import { setMessage } from '../../../actions/message';
@@ -64,6 +64,7 @@ function Share() {
   const currentUser = useSelector(getCurrentUser);
   const building = useSelector((state) => getBuildingById(state, currentBuildingId));
   const permissions = useSelector((state) => getBuildingPermissionsByBuildingId(state, currentBuildingId));
+  const permission = useSelector((state) => getBuildingPermissionByBuildingIdAndUserId(state, currentBuildingId, currentUser.id)) || {};
   const users = useSelector(getUsers);
 
   const {
@@ -157,7 +158,7 @@ function Share() {
                 <MenuItem value={ROLES.VIEWER}>Viewer</MenuItem>
                 <MenuItem value={ROLES.CONTRIBUTOR}>Contributor</MenuItem>
                 <MenuItem value={ROLES.Editor}>Editor</MenuItem>
-                <MenuItem value={ROLES.ADMIN}>Admin</MenuItem>
+                {permission.role === ROLES.ADMIN && <MenuItem value={ROLES.ADMIN}>Admin</MenuItem>}
               </Select>
             </ListItemSecondaryAction>
           </ListItem>
@@ -198,7 +199,7 @@ function Share() {
                       <MenuItem value={ROLES.VIEWER}>Viewer</MenuItem>
                       <MenuItem value={ROLES.CONTRIBUTOR}>Contributor</MenuItem>
                       <MenuItem value={ROLES.Editor}>Editor</MenuItem>
-                      <MenuItem value={ROLES.ADMIN}>Admin</MenuItem>
+                      {permission.role === ROLES.ADMIN && <MenuItem value={ROLES.ADMIN}>Admin</MenuItem>}
                     </Select>
                   </Grid>
                   <Grid item>
