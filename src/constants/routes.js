@@ -1,3 +1,4 @@
+/* istanbul ignore next */
 const routes = {
   building: {
     edit: (id = ':buildingId') => `/${id}/edit`,

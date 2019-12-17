@@ -1,6 +1,8 @@
 export const AppBar = function AppBar() { return null; };
 export const Button = function Button() { return null; };
+export const ButtonBase = function ButtonBase() { return null; };
 export const Container = function Container() { return null; };
+export const Divider = function Divider() { return null; };
 export const Grid = function Grid() { return null; };
 export const IconButton = function IconButton() { return null; };
 export const Link = function Link() { return null; };

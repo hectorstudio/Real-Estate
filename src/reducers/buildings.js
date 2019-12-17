@@ -4,11 +4,11 @@ import { normalize } from 'normalizr';
 import initialState from '../initialState';
 import { buildingSchema } from '../schemas';
 import {
+  RECEIVE_DELETE_BUILDING_PERMISSION,
   RECEIVE_GET_BUILDINGS,
   RECEIVE_PATCH_BUILDING,
   RECEIVE_PATCH_BUILDING_PERMISSION,
   RECEIVE_POST_BUILDING,
-  RECEIVE_DELETE_BUILDING_PERMISSION,
   RECEIVE_POST_BUILDING_PERMISSION,
 } from '../actions/types';
 
