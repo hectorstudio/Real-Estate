@@ -49,3 +49,10 @@ export const CONTENT_TYPES = {
   files: 'files',
   portfolios: 'portfolios',
 };
+
+// Fetch will throw an error when receiving a response with one of the status codes
+export const FETCH_RESPONSE_STATUS_THROW = [
+  401,
+  404,
+  500,
+];

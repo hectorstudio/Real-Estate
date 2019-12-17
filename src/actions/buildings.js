@@ -7,6 +7,7 @@ import {
   RECEIVE_POST_BUILDING_PERMISSION,
   RECEIVE_DELETE_BUILDING_PERMISSION,
 } from './types';
+import { fetchWithAuth } from './helpers';
 
 export const addNewBuilding = (userData) => fetch(ENDPOINTS.buildings.many(), {
   body: JSON.stringify(userData),
@@ -20,16 +21,12 @@ export const addNewBuilding = (userData) => fetch(ENDPOINTS.buildings.many(), {
   .then((data) => data);
   // TODO: Dispatch RECEIVE_POST_BUILDING action
 
-export const fetchBuildings = () => (dispatch, getState) => {
-  const state = getState();
-  const token = getAuthToken(state);
+export const fetchBuildings = () => (dispatch) => {
+  const url = ENDPOINTS.buildings.many();
 
-  return fetch(ENDPOINTS.buildings.many(), {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-    method: 'GET',
-  })
+  return dispatch(fetchWithAuth({
+    url,
+  }))
     .then((res) => res.json())
     .then((data) => {
       dispatch({

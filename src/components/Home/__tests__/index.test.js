@@ -10,6 +10,6 @@ describe('render', () => {
   it('root element', () => {
     const wrapper = shallow(<Home />);
 
-    expect(wrapper.children()).toHaveLength(2);
+    expect(wrapper.children()).toHaveLength(1);
   });
 });

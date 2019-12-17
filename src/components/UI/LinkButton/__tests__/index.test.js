@@ -15,6 +15,6 @@ describe('render', () => {
   it('Material UI link component', () => {
     const wrapper = mount(<Link {...props} />);
 
-    expect(wrapper.childAt(0).name()).toBe('Link');
+    expect(wrapper.childAt(0).name()).toBe('ButtonBase');
   });
 });

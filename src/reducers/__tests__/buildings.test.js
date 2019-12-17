@@ -1,6 +1,13 @@
 import reducer from '../buildings';
 import initialState from '../../initialState';
-import { RECEIVE_POST_BUILDING, RECEIVE_GET_BUILDINGS, RECEIVE_PATCH_BUILDING } from '../../actions/types';
+import {
+  RECEIVE_DELETE_BUILDING_PERMISSION,
+  RECEIVE_POST_BUILDING,
+  RECEIVE_GET_BUILDINGS,
+  RECEIVE_PATCH_BUILDING,
+  RECEIVE_POST_BUILDING_PERMISSION,
+  RECEIVE_PATCH_BUILDING_PERMISSION,
+} from '../../actions/types';
 
 let state;
 beforeEach(() => {
@@ -117,6 +124,91 @@ describe('RECEIVE_PATCH_BUILDING', () => {
         },
       },
       result: ['1'],
+    });
+  });
+});
+
+describe('RECEIVE_PATCH_BUILDING_PERMISSION', () => {
+  it('modifies role in permissions object', () => {
+    state = {
+      entities: {
+        permissions: {
+          1: { id: '1', role: 'foo' },
+          2: { id: '2' },
+        },
+      },
+    };
+
+    const action = {
+      payload: { id: '1', role: 'bar' },
+      type: RECEIVE_PATCH_BUILDING_PERMISSION,
+    };
+
+    const newState = reducer(state, action);
+
+    expect(newState).toEqual({
+      entities: {
+        permissions: {
+          1: { id: '1', role: 'bar' },
+          2: { id: '2' },
+        },
+      },
+    });
+  });
+});
+
+describe('RECEIVE_POST_BUILDING_PERMISSION', () => {
+  it('adds permission object', () => {
+    state = {
+      entities: {
+        permissions: {
+          1: { id: '1' },
+        },
+      },
+    };
+
+    const action = {
+      payload: { id: '2', role: 'foo' },
+      type: RECEIVE_POST_BUILDING_PERMISSION,
+    };
+
+    const newState = reducer(state, action);
+
+    expect(newState).toEqual({
+      entities: {
+        permissions: {
+          1: { id: '1' },
+          2: { id: '2', role: 'foo' },
+        },
+      },
+    });
+  });
+});
+
+describe('RECEIVE_DELETE_BUILDING_PERMISSION', () => {
+  it('Remove permission object', () => {
+    state = {
+      entities: {
+        permissions: {
+          1: { id: '1' },
+          2: { id: '2' },
+        },
+      },
+    };
+
+    const action = {
+      payload: { id: '1' },
+      type: RECEIVE_DELETE_BUILDING_PERMISSION,
+    };
+
+    const newState = reducer(state, action);
+
+    expect(newState).toEqual({
+      entities: {
+        permissions: {
+          2: { id: '2' },
+        },
+      },
     });
   });
 });

@@ -1,5 +1,6 @@
 import React from 'react';
 
+/* istanbul ignore next */
 export default function City() {
   return (
     <svg

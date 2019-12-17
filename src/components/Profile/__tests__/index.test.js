@@ -7,6 +7,6 @@ describe('render', () => {
   it('root element', () => {
     const wrapper = shallow(<Profile />);
 
-    expect(wrapper.find('.root')).toHaveLength(1);
+    expect(wrapper.name()).toBe('Container');
   });
 });
