@@ -33,18 +33,30 @@ function Building() {
                 to: ROUTES.building.main(currentBuildingId),
               },
               {
-                icon: 'folder_open',
+                // TODO:
+                icon: 'description',
+                label: 'About',
+                to: '#about',
+              },
+              {
+                icon: 'folder',
                 label: 'Files',
                 to: ROUTES.building.files(currentBuildingId),
               },
+              {
+                // TODO:
+                icon: 'chat',
+                label: 'Posts',
+                to: '#posts',
+              },
               [ROLES.EDITOR, ROLES.ADMIN].includes(permission.role) && {
-                icon: 'share',
-                label: 'Share',
+                icon: 'people',
+                label: 'Users',
                 to: ROUTES.building.share(currentBuildingId),
               },
               [ROLES.ADMIN].includes(permission.role) && {
                 icon: 'build',
-                label: 'Preferences',
+                label: 'Settings',
                 to: ROUTES.building.edit(currentBuildingId),
               },
             ]}

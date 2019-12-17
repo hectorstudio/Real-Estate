@@ -5,13 +5,15 @@ import {
   Avatar,
   Paper,
   Typography,
+  Grid,
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
 import { useSelector } from 'react-redux';
 
-import { getCurrentBuildingId } from '../../../selectors/router';
 import { getBuildingById, getBuildingPermissionByBuildingIdAndUserId } from '../../../selectors/buildings';
+import { getCurrentBuildingId } from '../../../selectors/router';
 import { getCurrentUser } from '../../../selectors/user';
+import { getMapUrl } from '../../../helpers';
 
 import Cover from './Cover';
 
@@ -35,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
     minHeight: 80,
   },
   info: {
-    marginLeft: 140 + theme.spacing(4),
+    paddingLeft: 140 + theme.spacing(4),
   },
   root: {
     marginBottom: theme.spacing(3),
@@ -54,17 +56,32 @@ function Header() {
   return (
     <Card className={s.root}>
       <Cover
+        address={building.address}
         image={building.coverPath}
         title={building.name}
         userRole={permission.role}
       />
       <CardContent className={s.content}>
         <Paper className={s.avatarContainer}>
-          <Avatar className={s.avatar} variant="square" />
+          <Avatar
+            className={s.avatar}
+            src={building.address ? getMapUrl(building.address) : ''}
+            variant="square"
+          />
         </Paper>
-        <div className={s.info}>
-          <Typography variant="h6">{building.name}</Typography>
-        </div>
+        <Grid
+          className={s.info}
+          container
+          direction="column"
+          spacing={1}
+        >
+          <Grid item>
+            <Typography variant="h5">{building.name}</Typography>
+          </Grid>
+          <Grid item>
+            <Typography variant="body1">{building.address}</Typography>
+          </Grid>
+        </Grid>
       </CardContent>
     </Card>
   );

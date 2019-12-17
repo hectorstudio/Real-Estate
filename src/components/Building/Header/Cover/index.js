@@ -28,6 +28,17 @@ const useStyles = makeStyles((theme) => ({
     right: theme.spacing(1),
     top: theme.spacing(1),
   },
+  dialogContent: {
+    '& > p': {
+      lineHeight: '1.5em',
+    },
+    '& > p:first-of-type': {
+      marginTop: 0,
+    },
+    '& > p:last-of-type': {
+      marginBottom: 0,
+    },
+  },
   root: {
     background: theme.palette.grey[200],
     backgroundPosition: '50%',
@@ -89,7 +100,20 @@ function Cover(props) {
       {props.userRole === ROLES.ADMIN && (
         <>
           <Dialog
-            content={'Upload a photo that is a cover photo of this building. File size should not exceed 2 MB.'}
+            content={(
+              <div className={s.dialogContent}>
+                <p>
+                  {'Upload a cover photo of this building. Prefered image size is '}
+                  <b>1216 x 250 px</b>
+                  {'.'}
+                </p>
+                <p>
+                  {'File size should not exceed '}
+                  <b>2 MB</b>
+                  {'.'}
+                </p>
+              </div>
+            )}
             okText="Choose file"
             onCancel={toggleDialog()}
             onOk={open}
