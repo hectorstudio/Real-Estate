@@ -148,3 +148,24 @@ export const deleteBuildingPermission = (buildingId, userId, permissionId) => (d
       });
     });
 };
+
+export const uploadBuildingCoverImage = (buildingId, file) => (dispatch) => {
+  const url = ENDPOINTS.buildings.cover(buildingId);
+
+  const formData = new FormData();
+  formData.append('file', file);
+
+  return dispatch(fetchWithAuth({
+    body: formData,
+    method: 'POST',
+    skipContentType: true,
+    url,
+  }))
+    .then((res) => res.json())
+    .then((data) => {
+      dispatch({
+        payload: data,
+        type: RECEIVE_PATCH_BUILDING,
+      });
+    });
+};

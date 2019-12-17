@@ -1,7 +1,6 @@
 import React from 'react';
 import {
   Card,
-  CardMedia,
   CardContent,
   Avatar,
   Paper,
@@ -11,7 +10,10 @@ import { makeStyles } from '@material-ui/styles';
 import { useSelector } from 'react-redux';
 
 import { getCurrentBuildingId } from '../../../selectors/router';
-import { getBuildingById } from '../../../selectors/buildings';
+import { getBuildingById, getBuildingPermissionByBuildingIdAndUserId } from '../../../selectors/buildings';
+import { getCurrentUser } from '../../../selectors/user';
+
+import Cover from './Cover';
 
 const useStyles = makeStyles((theme) => ({
   avatar: {
@@ -29,9 +31,6 @@ const useStyles = makeStyles((theme) => ({
     transform: 'translateY(-50%)',
     width: 140,
   },
-  backdrop: {
-    height: 200,
-  },
   content: {
     minHeight: 80,
   },
@@ -40,21 +39,24 @@ const useStyles = makeStyles((theme) => ({
   },
   root: {
     marginBottom: theme.spacing(3),
+    position: 'relative',
   },
 }));
 
 function Header() {
   const currentBuildingId = useSelector(getCurrentBuildingId);
   const building = useSelector((state) => getBuildingById(state, currentBuildingId)) || {};
+  const user = useSelector(getCurrentUser);
+  const permission = useSelector((state) => getBuildingPermissionByBuildingIdAndUserId(state, currentBuildingId, user.id)) || {};
 
   const s = useStyles();
 
   return (
     <Card className={s.root}>
-      <CardMedia
-        className={s.backdrop}
-        image="https://images.unsplash.com/photo-1576460428852-d882ddd0099c?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=3300&q=80"
-        title="Header"
+      <Cover
+        image={building.coverPath}
+        title={building.name}
+        userRole={permission.role}
       />
       <CardContent className={s.content}>
         <Paper className={s.avatarContainer}>

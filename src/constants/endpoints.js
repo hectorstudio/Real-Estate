@@ -3,6 +3,7 @@ const API_URL = process.env.REACT_APP_API_URL;
 /* istanbul ignore next */
 export default {
   buildings: {
+    cover: (buildingId) => `${API_URL}buildings/${buildingId}/cover`,
     many: () => `${API_URL}buildings`,
     one: (buildingId) => `${API_URL}buildings/${buildingId}`,
     permissions: (buildingId) => `${API_URL}buildings/${buildingId}/permissions`,

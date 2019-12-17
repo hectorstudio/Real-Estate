@@ -25,6 +25,7 @@ export const fetchBase = (url, options) => fetch(url, options)
 * @param {object} options.headers Request custom headers
 * @param {string} options.method Request method, defaults to GET
 * @param {string} options.body Request body
+* @param {string} options.skipContentType Do not include Content-Type header in request
 */
 export const fetchWithAuth = (options) => (dispatch, getState) => {
   const state = getState();
@@ -35,15 +36,18 @@ export const fetchWithAuth = (options) => (dispatch, getState) => {
     contentType = 'application/json',
     headers = {},
     method = 'GET',
+    skipContentType = false,
     url,
   } = options;
 
+  if (!skipContentType) {
+    headers['Content-Type'] = contentType;
+  }
 
   return fetchBase(url, {
     body,
     headers: {
       Authorization: `Bearer ${token}`,
-      'Content-Type': contentType,
       ...headers,
     },
     method,
