@@ -56,8 +56,7 @@ function Cover(props) {
     }
 
     dispatch(uploadBuildingCoverImage(currentBuildingId, file))
-      .then((response) => {
-        console.log('cover_image', response);
+      .then(() => {
         dispatch(setMessage('Cover image has been uploaded.'));
       })
       .catch((err) => {
