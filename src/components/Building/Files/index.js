@@ -93,7 +93,7 @@ function Files() {
   });
 
   return (
-    <Grid item>
+    <Grid className={s.root} item>
       {[ROLES.CONTRIBUTOR, ROLES.EDITOR, ROLES.ADMIN].includes(permission.role) && (
         <Grid className={s.uploadContainer} container spacing={6}>
           <Grid item xs={4}>
