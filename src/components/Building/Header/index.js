@@ -10,6 +10,7 @@ import {
 import { makeStyles } from '@material-ui/styles';
 import { useSelector } from 'react-redux';
 
+import styles from '../../../styles';
 import { getBuildingById, getBuildingPermissionByBuildingIdAndUserId } from '../../../selectors/buildings';
 import { getCurrentBuildingId } from '../../../selectors/router';
 import { getCurrentUser } from '../../../selectors/user';
@@ -54,7 +55,7 @@ function Header() {
   const s = useStyles();
 
   return (
-    <Card className={s.root}>
+    <Card className={s.root} elevation={styles.elevation}>
       <Cover
         address={building.address}
         image={building.coverPath}
@@ -62,7 +63,7 @@ function Header() {
         userRole={permission.role}
       />
       <CardContent className={s.content}>
-        <Paper className={s.avatarContainer}>
+        <Paper className={s.avatarContainer} elevation={styles.elevation}>
           <Avatar
             className={s.avatar}
             src={building.address ? getMapUrl(building.address) : ''}

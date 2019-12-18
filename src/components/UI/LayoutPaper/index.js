@@ -1,8 +1,10 @@
-import React from 'react';
 import PropTypes from 'prop-types';
-import { Paper } from '@material-ui/core';
+import React from 'react';
 import clsx from 'clsx';
+import { Paper } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
+
+import styles from '../../../styles';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -16,7 +18,7 @@ function LayoutPaper(props) {
   const s = useStyles();
 
   return (
-    <Paper className={clsx(s.root, props.className)}>
+    <Paper className={clsx(s.root, props.className)} elevation={styles.elevation}>
       {props.children}
     </Paper>
   );

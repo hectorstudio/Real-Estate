@@ -9,13 +9,13 @@ import {
   ListItem,
   ListItemIcon,
   ListItemText,
-  Paper,
 } from '@material-ui/core';
 
 import { useSelector } from 'react-redux';
 import { getPathname } from '../../../selectors/router';
 
 import LinkButton from '../LinkButton';
+import LayoutPaper from '../LayoutPaper';
 
 const useStyles = makeStyles((theme) => ({
   activeItem: {
@@ -23,6 +23,7 @@ const useStyles = makeStyles((theme) => ({
   },
   drawerPaper: {
     borderRight: 0,
+    padding: 0,
     width: 220,
   },
   icon: {
@@ -37,7 +38,7 @@ function Sidebar(props) {
   const items = props.items.filter((i) => i);
 
   return (
-    <Paper className={clsx(s.drawerPaper, props.className)}>
+    <LayoutPaper className={clsx(s.drawerPaper, props.className)}>
       <List className={s.list}>
         {items.map((item) => (
           <ListItem
@@ -57,7 +58,7 @@ function Sidebar(props) {
           </ListItem>
         ))}
       </List>
-    </Paper>
+    </LayoutPaper>
   );
 }
 
