@@ -109,6 +109,9 @@ function FileList() {
     if (filters.name) {
       data = fuse.current.search(filters.name);
     }
+    if (filters.types && filters.types.length) {
+      data = data.filter((item) => filters.types.includes(getFileFormat(item.name)));
+    }
 
     setTableData(data);
   }, [files, filters]);
@@ -137,7 +140,6 @@ function FileList() {
   }, [filters]);
 
   const onArrayFilterChange = useCallback((filter) => (e) => {
-    console.log(e, e?.target?.value);
     const { value } = e.target;
     const filterValue = filters[filter];
     if (filters[filter].includes(value)) {

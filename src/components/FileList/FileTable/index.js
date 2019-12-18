@@ -59,10 +59,10 @@ function FileTable(props) {
       }),
       title: 'Date uploaded',
     },
-    {
-      field: 'modifyDate',
-      title: 'Date modified',
-    },
+    // {
+    //   field: 'modifyDate',
+    //   title: 'Date modified',
+    // },
     {
       render: (rowData) => {
         const { addUserId } = rowData;
@@ -81,10 +81,10 @@ function FileTable(props) {
       },
       title: 'Uploaded by',
     },
-    {
-      field: 'modifyUser',
-      title: 'Modified by',
-    },
+    // {
+    //   field: 'modifyUser',
+    //   title: 'Modified by',
+    // },
     {
       render: (rowData) => (
         <Grid container>
