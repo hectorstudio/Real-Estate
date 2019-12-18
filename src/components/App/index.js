@@ -48,7 +48,7 @@ function App() {
         <Container maxWidth="lg">
           <Switch>
             <Route component={NewBuilding} exact path={ROUTES.building.main('new')} />
-            <Route component={Profile} exact path={ROUTES.profile()} />
+            <Route component={Profile} path={ROUTES.profile.main()} />
             <Route component={Building} path={ROUTES.building.main()} />
             <Route component={Home} />
           </Switch>

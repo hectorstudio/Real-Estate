@@ -74,7 +74,7 @@ function Header() {
 
   const profile = () => {
     handleClose();
-    dispatch(push(ROUTES.profile()));
+    dispatch(push(ROUTES.profile.main()));
   };
 
   const help = () => {

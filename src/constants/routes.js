@@ -8,7 +8,10 @@ const routes = {
   },
   forgotPassword: () => '/forgot-password',
   home: () => '/',
-  profile: () => '/profile',
+  profile: {
+    main: () => '/profile',
+    security: () => '/profile/security',
+  },
   signIn: () => '/signin',
   signUp: () => '/signup',
 };

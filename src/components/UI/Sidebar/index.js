@@ -37,7 +37,7 @@ function Sidebar(props) {
   const items = props.items.filter((i) => i);
 
   return (
-    <Paper className={s.drawerPaper}>
+    <Paper className={clsx(s.drawerPaper, props.className)}>
       <List className={s.list}>
         {items.map((item) => (
           <ListItem
@@ -62,7 +62,12 @@ function Sidebar(props) {
 }
 
 Sidebar.propTypes = {
+  className: PropTypes.string,
   items: PropTypes.arrayOf(PropTypes.any).isRequired,
+};
+
+Sidebar.defaultProps = {
+  className: '',
 };
 
 export default Sidebar;

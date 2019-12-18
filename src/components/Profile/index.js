@@ -1,70 +1,54 @@
-import React, { useState } from 'react';
-import {
-  Grid,
-  List,
-  ListItem,
-  Typography,
-} from '@material-ui/core';
+import React from 'react';
+import { Route, Switch } from 'react-router';
+import { makeStyles } from '@material-ui/styles';
+import { Grid, Container } from '@material-ui/core';
 
-import Container from '../UI/Container';
-import Link from '../UI/Link';
+import { ROUTES } from '../../constants';
+
 import ProfileForm from './ProfileForm';
 import SecurityForm from './SecurityForm';
+import Sidebar from '../UI/Sidebar';
+import LayoutPaper from '../UI/LayoutPaper';
 
-import s from './index.module.scss';
-
-const pages = {
-  personal: 'personal',
-  security: 'security',
-};
+const useStyles = makeStyles(() => ({
+  content: {
+    flexGrow: 1,
+  },
+  sidebar: {
+    width: 240,
+  },
+}));
 
 function Profile() {
-  const [page, setPage] = useState(pages.personal);
-
-  const changePage = (p) => () => setPage(p);
-
-  let component;
-  switch (page) {
-    case pages.security:
-      component = <SecurityForm />;
-      break;
-    default:
-      component = <ProfileForm />;
-  }
+  const s = useStyles();
 
   return (
-    <Container maxWidth="lg">
-      <Typography variant="h5">Preferences</Typography>
-      <Grid
-        className={s.grid}
-        container
-      >
-        <Grid className={s.menu} item>
-          <List className={s.menuList}>
-            <ListItem className={s.link}>
-              {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-              <Link
-                component="button"
-                onClick={changePage(pages.personal)}
-                variant="body1"
-              >
-                Personal information
-              </Link>
-            </ListItem>
-            <ListItem className={s.link}>
-              {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-              <Link
-                component="button"
-                onClick={changePage(pages.security)}
-                variant="body1"
-              >
-                Security
-              </Link>
-            </ListItem>
-          </List>
+    <Container maxWidth="md">
+      <Grid container spacing={3} wrap="nowrap">
+        <Grid item>
+          <Sidebar
+            className={s.sidebar}
+            items={[
+              {
+                icon: 'person',
+                label: 'Personal information',
+                to: ROUTES.profile.main(),
+              },
+              {
+                icon: 'security',
+                label: 'Security',
+                to: ROUTES.profile.security(),
+              },
+            ]}
+          />
         </Grid>
         <Grid className={s.content} item>
-          {component}
+          <LayoutPaper>
+            <Switch>
+              <Route component={ProfileForm} exact path={ROUTES.profile.main()} />
+              <Route component={SecurityForm} exact path={ROUTES.profile.security()} />
+            </Switch>
+          </LayoutPaper>
         </Grid>
       </Grid>
     </Container>
