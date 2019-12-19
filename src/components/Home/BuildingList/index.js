@@ -1,17 +1,14 @@
-import React, { useCallback, useState, useEffect } from 'react';
-// import MaterialTable from 'material-table';
+import React, { useCallback, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import loadGoogleMaps from 'load-google-maps-api';
 import clsx from 'clsx';
 import { push } from 'connected-react-router';
 import {
   Avatar,
-  // Checkbox,
   Grid,
   List,
   ListItem,
   ListItemAvatar,
-  // ListItemIcon,
   ListItemText,
   Typography,
   Divider,
@@ -19,8 +16,6 @@ import {
 
 import { getBuildings } from '../../../selectors/buildings';
 import { ROUTES } from '../../../constants';
-
-// import Link from '../../UI/Link';
 
 import s from './index.module.scss';
 
@@ -32,42 +27,6 @@ let geocoder;
 function BuildingList() {
   const dispatch = useDispatch();
   const buildings = useSelector(getBuildings);
-  // eslint-disable-next-line no-unused-vars
-  const [selectedItems, setSelectedItems] = useState([]);
-
-  // const columns = [
-  //   {
-  //     render: (rowData) => (
-  //       <Link
-  //         to={ROUTES.building(rowData.id)}
-  //         variant="body1"
-  //       >
-  //         {`${rowData.name}`}
-  //       </Link>
-  //     ),
-  //     title: 'Name',
-  //   },
-  //   {
-  //     field: 'address',
-  //     title: 'Address',
-  //   },
-  //   {
-  //     field: 'city',
-  //     title: 'City',
-  //   },
-  //   {
-  //     render: (rowData) => new Date(rowData.addDate).toLocaleDateString('default', {
-  //       day: '2-digit',
-  //       month: 'short',
-  //       year: 'numeric',
-  //     }),
-  //     title: 'Date added',
-  //   },
-  // ];
-
-  // const onSelectionChange = useCallback((array) => {
-  //   setSelectedItems(array);
-  // }, []);
 
   const mapRef = useCallback((node) => {
     if (process.env.NODE_ENV === 'development') return;
@@ -125,11 +84,8 @@ function BuildingList() {
         disableRipple
         onClick={() => dispatch(push(ROUTES.building.main(building.id)))}
       >
-        {/* <ListItemIcon>
-          <Checkbox />
-        </ListItemIcon> */}
         <ListItemAvatar>
-          <Avatar alt={building.name} className={s.avatar} src="https://media.fromthegrapevine.com/assets/images/2015/5/marina-singapore-0518.jpg.824x0_q71_crop-scale.jpg" variant="square" />
+          <Avatar alt={building.name} className={s.avatar} src={building.coverPath} variant="square" />
         </ListItemAvatar>
         <ListItemText
           primary={building.name}
@@ -158,22 +114,6 @@ function BuildingList() {
       spacing={4}
     >
       <Grid className={s.item} item>
-        {/* <MaterialTable
-          columns={columns}
-          components={{
-            Container: Grid,
-          }}
-          data={buildings}
-          onSelectionChange={onSelectionChange}
-          options={{
-            actionsColumnIndex: 0,
-            draggable: false,
-            pageSize: 10,
-            pageSizeOptions: [10, 20, 50, 100],
-            selection: true,
-            toolbar: false,
-          }}
-        /> */}
         <List>
           {itemList}
         </List>

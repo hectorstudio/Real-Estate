@@ -42,7 +42,7 @@ const useStyles = makeStyles((theme) => ({
     width: '100%',
   },
   sectionTitle: {
-    borderBottom: `solid ${theme.palette.grey[600]} 1px`,
+    borderBottom: `solid ${theme.palette.grey[400]} 1px`,
     fontWeight: 'normal',
   },
   title: {
