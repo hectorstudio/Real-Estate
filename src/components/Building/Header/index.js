@@ -1,17 +1,22 @@
 import React from 'react';
 import {
   Card,
-  CardMedia,
   CardContent,
   Avatar,
   Paper,
   Typography,
+  Grid,
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
 import { useSelector } from 'react-redux';
 
+import styles from '../../../styles';
+import { getBuildingById, getBuildingPermissionByBuildingIdAndUserId } from '../../../selectors/buildings';
 import { getCurrentBuildingId } from '../../../selectors/router';
-import { getBuildingById } from '../../../selectors/buildings';
+import { getCurrentUser } from '../../../selectors/user';
+import { getMapUrl } from '../../../helpers';
+
+import Cover from './Cover';
 
 const useStyles = makeStyles((theme) => ({
   avatar: {
@@ -29,40 +34,55 @@ const useStyles = makeStyles((theme) => ({
     transform: 'translateY(-50%)',
     width: 140,
   },
-  backdrop: {
-    height: 200,
-  },
   content: {
     minHeight: 80,
   },
   info: {
-    marginLeft: 140 + theme.spacing(4),
+    paddingLeft: 140 + theme.spacing(4),
   },
   root: {
     marginBottom: theme.spacing(3),
+    position: 'relative',
   },
 }));
 
 function Header() {
   const currentBuildingId = useSelector(getCurrentBuildingId);
   const building = useSelector((state) => getBuildingById(state, currentBuildingId)) || {};
+  const user = useSelector(getCurrentUser);
+  const permission = useSelector((state) => getBuildingPermissionByBuildingIdAndUserId(state, currentBuildingId, user.id)) || {};
 
   const s = useStyles();
 
   return (
-    <Card className={s.root}>
-      <CardMedia
-        className={s.backdrop}
-        image="https://images.unsplash.com/photo-1576460428852-d882ddd0099c?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=3300&q=80"
-        title="Header"
+    <Card className={s.root} elevation={styles.elevation}>
+      <Cover
+        address={building.address}
+        image={building.coverPath}
+        title={building.name}
+        userRole={permission.role}
       />
       <CardContent className={s.content}>
-        <Paper className={s.avatarContainer}>
-          <Avatar className={s.avatar} variant="square" />
+        <Paper className={s.avatarContainer} elevation={styles.elevation}>
+          <Avatar
+            className={s.avatar}
+            src={building.address ? getMapUrl(building.address) : ''}
+            variant="square"
+          />
         </Paper>
-        <div className={s.info}>
-          <Typography variant="h6">{building.name}</Typography>
-        </div>
+        <Grid
+          className={s.info}
+          container
+          direction="column"
+          spacing={1}
+        >
+          <Grid item>
+            <Typography variant="h5">{building.name}</Typography>
+          </Grid>
+          <Grid item>
+            <Typography variant="body1">{building.address}</Typography>
+          </Grid>
+        </Grid>
       </CardContent>
     </Card>
   );

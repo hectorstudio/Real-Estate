@@ -1,6 +1,7 @@
 import React from 'react';
 import useForm from 'react-hook-form';
 import { useSelector, useDispatch } from 'react-redux';
+import { makeStyles } from '@material-ui/styles';
 import { Button, Grid } from '@material-ui/core';
 
 import { getCurrentUser } from '../../../selectors/user';
@@ -10,9 +11,26 @@ import { setMessage } from '../../../actions/message';
 
 import TextField from '../../UI/TextField';
 
-import s from './index.module.scss';
+// import s from './index.module.scss';
+const useStyles = makeStyles((theme) => ({
+  grow: {
+    flexGrow: '1',
+    width: '50%',
+  },
+  root: {
+    '@global': {
+      '.MuiFormControl-root': {
+        width: '100%',
+      },
+    },
+  },
+  submit: {
+    marginTop: theme.spacing(3),
+  },
+}));
 
 function SecurityForm() {
+  const s = useStyles();
   const dispatch = useDispatch();
   const user = useSelector(getCurrentUser);
   const {
@@ -44,18 +62,25 @@ function SecurityForm() {
     register({ name: 'confirmPassword', required: true });
   }, [register]);
 
+  const rowSpacing = 4;
+
   return (
-    <>
-      <form
-        className={s.form}
-        noValidate
-        onSubmit={handleSubmit(onSubmit)}
+    <form
+      className={s.root}
+      noValidate
+      onSubmit={handleSubmit(onSubmit)}
+    >
+      <Grid
+        container
+        direction="column"
+        spacing={2}
       >
         <Grid
           container
-          direction="column"
+          item
+          spacing={rowSpacing}
         >
-          <Grid item>
+          <Grid className={s.grow} item>
             <TextField
               autoComplete="password"
               error={!!(errors && errors.oldPassword)}
@@ -68,44 +93,49 @@ function SecurityForm() {
               variant="standard"
             />
           </Grid>
-          <Grid container>
-            <Grid item>
-              <TextField
-                autoComplete="new-password"
-                error={!!(errors && errors.newPassword)}
-                inputRef={register}
-                label="New password"
-                name="newPassword"
-                required
-                type="password"
-                variant="standard"
-              />
-            </Grid>
-            <Grid className={s.confirmPassword} item>
-              <TextField
-                autoComplete="new-password"
-                error={!!(errors.confirmPassword)}
-                helperText={errors.confirmPassword && errors.confirmPassword.message}
-                inputRef={register}
-                label="Confirm password"
-                name="confirmPassword"
-                required
-                type="password"
-                variant="standard"
-              />
-            </Grid>
+          <Grid className={s.grow} item />
+        </Grid>
+        <Grid
+          container
+          item
+          spacing={rowSpacing}
+        >
+          <Grid className={s.grow} item>
+            <TextField
+              autoComplete="new-password"
+              error={!!(errors && errors.newPassword)}
+              inputRef={register}
+              label="New password"
+              name="newPassword"
+              required
+              type="password"
+              variant="standard"
+            />
+          </Grid>
+          <Grid className={s.grow} item>
+            <TextField
+              autoComplete="new-password"
+              error={!!(errors.confirmPassword)}
+              helperText={errors.confirmPassword && errors.confirmPassword.message}
+              inputRef={register}
+              label="Confirm password"
+              name="confirmPassword"
+              required
+              type="password"
+              variant="standard"
+            />
           </Grid>
         </Grid>
-        <Button
-          className={s.submit}
-          color="primary"
-          type="submit"
-          variant="contained"
-        >
-          Change password
-        </Button>
-      </form>
-    </>
+      </Grid>
+      <Button
+        className={s.submit}
+        color="primary"
+        type="submit"
+        variant="contained"
+      >
+        Change password
+      </Button>
+    </form>
   );
 }
 

@@ -1,20 +1,37 @@
 import React from 'react';
 import useForm from 'react-hook-form';
+import { makeStyles } from '@material-ui/styles';
 import { useSelector, useDispatch } from 'react-redux';
 import { Button, Grid } from '@material-ui/core';
 import { Autocomplete } from '@material-ui/lab';
 
+import countries from '../../../constants/countries';
 import profileForm from '../../../constants/validation/profileForm';
+import { countryToFlag } from '../../../helpers';
 import { getCurrentUser } from '../../../selectors/user';
 import { updateUser } from '../../../actions/users';
-import countries from '../../../constants/countries';
 
 import TextField from '../../UI/TextField';
 
-import s from './index.module.scss';
-import { countryToFlag } from '../../../helpers';
+const useStyles = makeStyles((theme) => ({
+  grow: {
+    flexGrow: '1',
+    width: '50%',
+  },
+  root: {
+    '@global': {
+      '.MuiFormControl-root': {
+        width: '100%',
+      },
+    },
+  },
+  submit: {
+    marginTop: theme.spacing(3),
+  },
+}));
 
 function ProfileForm() {
+  const s = useStyles();
   const dispatch = useDispatch();
   const user = useSelector(getCurrentUser);
   const {
@@ -48,27 +65,41 @@ function ProfileForm() {
     register({ name: 'country' });
   }, [register]);
 
+  const rowSpacing = 4;
+
   return (
     <form
-      className={s.form}
+      className={s.root}
       noValidate
       onSubmit={handleSubmit(onSubmit)}
     >
       <Grid
         container
         direction="column"
+        spacing={2}
       >
-        <Grid item>
-          <TextField
-            disabled
-            label="Email Address"
-            required
-            value={user.email}
-            variant="standard"
-          />
+        <Grid
+          container
+          item
+          spacing={rowSpacing}
+        >
+          <Grid className={s.grow} item>
+            <TextField
+              disabled
+              label="Email Address"
+              required
+              value={user.email}
+              variant="standard"
+            />
+          </Grid>
+          <Grid className={s.grow} item />
         </Grid>
-        <Grid className={s.groupFields} container>
-          <Grid item>
+        <Grid
+          container
+          item
+          spacing={rowSpacing}
+        >
+          <Grid className={s.grow} item>
             <TextField
               autoComplete="given-name"
               defaultValue={user.firstName}
@@ -80,7 +111,7 @@ function ProfileForm() {
               variant="standard"
             />
           </Grid>
-          <Grid item>
+          <Grid className={s.grow} item>
             <TextField
               autoComplete="family-name"
               defaultValue={user.lastName}
@@ -93,20 +124,31 @@ function ProfileForm() {
             />
           </Grid>
         </Grid>
-        <Grid item>
-          <TextField
-            autoComplete="tel"
-            defaultValue={user.phone}
-            error={!!(errors.phone)}
-            helperText={errors.phone && errors.phone.message}
-            inputRef={register}
-            label="Phone number"
-            name="phone"
-            variant="standard"
-          />
+        <Grid
+          container
+          item
+          spacing={rowSpacing}
+        >
+          <Grid className={s.grow} item>
+            <TextField
+              autoComplete="tel"
+              defaultValue={user.phone}
+              error={!!(errors.phone)}
+              helperText={errors.phone && errors.phone.message}
+              inputRef={register}
+              label="Phone number"
+              name="phone"
+              variant="standard"
+            />
+          </Grid>
+          <Grid className={s.grow} item />
         </Grid>
-        <Grid className={s.groupFields} container>
-          <Grid item>
+        <Grid
+          container
+          item
+          spacing={rowSpacing}
+        >
+          <Grid className={s.grow} item>
             <TextField
               autoComplete="address"
               defaultValue={user.address}
@@ -117,7 +159,7 @@ function ProfileForm() {
               variant="standard"
             />
           </Grid>
-          <Grid item>
+          <Grid className={s.grow} item>
             <Autocomplete
               autoHighlight
               defaultValue={countries.find((x) => x.code === user.country)}

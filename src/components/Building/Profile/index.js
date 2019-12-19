@@ -1,6 +1,7 @@
 import React from 'react';
-import { Grid, Paper, Typography } from '@material-ui/core';
+import { Grid, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
+import LayoutPaper from '../../UI/LayoutPaper';
 
 const useStyles = makeStyles((theme) => ({
   content: {
@@ -25,14 +26,14 @@ function Profile() {
   return (
     <>
       <Grid className={s.content} item>
-        <Paper className={s.contentPaper}>
+        <LayoutPaper className={s.contentPaper}>
           <div>Profile page. Work in progress</div>
-        </Paper>
+        </LayoutPaper>
       </Grid>
       <Grid item>
-        <Paper className={s.rightColumn}>
+        <LayoutPaper className={s.rightColumn}>
           <Typography variant="body1">Portfolio</Typography>
-        </Paper>
+        </LayoutPaper>
       </Grid>
     </>
   );

@@ -1,36 +1,74 @@
-import React, { useEffect, useCallback, useState } from 'react';
-import MaterialTable from 'material-table';
+import React, {
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
+import Fuse from 'fuse.js';
+import { makeStyles } from '@material-ui/styles';
 import { useDispatch, useSelector } from 'react-redux';
-import fileSize from 'filesize';
-import { Grid, Button, IconButton } from '@material-ui/core';
-import { Delete, GetApp } from '@material-ui/icons';
+import {
+  Checkbox,
+  FormControl,
+  Grid,
+  Input,
+  InputLabel,
+  ListItemText,
+  MenuItem,
+  Select,
+  TextField,
+} from '@material-ui/core';
 
-import { ROLES } from '../../constants';
 import { fetchFiles, getDownloadLink, deleteFiles } from '../../actions/files';
-import { getBuildingPermissionByBuildingIdAndUserId } from '../../selectors/buildings';
 import { getCurrentBuildingId } from '../../selectors/router';
-import { getCurrentUser } from '../../selectors/user';
-import { getFileFormat } from '../../helpers';
 import { getFiles } from '../../selectors/files';
-import { getUsers } from '../../selectors/users';
 import { setMessage } from '../../actions/message';
 
 import Dialog from '../UI/Dialog';
-import Link from '../UI/Link';
+import FileTable from './FileTable';
+import { getFileFormat } from '../../helpers';
 
-import s from './index.module.scss';
+const useStyles = makeStyles((theme) => ({
+  filterControl: {
+    width: 160,
+  },
+  filters: {
+    marginBottom: theme.spacing(2),
+  },
+  root: {
+    '@global': {
+      '.MuiTableRow-root:empty': {
+        display: 'none',
+      },
+    },
+  },
+}));
+
+const MenuProps = {
+  PaperProps: {
+    style: {
+      maxHeight: 32 * 4.5 + 8,
+      width: 250,
+    },
+  },
+};
 
 function FileList() {
+  const s = useStyles();
   const dispatch = useDispatch();
   const files = useSelector(getFiles);
-  const users = useSelector(getUsers);
   const currentBuildingId = useSelector(getCurrentBuildingId);
-  const currentUser = useSelector(getCurrentUser);
-  const permission = useSelector((state) => getBuildingPermissionByBuildingIdAndUserId(state, currentBuildingId, currentUser.id)) || {};
+  const fuse = useRef();
 
-  const [selectedItems, setSelectedItems] = useState([]);
   const [deleteConfirmOpened, setDeleteConfirmOpened] = useState(false);
   const [deleteList, setDeleteList] = useState([]);
+  const [fileTypes, setFileTypes] = useState([]);
+  const [selectedItems, setSelectedItems] = useState([]);
+  const [tableData, setTableData] = useState([]);
+  const [filters, setFilters] = useState({
+    name: '',
+    types: [],
+  });
 
   const downloadFile = (fileId) => {
     dispatch(getDownloadLink(fileId)).then((url) => {
@@ -65,87 +103,96 @@ function FileList() {
     }
   }, [currentBuildingId, dispatch]);
 
-  const columns = [
-    {
-      render: (rowData) => (
-        <Link
-          to="/"
-          variant="body1"
-        >
-          {`${rowData.name}`}
-        </Link>
-      ),
-      title: 'File name',
-    },
-    {
-      render: (rowData) => getFileFormat(rowData.name),
-      title: 'File type',
-    },
-    {
-      render: (rowData) => fileSize(rowData.size || 0),
-      title: 'File size',
-    },
-    // {
-    //   render: (rowData) => rowData.status,
-    //   title: 'Status',
-    // },
-    {
-      render: (rowData) => new Date(rowData.addDate).toLocaleDateString('default', {
-        day: '2-digit',
-        month: 'short',
-        year: 'numeric',
-      }),
-      title: 'Date uploaded',
-    },
-    {
-      field: 'modifyDate',
-      title: 'Date modified',
-    },
-    {
-      render: (rowData) => {
-        const { addUserId } = rowData;
-        const user = users.find((x) => x.id === addUserId);
+  useEffect(() => {
+    let data = files;
 
-        if (!user) return null;
+    if (filters.name) {
+      data = fuse.current.search(filters.name);
+    }
+    if (filters.types && filters.types.length) {
+      data = data.filter((item) => filters.types.includes(getFileFormat(item.name)));
+    }
 
-        return (
-          <Link
-            to="/"
-            variant="body1"
-          >
-            {`${user.firstName} ${user.lastName}`}
-          </Link>
-        );
-      },
-      title: 'Uploaded by',
-    },
-    {
-      field: 'modifyUser',
-      title: 'Modified by',
-    },
-    {
-      render: (rowData) => (
-        <Grid container>
-          <Grid item>
-            <IconButton onClick={() => downloadFile(rowData.id)} size="small">
-              <GetApp />
-            </IconButton>
-          </Grid>
-          {[ROLES.EDITOR, ROLES.ADMIN].includes(permission.role) && (
-            <Grid item>
-              <IconButton onClick={() => onDeleteFiles([rowData.id])()} size="small">
-                <Delete />
-              </IconButton>
-            </Grid>
-          )}
-        </Grid>
-      ),
-      title: 'Actions',
-    },
-  ];
+    setTableData(data);
+  }, [files, filters]);
+
+  useEffect(() => {
+    const options = {
+      keys: ['name'],
+    };
+
+    fuse.current = new Fuse(files, options);
+
+    const types = files.reduce((acc, curr) => {
+      const type = getFileFormat(curr.name);
+      return acc.includes(type)
+        ? acc
+        : [...acc, type];
+    }, []);
+    setFileTypes(types);
+  }, [files]);
+
+  const onFilterChange = useCallback((filter) => (e) => {
+    setFilters({
+      ...filters,
+      [filter]: e.target.value,
+    });
+  }, [filters]);
+
+  const onArrayFilterChange = useCallback((filter) => (e) => {
+    const { value } = e.target;
+    const filterValue = filters[filter];
+    if (filters[filter].includes(value)) {
+      const index = filterValue.indexOf(value);
+      filterValue.splice(index, 1);
+    } else {
+      filterValue.push(value);
+    }
+
+    setFilters({
+      ...filters,
+      [filter]: e.target.value,
+    });
+  }, [filters]);
 
   return (
     <div className={s.root}>
+      <Grid
+        className={s.filters}
+        container
+        spacing={2}
+      >
+        <Grid item>
+          <TextField
+            className={s.filterControl}
+            label="Name"
+            onChange={onFilterChange('name')}
+            size="small"
+            value={filters.name}
+          />
+        </Grid>
+        <Grid item>
+          <FormControl className={s.filterControl} size="small">
+            <InputLabel id="filter-types-label">File type</InputLabel>
+            <Select
+              input={<Input />}
+              labelId="filter-types-label"
+              MenuProps={MenuProps}
+              multiple
+              onChange={onArrayFilterChange('types')}
+              renderValue={(selected) => selected.join(', ')}
+              value={filters.types}
+            >
+              {fileTypes.map((type) => (
+                <MenuItem key={type} value={type}>
+                  <Checkbox checked={filters.types.includes(type)} size="small" />
+                  <ListItemText primary={type} />
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        </Grid>
+      </Grid>
       <Dialog
         content={(
           <p>
@@ -158,50 +205,12 @@ function FileList() {
         open={deleteConfirmOpened}
         title="Are you sure?"
       />
-      <MaterialTable
-        actions={[
-          {
-            icon: 'edit',
-            onClick: () => {},
-            tooltip: 'Edit',
-          },
-          {
-            icon: 'get_app',
-            onClick: (e, rowData) => downloadFile(rowData.id),
-            tooltip: 'Download',
-          },
-          {
-            icon: 'delete',
-            onClick: (e, rowData) => onDeleteFiles([rowData.id])(),
-            tooltip: 'Delete',
-          },
-        ]}
-        columns={columns}
-        components={{
-          Container: Grid,
-          Toolbar: () => (
-            <Grid className={s.tableToolbar} container>
-              <Grid item>
-                <Button
-                  disabled={!selectedItems.length}
-                  onClick={onDeleteFiles()}
-                  variant="outlined"
-                >
-                  Delete selected
-                </Button>
-              </Grid>
-            </Grid>
-          ),
-        }}
-        data={files}
+      <FileTable
+        data={tableData}
+        onDeleteFiles={onDeleteFiles}
+        onDownloadFile={downloadFile}
         onSelectionChange={onSelectionChange}
-        options={{
-          actionsColumnIndex: -1,
-          draggable: false,
-          pageSize: 10,
-          pageSizeOptions: [10, 20, 50, 100],
-          selection: true,
-        }}
+        selectedItems={selectedItems}
       />
     </div>
   );

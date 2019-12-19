@@ -73,7 +73,7 @@ function BuildingList() {
     if (process.env.NODE_ENV === 'development') return;
 
     loadGoogleMaps({
-      key: 'AIzaSyDNq0toolno9-6DWW52N4BxPv_OBpRYW_Q',
+      key: process.env.REACT_APP_FIREBASE_API_KEY,
       libraries: [
         'places',
       ],

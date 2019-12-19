@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import { push } from 'connected-react-router';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { makeStyles } from '@material-ui/styles';
-import { AccountCircle } from '@material-ui/icons';
+import { Search } from '@material-ui/icons';
 import clsx from 'clsx';
 import {
   AppBar,
@@ -10,14 +10,14 @@ import {
   IconButton,
   Menu,
   MenuItem,
-  Divider,
-  Typography,
+  Paper,
+  InputBase,
+  Avatar,
 } from '@material-ui/core';
 
 import { ROUTES } from '../../constants';
 import { signOut } from '../../actions/firebase';
-import { getCurrentBuildingId } from '../../selectors/router';
-import { getBuildingById } from '../../selectors/buildings';
+import { setMessage } from '../../actions/message';
 
 import Logo from '../../assets/logo3.svg';
 import Link from '../UI/Link';
@@ -34,15 +34,25 @@ const useStyles = makeStyles((theme) => ({
   appBarWithShadow: {
     boxShadow: '0 2px 5px rgba(200, 200, 200, .2)',
   },
+  searchIcon: {
+    color: theme.palette.secondary.main,
+    marginLeft: theme.spacing(0.5),
+    marginRight: theme.spacing(1),
+    transform: 'translateY(2px)',
+  },
+  searchInput: {
+    padding: theme.spacing(0.5),
+    width: 400,
+  },
+  searchInputWrapper: {
+    marginLeft: theme.spacing(6),
+  },
 }));
 
 function Header() {
   const dispatch = useDispatch();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [shadowVisible, setShadowVisible] = React.useState(false);
-
-  const currentBuildingId = useSelector(getCurrentBuildingId);
-  const currentBuilding = useSelector((state) => getBuildingById(state, currentBuildingId));
 
   const classes = useStyles();
 
@@ -64,7 +74,12 @@ function Header() {
 
   const profile = () => {
     handleClose();
-    dispatch(push(ROUTES.profile()));
+    dispatch(push(ROUTES.profile.main()));
+  };
+
+  const help = () => {
+    handleClose();
+    dispatch(setMessage('Not implemented yet.'));
   };
 
   useEffect(() => {
@@ -92,12 +107,17 @@ function Header() {
           <Link to={ROUTES.home()}>
             <img alt="Pocket Buildings" className={s.logo} src={Logo} />
           </Link>
-          {currentBuilding && (
-            <>
-              <Divider className={s.divider} orientation="vertical" />
-              <Typography variant="body1">{currentBuilding.name}</Typography>
-            </>
-          )}
+          <Paper className={classes.searchInputWrapper}>
+            <InputBase
+              className={classes.searchInput}
+              placeholder="Search"
+              startAdornment={(
+                <div className={classes.searchIcon}>
+                  <Search />
+                </div>
+              )}
+            />
+          </Paper>
         </div>
         <IconButton
           aria-controls="menu-appbar"
@@ -105,8 +125,9 @@ function Header() {
           aria-label="account of current user"
           color="inherit"
           onClick={handleMenu}
+          size="small"
         >
-          <AccountCircle />
+          <Avatar>DB</Avatar>
         </IconButton>
         <Menu
           anchorEl={anchorEl}
@@ -125,6 +146,7 @@ function Header() {
           }}
         >
           <MenuItem onClick={profile}>Profile</MenuItem>
+          <MenuItem onClick={help}>Help</MenuItem>
           <MenuItem onClick={logOut}>Sign out</MenuItem>
         </Menu>
       </Toolbar>

@@ -56,3 +56,5 @@ export const FETCH_RESPONSE_STATUS_THROW = [
   404,
   500,
 ];
+
+export const MAX_IMAGE_COVER_SIZE = 2 * 1024 * 1024; // 2 MB

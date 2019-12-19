@@ -9,13 +9,16 @@ export const countryToFlag = (isoCode) => (typeof String.fromCodePoint !== 'unde
   ? isoCode.toUpperCase().replace(/./g, (char) => String.fromCodePoint(char.charCodeAt(0) + 127397))
   : isoCode);
 
+// Get custom error message based on firebase error, if not found then display default message
 export const getFirebaseErrorMessage = (error) => firebaseErrors[error.code] || error.message;
 
+// Get file format from file name
 export const getFileFormat = (fileName = '') => {
   const arr = fileName.split('.');
   return arr.length > 1 ? arr[arr.length - 1].toLocaleUpperCase() : '';
 };
 
+// Create and return resumable google cloud storage upload instance
 export const createUploadInstance = (params, onProgress, onComplete) => {
   const uploadParams = {
     chunkSize: UPLOAD_CONFIG.chunkSize,
@@ -36,3 +39,16 @@ export const createUploadInstance = (params, onProgress, onComplete) => {
 export const getGcsLocalStorageItemKey = (id) => `__gcsBrowserUpload.${id}`;
 
 export const getUploadUrlStorageItemKey = (id) => `${WINDOW_UPLOAD_URLS_KEY}_${id}`;
+
+// Generate Google Maps Static image url
+export const getMapUrl = (address) => {
+  const url = new URL('https://maps.googleapis.com/maps/api/staticmap');
+
+  url.searchParams.append('key', process.env.REACT_APP_FIREBASE_API_KEY);
+  url.searchParams.append('center', `${address}`);
+  url.searchParams.append('size', '140x180');
+  url.searchParams.append('scale', 2);
+  url.searchParams.append('zoom', 15);
+
+  return url.href;
+};
