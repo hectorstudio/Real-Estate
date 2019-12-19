@@ -10,6 +10,12 @@ export const getBuildings = createSelector(
   (ids, entities) => ids.map((id) => entities[id]),
 );
 
+export const getBuildingsByPortfolioId = createSelector(
+  getBuildings,
+  (state, portfolioId) => portfolioId,
+  (buildings, portfolioId) => buildings.filter((building) => building.portfolioId === portfolioId),
+);
+
 export const getBuildingById = createSelector(
   getBuildings,
   (state, id) => id,

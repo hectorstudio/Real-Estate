@@ -1,7 +1,9 @@
 import React from 'react';
-import { Grid, Typography } from '@material-ui/core';
+import { Grid } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
+
 import LayoutPaper from '../../UI/LayoutPaper';
+import Portfolios from './Portfolios';
 
 const useStyles = makeStyles((theme) => ({
   content: {
@@ -14,7 +16,7 @@ const useStyles = makeStyles((theme) => ({
   },
   rightColumn: {
     boxSizing: 'border-box',
-    height: 260,
+    minHeight: 260,
     padding: theme.spacing(2),
     width: 260,
   },
@@ -32,7 +34,7 @@ function Profile() {
       </Grid>
       <Grid item>
         <LayoutPaper className={s.rightColumn}>
-          <Typography variant="body1">Portfolio</Typography>
+          <Portfolios />
         </LayoutPaper>
       </Grid>
     </>
