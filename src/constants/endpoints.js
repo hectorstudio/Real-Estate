@@ -16,6 +16,11 @@ export default {
     success: (fileId) => `${API_URL}files/success/${fileId}`,
     upload: (fileId) => `${API_URL}files/upload/${fileId}`,
   },
+  portfolios: {
+    many: () => `${API_URL}portfolios`,
+    one: (portfolioId) => `${API_URL}portfolios/${portfolioId}`,
+    permissions: (portfolioId) => `${API_URL}portfolios/${portfolioId}/permissions`,
+  },
   users: {
     currentUser: () => `${API_URL}users/currentUser`,
     firebaseId: (firebaseId) => `${API_URL}users/firebase/${firebaseId}`,

@@ -16,6 +16,7 @@ import NewBuilding from '../NewBuilding';
 import PrivateRoute from '../PrivateRoute';
 import Profile from '../Profile';
 import Container from '../UI/Container';
+import { fetchPortfolios } from '../../actions/portfolios';
 
 const useTheme = makeStyles((theme) => {
   console.log(theme);
@@ -37,6 +38,7 @@ function App() {
     if (token) {
       dispatch(fetchUsers()); // Fetch users per building only
       dispatch(fetchBuildings());
+      dispatch(fetchPortfolios());
     }
   }, [dispatch, token]);
 

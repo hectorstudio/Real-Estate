@@ -25,7 +25,7 @@ it('returns state', () => {
 it('returns initial state if no state is passed', () => {
   const newState = reducer(undefined, {});
 
-  expect(newState).toBe(initialState.files);
+  expect(newState).toBe(initialState.buildings);
 });
 
 describe('RECEIVE_GET_BUILDINGS', () => {

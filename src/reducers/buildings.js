@@ -12,7 +12,7 @@ import {
   RECEIVE_POST_BUILDING_PERMISSION,
 } from '../actions/types';
 
-export default (state = initialState.files, action) => {
+export default (state = initialState.buildings, action) => {
   switch (action.type) {
     case RECEIVE_GET_BUILDINGS:
       return normalize(action.payload, [buildingSchema]);
