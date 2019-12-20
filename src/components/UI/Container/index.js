@@ -4,8 +4,6 @@ import { makeStyles } from '@material-ui/styles';
 import { Container as MUIContainer } from '@material-ui/core';
 import clsx from 'clsx';
 
-// TODO: No longer used?
-
 const useStyles = makeStyles((theme) => ({
   container: {
     marginTop: theme.spacing(3),

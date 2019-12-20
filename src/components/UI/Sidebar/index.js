@@ -1,8 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/styles';
 import { matchPath } from 'react-router';
 import clsx from 'clsx';
+import { useSelector } from 'react-redux';
 import {
   Icon,
   List,
@@ -11,13 +12,12 @@ import {
   ListItemText,
 } from '@material-ui/core';
 
-import { useSelector } from 'react-redux';
 import { getPathname } from '../../../selectors/router';
 
 import LinkButton from '../LinkButton';
 import LayoutPaper from '../LayoutPaper';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(/* istanbul ignore next */(theme) => ({
   activeItem: {
     color: theme.palette.primary.main,
   },
@@ -64,7 +64,11 @@ function Sidebar(props) {
 
 Sidebar.propTypes = {
   className: PropTypes.string,
-  items: PropTypes.arrayOf(PropTypes.any).isRequired,
+  items: PropTypes.arrayOf(PropTypes.shape({
+    icon: PropTypes.string,
+    label: PropTypes.string,
+    to: PropTypes.string,
+  })).isRequired,
 };
 
 Sidebar.defaultProps = {

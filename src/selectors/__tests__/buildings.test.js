@@ -4,6 +4,7 @@ import {
   getBuildingPermissions,
   getBuildingPermissionsByBuildingId,
   getBuildings,
+  getBuildingsByPortfolioId,
 } from '../buildings';
 
 let state;
@@ -12,8 +13,15 @@ beforeEach(() => {
     buildings: {
       entities: {
         buildings: {
-          1: { id: '1', name: 'foo' },
-          2: { id: '2', name: 'bar' },
+          1: {
+            id: '1',
+            name: 'foo',
+            portfolioId: 'foo',
+          },
+          2: {
+            id: '2',
+            name: 'bar',
+          },
         },
         permissions: {
           1: {
@@ -44,6 +52,16 @@ describe('getBuildings', () => {
     expect(selection).toMatchObject([
       state.buildings.entities.buildings[1],
       state.buildings.entities.buildings[2],
+    ]);
+  });
+});
+
+describe('getBuildingsByPortfolioId', () => {
+  it('returns list of buildings that are part of portfolio', () => {
+    const selection = getBuildingsByPortfolioId(state, 'foo');
+
+    expect(selection).toMatchObject([
+      state.buildings.entities.buildings[1],
     ]);
   });
 });

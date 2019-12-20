@@ -6,7 +6,7 @@ import { makeStyles } from '@material-ui/styles';
 
 import styles from '../../../styles';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(/* istanbul ignore next */(theme) => ({
   root: {
     boxSizing: 'border-box',
     minHeight: theme.spacing(2),

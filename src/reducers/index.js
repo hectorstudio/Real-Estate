@@ -9,7 +9,7 @@ import uploads from './uploads';
 import user from './user';
 import users from './users';
 
-export default (history) => combineReducers({
+export default /* istanbul ignore next */ (history) => combineReducers({
   buildings,
   files,
   message,

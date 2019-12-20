@@ -10,7 +10,7 @@ import SecurityForm from './SecurityForm';
 import Sidebar from '../UI/Sidebar';
 import LayoutPaper from '../UI/LayoutPaper';
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles(/* istanbul ignore next */ () => ({
   content: {
     flexGrow: 1,
   },
