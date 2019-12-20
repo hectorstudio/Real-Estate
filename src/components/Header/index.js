@@ -1,26 +1,27 @@
 import React, { useEffect } from 'react';
 import { push } from 'connected-react-router';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { makeStyles } from '@material-ui/styles';
 import { Search } from '@material-ui/icons';
 import clsx from 'clsx';
 import {
   AppBar,
-  Toolbar,
   IconButton,
+  InputBase,
   Menu,
   MenuItem,
   Paper,
-  InputBase,
-  Avatar,
+  Toolbar,
 } from '@material-ui/core';
 
 import { ROUTES } from '../../constants';
-import { signOut } from '../../actions/firebase';
+import { getCurrentUser } from '../../selectors/user';
 import { setMessage } from '../../actions/message';
+import { signOut } from '../../actions/firebase';
 
-import Logo from '../../assets/logo3.svg';
 import Link from '../UI/Link';
+import Logo from '../../assets/logo3.svg';
+import UserAvatar from '../UserAvatar';
 
 import s from './index.module.scss';
 
@@ -51,6 +52,7 @@ const useStyles = makeStyles((theme) => ({
 
 function Header() {
   const dispatch = useDispatch();
+  const currentUser = useSelector(getCurrentUser);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [shadowVisible, setShadowVisible] = React.useState(false);
 
@@ -127,7 +129,7 @@ function Header() {
           onClick={handleMenu}
           size="small"
         >
-          <Avatar>DB</Avatar>
+          <UserAvatar user={currentUser} />
         </IconButton>
         <Menu
           anchorEl={anchorEl}

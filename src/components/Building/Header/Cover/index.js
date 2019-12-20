@@ -8,11 +8,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import fileSize from 'filesize';
 
 import { MAX_IMAGE_COVER_SIZE, ROLES } from '../../../../constants';
-import { setMessage } from '../../../../actions/message';
 import { getCurrentBuildingId } from '../../../../selectors/router';
+import { setMessage } from '../../../../actions/message';
+import { uploadBuildingCoverImage } from '../../../../actions/buildings';
 
 import Dialog from '../../../UI/Dialog';
-import { uploadBuildingCoverImage } from '../../../../actions/buildings';
 
 const useStyles = makeStyles((theme) => ({
   button: {
