@@ -10,6 +10,7 @@ const routes = {
   home: () => '/',
   profile: {
     main: () => '/profile',
+    photo: () => '/profile/photo',
     security: () => '/profile/security',
   },
   signIn: () => '/signin',

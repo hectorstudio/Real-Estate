@@ -5,10 +5,11 @@ import { Grid, Container } from '@material-ui/core';
 
 import { ROUTES } from '../../constants';
 
+import LayoutPaper from '../UI/LayoutPaper';
+import PhotoForm from './PhotoForm';
 import ProfileForm from './ProfileForm';
 import SecurityForm from './SecurityForm';
 import Sidebar from '../UI/Sidebar';
-import LayoutPaper from '../UI/LayoutPaper';
 
 const useStyles = makeStyles(/* istanbul ignore next */ () => ({
   content: {
@@ -35,6 +36,11 @@ function Profile() {
                 to: ROUTES.profile.main(),
               },
               {
+                icon: 'add_a_photo',
+                label: 'Profile photo',
+                to: ROUTES.profile.photo(),
+              },
+              {
                 icon: 'security',
                 label: 'Security',
                 to: ROUTES.profile.security(),
@@ -46,6 +52,7 @@ function Profile() {
           <LayoutPaper>
             <Switch>
               <Route component={ProfileForm} exact path={ROUTES.profile.main()} />
+              <Route component={PhotoForm} exact path={ROUTES.profile.photo()} />
               <Route component={SecurityForm} exact path={ROUTES.profile.security()} />
             </Switch>
           </LayoutPaper>

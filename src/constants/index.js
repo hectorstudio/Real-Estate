@@ -58,3 +58,4 @@ export const FETCH_RESPONSE_STATUS_THROW = [
 ];
 
 export const MAX_IMAGE_COVER_SIZE = 2 * 1024 * 1024; // 2 MB
+export const MAX_USER_PHOTO_SIZE = 2 * 1024 * 1024; // 2 MB

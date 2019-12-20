@@ -11,7 +11,6 @@ import { setMessage } from '../../../actions/message';
 
 import TextField from '../../UI/TextField';
 
-// import s from './index.module.scss';
 const useStyles = makeStyles((theme) => ({
   grow: {
     flexGrow: '1',
