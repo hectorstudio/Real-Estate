@@ -51,6 +51,8 @@ function ProfileForm() {
     if (user.phone !== values.phone) updatedValues.phone = values.phone;
     if (user.address !== values.address) updatedValues.address = values.address;
     if (user.country !== values.country) updatedValues.country = values.country;
+    if (user.jobTitle !== values.jobTitle) updatedValues.jobTitle = values.jobTitle;
+    if (user.companyName !== values.companyName) updatedValues.companyName = values.companyName;
 
     dispatch(updateUser(updatedValues));
   };
@@ -58,11 +60,13 @@ function ProfileForm() {
   const onCountryChange = (e, value) => setValue('country', value.code);
 
   React.useEffect(() => {
+    register({ name: 'address' });
+    register({ name: 'companyName' });
+    register({ name: 'country' });
     register({ name: 'firstName' });
+    register({ name: 'jobTitle' });
     register({ name: 'lastName' });
     register({ name: 'phone' });
-    register({ name: 'address' });
-    register({ name: 'country' });
   }, [register]);
 
   const rowSpacing = 4;
@@ -120,6 +124,30 @@ function ProfileForm() {
               label="Last name"
               name="lastName"
               required
+              variant="standard"
+            />
+          </Grid>
+        </Grid>
+        <Grid
+          container
+          item
+          spacing={rowSpacing}
+        >
+          <Grid className={s.grow} item>
+            <TextField
+              defaultValue={user.jobTitle}
+              inputRef={register}
+              label="Job title"
+              name="jobTitle"
+              variant="standard"
+            />
+          </Grid>
+          <Grid className={s.grow} item>
+            <TextField
+              defaultValue={user.companyName}
+              inputRef={register}
+              label="Company name"
+              name="companyName"
               variant="standard"
             />
           </Grid>

@@ -64,11 +64,14 @@ function Sidebar(props) {
 
 Sidebar.propTypes = {
   className: PropTypes.string,
-  items: PropTypes.arrayOf(PropTypes.shape({
-    icon: PropTypes.string,
-    label: PropTypes.string,
-    to: PropTypes.string,
-  })).isRequired,
+  items: PropTypes.arrayOf(PropTypes.oneOfType([
+    PropTypes.bool,
+    PropTypes.shape({
+      icon: PropTypes.string,
+      label: PropTypes.string,
+      to: PropTypes.string,
+    }),
+  ])).isRequired,
 };
 
 Sidebar.defaultProps = {
