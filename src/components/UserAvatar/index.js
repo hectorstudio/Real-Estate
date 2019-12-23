@@ -3,7 +3,12 @@ import PropTypes from 'prop-types';
 import { Avatar } from '@material-ui/core';
 
 function UserAvatar(props) {
-  const initials = `${props.user.firstName[0]}${props.user.lastName[0]}`.toUpperCase();
+  const {
+    firstName = '',
+    lastName = '',
+  } = props.user;
+
+  const initials = `${firstName[0] || ''}${lastName[0] || ''}`.toUpperCase();
 
   return (
     <Avatar
