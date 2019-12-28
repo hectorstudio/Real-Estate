@@ -1,5 +1,5 @@
 import React from 'react';
-import useForm from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
 import { Button, Grid, Typography } from '@material-ui/core';
 import { push } from 'connected-react-router';

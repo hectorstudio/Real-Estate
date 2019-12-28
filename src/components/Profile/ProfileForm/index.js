@@ -1,5 +1,5 @@
 import React from 'react';
-import useForm from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { makeStyles } from '@material-ui/styles';
 import { useSelector, useDispatch } from 'react-redux';
 import { Button, Grid } from '@material-ui/core';

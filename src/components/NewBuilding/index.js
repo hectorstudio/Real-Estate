@@ -2,7 +2,7 @@ import React from 'react';
 import { useDispatch } from 'react-redux';
 import { Button, TextField, Grid } from '@material-ui/core';
 import { Autocomplete } from '@material-ui/lab';
-import useForm from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { push } from 'connected-react-router';
 
 import countries from '../../constants/countries';

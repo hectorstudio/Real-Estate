@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Autocomplete } from '@material-ui/lab';
-import useForm from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { push } from 'connected-react-router';
 import {
   Button,

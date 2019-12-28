@@ -16,7 +16,7 @@ import {
   IconButton,
   Icon,
 } from '@material-ui/core';
-import useForm from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 
 import { getCurrentBuildingId } from '../../../selectors/router';
 import { ROLES } from '../../../constants';
