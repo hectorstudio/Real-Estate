@@ -24,7 +24,7 @@
     "fuse.js": "3.4.6",
     "gcs-browser-upload-stream": "https://github.com/benjeffery/gcs-browser-upload.git",
     "immutability-helper": "3.0.1",
-    "jss-plugin-global": "10.0.0",
+    "jss-plugin-global": "10.0.1",
     "load-google-maps-api": "2.0.1",
     "material-table": "1.54.2",
     "node-sass": "4.13.0",
