@@ -8,6 +8,7 @@ import portfolios from './portfolios';
 import uploads from './uploads';
 import user from './user';
 import users from './users';
+import viewer from './viewer';
 
 export default /* istanbul ignore next */ (history) => combineReducers({
   buildings,
@@ -18,4 +19,5 @@ export default /* istanbul ignore next */ (history) => combineReducers({
   uploads,
   user,
   users,
+  viewer,
 });

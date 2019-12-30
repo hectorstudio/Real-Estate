@@ -16,4 +16,8 @@ export default {
   uploads: normalize({}, [uploadSchema]),
   user: {},
   users: normalize({}, [userSchema]),
+  viewer: {
+    fileId: null,
+    visible: false,
+  },
 };
